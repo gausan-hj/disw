@@ -50,7 +50,7 @@ for i in range(len(df)):
             
             # 只添加有名字的人
             if name_cn or name_en:
-                # 计算总分：从第7列（H列）开始的所有数字加起来
+                # 计算总分：从第7列开始的所有数字加起来
                 total_score = 0
                 for j in range(7, len(row)):
                     if pd.notna(row[j]) and isinstance(row[j], (int, float)):
@@ -62,7 +62,8 @@ for i in range(len(df)):
                     "name_en": name_en,
                     "class": row[2] if len(row) > 2 and pd.notna(row[2]) else "",
                     "student_id": row[1] if len(row) > 1 and pd.notna(row[1]) else "",
-                    "total": total_score
+                    "total": total_score,
+                    "original_order": i  # 保留原始行号作为顺序
                 })
 
 print(f"总共解析到 {len(people)} 位成员")
@@ -79,14 +80,18 @@ for p in people:
     group_data[g].append(p)
     group_totals[g] += p["total"]
 
-print("\n最终解析结果：")
+# 每个组内按原始顺序排序
+for g in group_data:
+    group_data[g].sort(key=lambda x: x["original_order"])
+
+print("\n解析结果：")
 for g in group_data:
     print(f"{g}: {len(group_data[g])} 人, 组总分: {int(group_totals[g])}")
     # 打印所有人（调试用）
     for p in group_data[g]:
         print(f"  - {p['name_cn']}: {int(p['total'])}分")
 
-# 生成HTML - 显示所有人
+# 生成HTML - 完全按照原顺序
 html = f"""<!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -119,7 +124,6 @@ html = f"""<!DOCTYPE html>
         h1 {{
             font-size: 1.8rem;
             font-weight: 500;
-            color: #2c3e50;
             margin-bottom: 8px;
         }}
         .update-time {{
@@ -137,10 +141,6 @@ html = f"""<!DOCTYPE html>
             border: 1px solid #dce1e5;
             border-radius: 30px;
             font-size: 0.95rem;
-        }}
-        #search:focus {{
-            outline: none;
-            border-color: #9aa6b2;
         }}
         .group-card {{
             background: white;
