@@ -15,20 +15,23 @@ df = pd.read_csv(url, header=None)
 
 print(f"读取到 {len(df)} 行数据")
 
-# 根据你发的Excel，组别分别在：
-# 第2行（索引2）：星穹组
-# 第13行（索引13）：夜曜组（因为星穹组后面有空行）
-# 第26行（索引26）：沧澜组
+# ===== 根据你的Excel，组别位置如下 =====
+# 第3行（索引2）：星穹组
+# 第15行（索引14）：夜曜组  
+# 第28行（索引27）：沧澜组
+# ====================================
 
 group_positions = {
     2: "星穹组",
-    13: "夜曜组",
-    26: "沧澜组"
+    14: "夜曜组",
+    27: "沧澜组"
 }
 
 # 解析数据
 people = []
 current_group = None
+
+print("开始解析数据...")
 
 for i in range(len(df)):
     row = df.iloc[i].tolist()
@@ -41,29 +44,33 @@ for i in range(len(df)):
     
     # 检查是否是人员数据行（A列有序号）
     if len(row) > 0 and pd.notna(row[0]) and isinstance(row[0], (int, float)):
-        # 跳过TOTAL行
+        # 跳过TOTAL行（E列是TOTAL）
         if len(row) > 4 and row[4] == "TOTAL":
             continue
             
         if current_group:
             # 提取基本信息
-            name_cn = row[3] if len(row) > 3 else ""
-            name_en = row[4] if len(row) > 4 else ""
+            name_cn = row[3] if len(row) > 3 and pd.notna(row[3]) else ""
+            name_en = row[4] if len(row) > 4 and pd.notna(row[4]) else ""
             
             # 只添加有名字的人
             if name_cn or name_en:
-                # 计算总分：从第7列（索引7）开始的所有数字加起来
+                # 计算总分：从第7列（H列，索引7）开始的所有数字加起来
                 total_score = 0
                 for j in range(7, len(row)):
                     if pd.notna(row[j]) and isinstance(row[j], (int, float)):
                         total_score += row[j]
                 
+                # 获取其他信息
+                student_class = row[2] if len(row) > 2 and pd.notna(row[2]) else ""
+                student_id = row[1] if len(row) > 1 and pd.notna(row[1]) else ""
+                
                 people.append({
                     "group": current_group,
                     "name_cn": name_cn,
                     "name_en": name_en,
-                    "class": row[2] if len(row) > 2 else "",
-                    "student_id": row[1] if len(row) > 1 else "",
+                    "class": student_class,
+                    "student_id": student_id,
                     "total": total_score
                 })
 
@@ -71,45 +78,42 @@ print(f"总共解析到 {len(people)} 位成员")
 
 # 按组别整理
 group_data = {}
+group_totals = {}
+
 for p in people:
     g = p["group"]
     if g not in group_data:
         group_data[g] = []
+        group_totals[g] = 0
     group_data[g].append(p)
+    group_totals[g] += p["total"]
 
-# 计算各组总分
-group_totals = {}
-for g, members in group_data.items():
-    group_totals[g] = sum([m["total"] for m in members])
-    print(f"{g}: {len(members)} 人, 组总分: {group_totals[g]}")
+print("\n解析结果：")
+for g in group_data:
+    print(f"{g}: {len(group_data[g])} 人, 组总分: {int(group_totals[g])}")
+    # 打印前几个人看看
+    for p in group_data[g][:3]:
+        print(f"  - {p['name_cn']}: {int(p['total'])}分")
 
 # 按总分排序组别
 sorted_groups = sorted(group_totals.items(), key=lambda x: x[1], reverse=True)
 
-# 生成HTML（用之前那个最简版本）
-html = f"""
-<!DOCTYPE html>
+# 生成HTML（使用最简版本）
+html = f"""<!DOCTYPE html>
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>训育处 - 学长团分数板</title>
     <style>
-        * {{
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }}
+        * {{ box-sizing: border-box; margin: 0; padding: 0; }}
         body {{
             font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
             background: #f5f5f5;
             padding: 24px;
             color: #2c3e50;
         }}
-        .container {{
-            max-width: 1200px;
-            margin: 0 auto;
-        }}
+        .container {{ max-width: 1200px; margin: 0 auto; }}
         .header {{
             background: white;
             border-radius: 12px;
@@ -117,19 +121,9 @@ html = f"""
             margin-bottom: 24px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }}
-        h1 {{
-            font-size: 1.8rem;
-            font-weight: 500;
-            margin-bottom: 8px;
-        }}
-        .update-time {{
-            color: #95a5a6;
-            font-size: 0.9rem;
-            margin-top: 8px;
-        }}
-        .search-box {{
-            margin-top: 16px;
-        }}
+        h1 {{ font-size: 1.8rem; font-weight: 500; margin-bottom: 8px; }}
+        .update-time {{ color: #95a5a6; font-size: 0.9rem; margin-top: 8px; }}
+        .search-box {{ margin-top: 16px; }}
         #search {{
             width: 100%;
             max-width: 400px;
@@ -165,18 +159,9 @@ html = f"""
             border-left: 4px solid #9aa6b2;
             cursor: pointer;
         }}
-        .group-rank-item:hover {{
-            background: #f1f4f8;
-        }}
-        .group-rank-name {{
-            font-size: 1.1rem;
-            font-weight: 500;
-            margin-bottom: 8px;
-        }}
-        .group-rank-score {{
-            font-size: 1.6rem;
-            font-weight: 500;
-        }}
+        .group-rank-item:hover {{ background: #f1f4f8; }}
+        .group-rank-name {{ font-size: 1.1rem; font-weight: 500; margin-bottom: 8px; }}
+        .group-rank-score {{ font-size: 1.6rem; font-weight: 500; }}
         .tabs {{
             display: flex;
             gap: 8px;
@@ -202,9 +187,7 @@ html = f"""
             border-radius: 12px;
             padding: 24px;
         }}
-        .group-section.active {{
-            display: block;
-        }}
+        .group-section.active {{ display: block; }}
         .group-header {{
             display: flex;
             justify-content: space-between;
@@ -213,10 +196,7 @@ html = f"""
             padding-bottom: 16px;
             border-bottom: 1px solid #ecf0f1;
         }}
-        .group-name {{
-            font-size: 1.4rem;
-            font-weight: 500;
-        }}
+        .group-name {{ font-size: 1.4rem; font-weight: 500; }}
         .group-total {{
             font-size: 1.2rem;
             font-weight: 500;
@@ -225,10 +205,7 @@ html = f"""
             padding: 6px 16px;
             border-radius: 30px;
         }}
-        table {{
-            width: 100%;
-            border-collapse: collapse;
-        }}
+        table {{ width: 100%; border-collapse: collapse; }}
         th {{
             text-align: left;
             padding: 14px 12px;
@@ -326,7 +303,7 @@ for group_name, members in group_data.items():
     
     for rank, p in enumerate(sorted_members, 1):
         # 处理学号显示
-        student_id_display = str(int(p['student_id'])) if isinstance(p['student_id'], (int, float)) else p['student_id']
+        student_id_display = str(int(p['student_id'])) if isinstance(p['student_id'], (int, float)) else str(p['student_id'])
         
         html += f"""
                     <tr data-name="{p['name_cn']} {p['name_en']}">
@@ -398,6 +375,6 @@ html += """
 with open("index.html", "w", encoding="utf-8") as f:
     f.write(html)
 
-print(f"✅ 生成成功！共 {len(people)} 人")
-for g, members in group_data.items():
-    print(f"  {g}: {len(members)} 人, 总分: {int(group_totals[g])}")
+print(f"\n✅ 生成成功！共 {len(people)} 人")
+for g in group_data:
+    print(f"  {g}: {len(group_data[g])} 人, 总分: {int(group_totals[g])}")
