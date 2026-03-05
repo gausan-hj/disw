@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>学长团个人分数板</title>
+    <title>训育处 - 学长团个人分数板</title>
     <style>
         * {
             box-sizing: border-box;
@@ -12,55 +12,75 @@
             padding: 0;
         }
         body {
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            background: #f3f4f6;
-            padding: 20px;
+            font-family: 'Segoe UI', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+            background: #f5f5f5;
+            padding: 24px;
             min-height: 100vh;
+            color: #2c3e50;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #eaeef2;
+        }
         h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #1f2937;
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: #2c3e50;
             margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .update-time {
-            color: #6b7280;
-            margin-bottom: 24px;
+            color: #95a5a6;
             font-size: 0.9rem;
         }
         .search-box {
-            margin-bottom: 24px;
+            margin-top: 16px;
         }
         #search {
             width: 100%;
-            padding: 12px 16px;
-            font-size: 1rem;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            max-width: 400px;
+            padding: 10px 16px;
+            font-size: 0.95rem;
+            border: 1px solid #dce1e5;
+            border-radius: 30px;
+            background: white;
             transition: all 0.2s;
         }
         #search:focus {
             outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+            border-color: #9aa6b2;
+            box-shadow: 0 0 0 2px rgba(44,62,80,0.1);
         }
         .group-rank-header {
             background: white;
-            border-radius: 16px;
+            border-radius: 12px;
             padding: 20px;
             margin-bottom: 24px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #eaeef2;
         }
         .group-rank-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #374151;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #34495e;
             margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #ecf0f1;
         }
         .group-rank-list {
             display: flex;
@@ -69,62 +89,71 @@
         }
         .group-rank-item {
             flex: 1;
-            min-width: 200px;
-            background: #f9fafb;
-            border-radius: 12px;
+            min-width: 180px;
+            background: #f8fafc;
+            border-radius: 10px;
             padding: 16px;
-            border-left: 6px solid;
-            transition: transform 0.2s;
+            border-left: 4px solid;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
         .group-rank-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            background: #f1f4f8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         }
         .group-rank-name {
             font-size: 1.1rem;
-            font-weight: 600;
+            font-weight: 500;
             margin-bottom: 8px;
+            color: #2c3e50;
         }
         .group-rank-score {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: #34495e;
         }
         .group-rank-score small {
             font-size: 0.9rem;
             font-weight: 400;
-            color: #6b7280;
+            color: #7f8c8d;
         }
         .tabs {
             display: flex;
             gap: 8px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }
         .tab {
-            padding: 10px 20px;
+            padding: 10px 24px;
             background: white;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #dce1e5;
             border-radius: 30px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 500;
-            color: #4b5563;
+            color: #5d6d7e;
             cursor: pointer;
             transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
         .tab:hover {
-            background: #f3f4f6;
+            background: #f1f4f8;
+            border-color: #b8c5d0;
         }
         .tab.active {
-            background: #1f2937;
+            background: #2c3e50;
             color: white;
-            border-color: #1f2937;
+            border-color: #2c3e50;
         }
         .group-section {
             display: none;
             background: white;
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #eaeef2;
         }
         .group-section.active {
             display: block;
@@ -135,104 +164,468 @@
             align-items: center;
             margin-bottom: 20px;
             padding-bottom: 16px;
-            border-bottom: 2px solid #e5e7eb;
+            border-bottom: 1px solid #ecf0f1;
         }
         .group-name {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: #2c3e50;
         }
         .group-total {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #4b5563;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #5d6d7e;
+            background: #f8fafc;
+            padding: 6px 16px;
+            border-radius: 30px;
+            border: 1px solid #e9ecef;
         }
         table {
             width: 100%;
             border-collapse: collapse;
+            font-size: 0.95rem;
         }
         th {
             text-align: left;
-            padding: 12px 8px;
-            background: #f9fafb;
-            font-weight: 600;
-            color: #374151;
-            border-radius: 8px 8px 0 0;
+            padding: 14px 12px;
+            background: #f8fafc;
+            font-weight: 500;
+            color: #4a5b6b;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
         }
         td {
-            padding: 12px 8px;
-            border-bottom: 1px solid #e5e7eb;
+            padding: 14px 12px;
+            border-bottom: 1px solid #edf2f7;
+            color: #3a4a5a;
+        }
+        tr:hover {
+            background: #fafcfd;
         }
         .rank-1 {
-            background: rgba(255,215,0,0.1);
+            background: #fcfaf7;
+        }
+        .rank-1 td:first-child {
             font-weight: 600;
+            color: #b85c5c;
         }
         .rank-1 td:first-child::before {
             content: "👑 ";
+            font-size: 0.9rem;
         }
         .score-badge {
-            background: #e5e7eb;
-            padding: 4px 8px;
-            border-radius: 20px;
+            background: #ecf0f1;
+            padding: 4px 10px;
+            border-radius: 30px;
             font-size: 0.85rem;
+            font-weight: 500;
+            color: #2c3e50;
+            display: inline-block;
         }
         .daily-scores {
             display: flex;
-            gap: 4px;
+            gap: 6px;
             flex-wrap: wrap;
-            margin-top: 4px;
         }
         .daily-score {
-            background: #f3f4f6;
-            padding: 2px 6px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            color: #4b5563;
+            background: #f1f5f9;
+            padding: 3px 8px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            color: #4a5b6b;
+            border: 1px solid #e2e8f0;
+            min-width: 32px;
+            text-align: center;
         }
         .search-highlight {
-            background: #fef3c7;
+            background: #fff9e6;
         }
-        .color-star {
-            border-left-color: #3b82f6;
+        .border-star { border-left-color: #9aa6b2; }
+        .border-night { border-left-color: #7f8c8d; }
+        .border-ocean { border-left-color: #95a5a6; }
+        
+        /* 素色风格 - 只有极淡的区分 */
+        .group-rank-item.border-star { border-left-color: #b0bec5; }
+        .group-rank-item.border-night { border-left-color: #90a4ae; }
+        .group-rank-item.border-ocean { border-left-color: #aab7b8; }
+        
+        .footer {
+            margin-top: 32px;
+            text-align: center;
+            color: #95a5a6;
+            font-size: 0.85rem;
+            padding: 16px;
+            border-top: 1px solid #e9ecef;
         }
-        .color-night {
-            border-left-color: #8b5cf6;
-        }
-        .color-ocean {
-            border-left-color: #10b981;
-        }
-        .bg-star { background: #3b82f6; color: white; }
-        .bg-night { background: #8b5cf6; color: white; }
-        .bg-ocean { background: #10b981; color: white; }
-        .text-star { color: #3b82f6; }
-        .text-night { color: #8b5cf6; }
-        .text-ocean { color: #10b981; }
         @media (max-width: 640px) {
             body { padding: 12px; }
             .group-rank-list { flex-direction: column; }
-            th, td { padding: 8px 4px; font-size: 0.9rem; }
+            th, td { padding: 10px 6px; font-size: 0.85rem; }
+            .daily-score { padding: 2px 4px; font-size: 0.7rem; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🏆 学长团个人分数板</h1>
-        <div class="update-time">最后更新：2026-03-05 11:52:54</div>
-        
-        <div class="search-box">
-            <input type="text" id="search" placeholder="🔍 输入姓名搜索...">
+        <div class="header">
+            <h1>🏫 训育处 · 学长团个人分数板</h1>
+            <div class="subtitle">
+                <span>Prefects' Personal Scoreboard</span>
+                <span class="update-time">更新：2026-03-05 12:06</span>
+            </div>
+            <div class="search-box">
+                <input type="text" id="search" placeholder="🔍 输入姓名或学号搜索...">
+            </div>
         </div>
 
         <div class="group-rank-header">
-            <div class="group-rank-title">📊 组别总分排名</div>
+            <div class="group-rank-title">📋 组别总分排名</div>
             <div class="group-rank-list" id="groupRankList">
 
+                <div class="group-rank-item border-star" data-group="星穹组">
+                    <div class="group-rank-name">星穹组</div>
+                    <div class="group-rank-score">0 <small>分</small></div>
+                    <div style="font-size:0.8rem; color:#95a5a6; margin-top:4px;">第1名</div>
+                </div>
+    
+                <div class="group-rank-item border-night" data-group="夜曜组">
+                    <div class="group-rank-name">夜曜组</div>
+                    <div class="group-rank-score">0 <small>分</small></div>
+                    <div style="font-size:0.8rem; color:#95a5a6; margin-top:4px;">第2名</div>
+                </div>
+    
+                <div class="group-rank-item border-ocean" data-group="沧澜组">
+                    <div class="group-rank-name">沧澜组</div>
+                    <div class="group-rank-score">0 <small>分</small></div>
+                    <div style="font-size:0.8rem; color:#95a5a6; margin-top:4px;">第3名</div>
+                </div>
+    
             </div>
         </div>
 
         <div class="tabs" id="tabs">
 
+            <button class="tab active" data-group="星穹组">星穹组</button>
+
+            <button class="tab " data-group="夜曜组">夜曜组</button>
+
+            <button class="tab " data-group="沧澜组">沧澜组</button>
+
         </div>
 
+        <div class="group-section active" id="group-星穹组" data-group="星穹组">
+            <div class="group-header">
+                <span class="group-name">星穹组</span>
+                <span class="group-total">总分 0</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:60px">名次</th>
+                        <th>姓名</th>
+                        <th style="width:80px">班级</th>
+                        <th style="width:100px">学号</th>
+                        <th style="width:80px">总分</th>
+                        <th>每日得分</th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+                    <tr class="rank-1" data-name="邱嘉瑞 KATHERINE KHOO JAI RUI 24076">
+                        <td>1</td>
+                        <td><strong>邱嘉瑞</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">KATHERINE KHOO JAI R...</span></td>
+                        <td>J3T</td>
+                        <td>24076</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="莎哈娜 SADHANA A/P SASU BAKIAN 24078">
+                        <td>2</td>
+                        <td><strong>莎哈娜</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">SADHANA A/P SASU BAK...</span></td>
+                        <td>J3T</td>
+                        <td>24078</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="李韡翰 LEE WEI HANN 24068">
+                        <td>3</td>
+                        <td><strong>李韡翰</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">LEE WEI HANN</span></td>
+                        <td>J3K</td>
+                        <td>24068</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="彭绍洋 PEH SHAO YANG 24088">
+                        <td>4</td>
+                        <td><strong>彭绍洋</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">PEH SHAO YANG</span></td>
+                        <td>J3T</td>
+                        <td>24088</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="梁纹璇 LEONG WEN XUAN 25035">
+                        <td>5</td>
+                        <td><strong>梁纹璇</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">LEONG WEN XUAN</span></td>
+                        <td>J2Y</td>
+                        <td>25035</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="尤嘉乐 JUSTIN YEW JIA LE 25046">
+                        <td>6</td>
+                        <td><strong>尤嘉乐</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">JUSTIN YEW JIA LE</span></td>
+                        <td>J2Y</td>
+                        <td>25046</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="许艳棋 KHOR YAN QI 26018">
+                        <td>7</td>
+                        <td><strong>许艳棋</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">KHOR YAN QI</span></td>
+                        <td>J1Y</td>
+                        <td>26018</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="林隽毓 LIM JOON YI 26032">
+                        <td>8</td>
+                        <td><strong>林隽毓</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">LIM JOON YI</span></td>
+                        <td>J1Y</td>
+                        <td>26032</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="李竑证 LEE HOONG ZHENG 22040">
+                        <td>9</td>
+                        <td><strong>李竑证</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">LEE HOONG ZHENG</span></td>
+                        <td>S2FA</td>
+                        <td>22040</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="廖若含 LIEW XIN YU 22029">
+                        <td>10</td>
+                        <td><strong>廖若含</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">LIEW XIN YU</span></td>
+                        <td>S2Y</td>
+                        <td>22029</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                </tbody>
+            </table>
+        </div>
+    
+        <div class="group-section " id="group-夜曜组" data-group="夜曜组">
+            <div class="group-header">
+                <span class="group-name">夜曜组</span>
+                <span class="group-total">总分 0</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:60px">名次</th>
+                        <th>姓名</th>
+                        <th style="width:80px">班级</th>
+                        <th style="width:100px">学号</th>
+                        <th style="width:80px">总分</th>
+                        <th>每日得分</th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+                    <tr class="rank-1" data-name="周柔慈 CHEO ROU ZHI 22051">
+                        <td>1</td>
+                        <td><strong>周柔慈</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">CHEO ROU ZHI</span></td>
+                        <td>S2K</td>
+                        <td>22051</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="林骏喨 LIM TEIK LIANG 24083">
+                        <td>2</td>
+                        <td><strong>林骏喨</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">LIM TEIK LIANG</span></td>
+                        <td>J3T</td>
+                        <td>24083</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="林宜彤 LIM YEE TONG 25036">
+                        <td>3</td>
+                        <td><strong>林宜彤</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">LIM YEE TONG</span></td>
+                        <td>J2Y</td>
+                        <td>25036</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="潘宛瑜 TRACY PHUAH WANYU 25071">
+                        <td>4</td>
+                        <td><strong>潘宛瑜</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">TRACY PHUAH WANYU</span></td>
+                        <td>J2Y</td>
+                        <td>25071</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="符传吉 FOO CHUAN JI 25044">
+                        <td>5</td>
+                        <td><strong>符传吉</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">FOO CHUAN JI</span></td>
+                        <td>J2Y</td>
+                        <td>25044</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="陈欣怡 CINDY TAN XIN YI 25058">
+                        <td>6</td>
+                        <td><strong>陈欣怡</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">CINDY TAN XIN YI</span></td>
+                        <td>J2F</td>
+                        <td>25058</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="丽亚 DHIYA ZULAIKHA DARWISYAH BINTI YUSNIZAN 25059">
+                        <td>7</td>
+                        <td><strong>丽亚</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">DHIYA ZULAIKHA DARWI...</span></td>
+                        <td>J2F</td>
+                        <td>25059</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="郑宜桐 TEH YEE THONG 26024">
+                        <td>8</td>
+                        <td><strong>郑宜桐</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">TEH YEE THONG</span></td>
+                        <td>J1Y</td>
+                        <td>26024</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="浦源政 POH YUAN ZHENG 22044">
+                        <td>9</td>
+                        <td><strong>浦源政</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">POH YUAN ZHENG</span></td>
+                        <td>S2Y</td>
+                        <td>22044</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="吴贝优 GOH BEI YO 22021">
+                        <td>10</td>
+                        <td><strong>吴贝优</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">GOH BEI YO</span></td>
+                        <td>S2Y</td>
+                        <td>22021</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="林沛筠 LIM PEI JUN 22030">
+                        <td>11</td>
+                        <td><strong>林沛筠</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">LIM PEI JUN</span></td>
+                        <td>S2Y</td>
+                        <td>22030</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                </tbody>
+            </table>
+        </div>
+    
+        <div class="group-section " id="group-沧澜组" data-group="沧澜组">
+            <div class="group-header">
+                <span class="group-name">沧澜组</span>
+                <span class="group-total">总分 0</span>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:60px">名次</th>
+                        <th>姓名</th>
+                        <th style="width:80px">班级</th>
+                        <th style="width:100px">学号</th>
+                        <th style="width:80px">总分</th>
+                        <th>每日得分</th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+                    <tr class="rank-1" data-name="郑憶欣 TEE YEE XIN 23065">
+                        <td>1</td>
+                        <td><strong>郑憶欣</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">TEE YEE XIN</span></td>
+                        <td>S1Y</td>
+                        <td>23065</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="谢楷棋 CHEAH KHAI QI 23013">
+                        <td>2</td>
+                        <td><strong>谢楷棋</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">CHEAH KHAI QI</span></td>
+                        <td>S1T</td>
+                        <td>23013</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="蔡善恩 CHUAH SHAN EN 24039">
+                        <td>3</td>
+                        <td><strong>蔡善恩</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">CHUAH SHAN EN</span></td>
+                        <td>J3F</td>
+                        <td>24039</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="许家绮 KOO JIA QI 25031">
+                        <td>4</td>
+                        <td><strong>许家绮</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">KOO JIA QI</span></td>
+                        <td>J2Y</td>
+                        <td>25031</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="张子欣 TEON ZI XIN 25070">
+                        <td>5</td>
+                        <td><strong>张子欣</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">TEON ZI XIN</span></td>
+                        <td>J2F</td>
+                        <td>25070</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                    <tr class="" data-name="施锦轩 SEE JIN XUAN 26092">
+                        <td>6</td>
+                        <td><strong>施锦轩</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">SEE JIN XUAN</span></td>
+                        <td>J1T</td>
+                        <td>26092</td>
+                        <td><span class="score-badge">0</span></td>
+                        <td><div class="daily-scores"><span style="color:#bdc3c7; font-size:0.8rem;">—</span></div></td>
+                    </tr>
+        
+                </tbody>
+            </table>
+        </div>
+    
+        <div class="footer">
+            ⚖️ 训育处  ·  数据每日自动更新  ·  仅供参考
+        </div>
     </div>
 
     <script>
@@ -263,7 +656,6 @@
         groupRankItems.forEach(item => {
             item.addEventListener('click', () => {
                 const groupName = item.dataset.group;
-                // 找到对应的标签并点击
                 const targetTab = Array.from(tabs).find(tab => tab.dataset.group === groupName);
                 if (targetTab) {
                     targetTab.click();
@@ -279,7 +671,6 @@
             const searchTerm = e.target.value.toLowerCase().trim();
             
             if (searchTerm === '') {
-                // 如果搜索框为空，显示所有行
                 allRows.forEach(row => {
                     row.style.display = '';
                     row.classList.remove('search-highlight');
@@ -287,27 +678,30 @@
                 return;
             }
             
-            // 先隐藏所有行
             allRows.forEach(row => {
                 row.style.display = 'none';
                 row.classList.remove('search-highlight');
             });
             
-            // 搜索匹配的行
             allRows.forEach(row => {
-                const nameAttr = row.dataset.name.toLowerCase();
-                const nameText = row.querySelector('td:nth-child(2)').innerText.toLowerCase();
+                const nameAttr = row.dataset.name ? row.dataset.name.toLowerCase() : '';
+                const nameCell = row.querySelector('td:nth-child(2)');
+                const nameText = nameCell ? nameCell.innerText.toLowerCase() : '';
+                const idCell = row.querySelector('td:nth-child(4)');
+                const idText = idCell ? idCell.innerText.toLowerCase() : '';
                 
-                if (nameAttr.includes(searchTerm) || nameText.includes(searchTerm)) {
+                if (nameAttr.includes(searchTerm) || nameText.includes(searchTerm) || idText.includes(searchTerm)) {
                     row.style.display = '';
                     row.classList.add('search-highlight');
                     
                     // 自动切换到该组
                     const groupSection = row.closest('.group-section');
-                    const groupName = groupSection.dataset.group;
-                    const targetTab = Array.from(tabs).find(tab => tab.dataset.group === groupName);
-                    if (targetTab && !targetTab.classList.contains('active')) {
-                        targetTab.click();
+                    if (groupSection) {
+                        const groupName = groupSection.dataset.group;
+                        const targetTab = Array.from(tabs).find(tab => tab.dataset.group === groupName);
+                        if (targetTab && !targetTab.classList.contains('active')) {
+                            targetTab.click();
+                        }
                     }
                 }
             });
