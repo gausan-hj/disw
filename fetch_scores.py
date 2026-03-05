@@ -17,7 +17,6 @@ print(f"读取到 {len(df)} 行数据")
 
 # 解析数据
 people = []
-current_group = None
 dates = []  # 存储日期
 
 # 先读取第一行获取日期
@@ -32,13 +31,29 @@ if len(df) > 0:
 
 print(f"找到 {len(dates)} 个日期")
 
+# ===== 根据你提供的信息，组别分别在以下行（0-based索引）=====
+# 第2行（索引2）：星穹组
+# 第14行（索引14）：夜曜组
+# 第27行（索引27）：沧澜组
+# ====================================================
+
+group_positions = {
+    2: "星穹组",
+    14: "夜曜组", 
+    27: "沧澜组"
+}
+
+current_group = None
+current_group_start_row = 0
+
 # 遍历每一行
 for i in range(len(df)):
     row = df.iloc[i].tolist()
     
-    # 检查是否是组别标题行（B列有"星穹组"、"夜曜组"等）
-    if len(row) > 1 and pd.notna(row[1]) and isinstance(row[1], str) and "组" in row[1]:
-        current_group = row[1]
+    # 检查这一行是不是组别标题行
+    if i in group_positions:
+        current_group = group_positions[i]
+        current_group_start_row = i
         print(f"第{i}行: 找到组别 {current_group}")
         continue
     
@@ -46,15 +61,6 @@ for i in range(len(df)):
     if len(row) > 0 and pd.notna(row[0]) and isinstance(row[0], (int, float)):
         if current_group:
             # 提取基本信息
-            # A列: 序号
-            # B列: 学号
-            # C列: 班级
-            # D列: 中文名
-            # E列: 英文名
-            # F列: 性别
-            # G列: 是否留宿
-            # H列开始: 每日分数
-            
             person = {
                 "group": current_group,
                 "no": row[0],
@@ -80,6 +86,10 @@ for i in range(len(df)):
             person["total"] = sum(person["daily_scores"])
             
             people.append(person)
+            
+            # 打印找到的人员（调试用）
+            if len(people) < 5:  # 只打印前几个
+                print(f"  找到人员: {person['name_cn']} ({person['group']})")
 
 print(f"总共解析到 {len(people)} 位成员")
 
@@ -92,14 +102,15 @@ for p in people:
     group_data[g].append(p)
 
 print(f"组别分布: {list(group_data.keys())}")
+for g, members in group_data.items():
+    print(f"  {g}: {len(members)} 人")
 
 # 如果没有解析到任何人，输出错误信息
 if len(people) == 0:
     print("❌ 错误：没有解析到任何成员！")
     print("请检查：")
     print("1. Google Sheets 的权限是否设置为“任何知道链接的人可查看”")
-    print("2. Sheet 名字是否正确（当前是 Sheet3）")
-    print("3. 数据格式是否和 Excel 一致")
+    print("2. 组别行号是否正确（当前设置：2=星穹组, 14=夜曜组, 27=沧澜组）")
     exit(1)
 
 # 计算各组总分
@@ -110,14 +121,14 @@ for g, members in group_data.items():
 # 按总分排序组别
 sorted_groups = sorted(group_totals.items(), key=lambda x: x[1], reverse=True)
 
-# 生成HTML
+# 生成HTML - 素色背景风格
 html = f"""
 <!DOCTYPE html>
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>学长团个人分数板</title>
+    <title>训育处 - 学长团个人分数板</title>
     <style>
         * {{
             box-sizing: border-box;
@@ -125,55 +136,75 @@ html = f"""
             padding: 0;
         }}
         body {{
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            background: #f3f4f6;
-            padding: 20px;
+            font-family: 'Segoe UI', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+            background: #f5f5f5;
+            padding: 24px;
             min-height: 100vh;
+            color: #2c3e50;
         }}
         .container {{
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }}
+        .header {{
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #eaeef2;
+        }}
         h1 {{
-            font-size: 2rem;
-            font-weight: 700;
-            color: #1f2937;
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: #2c3e50;
             margin-bottom: 8px;
+            letter-spacing: 1px;
+        }}
+        .subtitle {{
+            color: #7f8c8d;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }}
         .update-time {{
-            color: #6b7280;
-            margin-bottom: 24px;
+            color: #95a5a6;
             font-size: 0.9rem;
         }}
         .search-box {{
-            margin-bottom: 24px;
+            margin-top: 16px;
         }}
         #search {{
             width: 100%;
-            padding: 12px 16px;
-            font-size: 1rem;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            max-width: 400px;
+            padding: 10px 16px;
+            font-size: 0.95rem;
+            border: 1px solid #dce1e5;
+            border-radius: 30px;
+            background: white;
             transition: all 0.2s;
         }}
         #search:focus {{
             outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+            border-color: #9aa6b2;
+            box-shadow: 0 0 0 2px rgba(44,62,80,0.1);
         }}
         .group-rank-header {{
             background: white;
-            border-radius: 16px;
+            border-radius: 12px;
             padding: 20px;
             margin-bottom: 24px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #eaeef2;
         }}
         .group-rank-title {{
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #374151;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #34495e;
             margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #ecf0f1;
         }}
         .group-rank-list {{
             display: flex;
@@ -182,63 +213,71 @@ html = f"""
         }}
         .group-rank-item {{
             flex: 1;
-            min-width: 200px;
-            background: #f9fafb;
-            border-radius: 12px;
+            min-width: 180px;
+            background: #f8fafc;
+            border-radius: 10px;
             padding: 16px;
-            border-left: 6px solid;
-            transition: transform 0.2s;
+            border-left: 4px solid;
+            transition: all 0.2s;
             cursor: pointer;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }}
         .group-rank-item:hover {{
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            background: #f1f4f8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         }}
         .group-rank-name {{
             font-size: 1.1rem;
-            font-weight: 600;
+            font-weight: 500;
             margin-bottom: 8px;
+            color: #2c3e50;
         }}
         .group-rank-score {{
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: #34495e;
         }}
         .group-rank-score small {{
             font-size: 0.9rem;
             font-weight: 400;
-            color: #6b7280;
+            color: #7f8c8d;
         }}
         .tabs {{
             display: flex;
             gap: 8px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }}
         .tab {{
-            padding: 10px 20px;
+            padding: 10px 24px;
             background: white;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #dce1e5;
             border-radius: 30px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 500;
-            color: #4b5563;
+            color: #5d6d7e;
             cursor: pointer;
             transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }}
         .tab:hover {{
-            background: #f3f4f6;
+            background: #f1f4f8;
+            border-color: #b8c5d0;
         }}
         .tab.active {{
-            background: #1f2937;
+            background: #2c3e50;
             color: white;
-            border-color: #1f2937;
+            border-color: #2c3e50;
         }}
         .group-section {{
             display: none;
             background: white;
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #eaeef2;
         }}
         .group-section.active {{
             display: block;
@@ -249,120 +288,141 @@ html = f"""
             align-items: center;
             margin-bottom: 20px;
             padding-bottom: 16px;
-            border-bottom: 2px solid #e5e7eb;
+            border-bottom: 1px solid #ecf0f1;
         }}
         .group-name {{
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: #2c3e50;
         }}
         .group-total {{
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #4b5563;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #5d6d7e;
+            background: #f8fafc;
+            padding: 6px 16px;
+            border-radius: 30px;
+            border: 1px solid #e9ecef;
         }}
         table {{
             width: 100%;
             border-collapse: collapse;
+            font-size: 0.95rem;
         }}
         th {{
             text-align: left;
-            padding: 12px 8px;
-            background: #f9fafb;
-            font-weight: 600;
-            color: #374151;
-            border-radius: 8px 8px 0 0;
+            padding: 14px 12px;
+            background: #f8fafc;
+            font-weight: 500;
+            color: #4a5b6b;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
         }}
         td {{
-            padding: 12px 8px;
-            border-bottom: 1px solid #e5e7eb;
+            padding: 14px 12px;
+            border-bottom: 1px solid #edf2f7;
+            color: #3a4a5a;
+        }}
+        tr:hover {{
+            background: #fafcfd;
         }}
         .rank-1 {{
-            background: rgba(255,215,0,0.1);
+            background: #fcfaf7;
+        }}
+        .rank-1 td:first-child {{
             font-weight: 600;
+            color: #b85c5c;
         }}
         .rank-1 td:first-child::before {{
             content: "👑 ";
+            font-size: 0.9rem;
         }}
         .score-badge {{
-            background: #e5e7eb;
-            padding: 4px 8px;
-            border-radius: 20px;
+            background: #ecf0f1;
+            padding: 4px 10px;
+            border-radius: 30px;
             font-size: 0.85rem;
-            font-weight: 600;
+            font-weight: 500;
+            color: #2c3e50;
+            display: inline-block;
         }}
         .daily-scores {{
             display: flex;
-            gap: 4px;
+            gap: 6px;
             flex-wrap: wrap;
-            margin-top: 4px;
         }}
         .daily-score {{
-            background: #f3f4f6;
-            padding: 2px 6px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            color: #4b5563;
+            background: #f1f5f9;
+            padding: 3px 8px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            color: #4a5b6b;
+            border: 1px solid #e2e8f0;
+            min-width: 32px;
+            text-align: center;
         }}
         .search-highlight {{
-            background: #fef3c7;
+            background: #fff9e6;
         }}
-        .color-star {{
-            border-left-color: #3b82f6;
+        .border-star {{ border-left-color: #9aa6b2; }}
+        .border-night {{ border-left-color: #7f8c8d; }}
+        .border-ocean {{ border-left-color: #95a5a6; }}
+        
+        /* 素色风格 - 只有极淡的区分 */
+        .group-rank-item.border-star {{ border-left-color: #b0bec5; }}
+        .group-rank-item.border-night {{ border-left-color: #90a4ae; }}
+        .group-rank-item.border-ocean {{ border-left-color: #aab7b8; }}
+        
+        .footer {{
+            margin-top: 32px;
+            text-align: center;
+            color: #95a5a6;
+            font-size: 0.85rem;
+            padding: 16px;
+            border-top: 1px solid #e9ecef;
         }}
-        .color-night {{
-            border-left-color: #8b5cf6;
-        }}
-        .color-ocean {{
-            border-left-color: #10b981;
-        }}
-        .bg-star {{ background: #3b82f6; color: white; }}
-        .bg-night {{ background: #8b5cf6; color: white; }}
-        .bg-ocean {{ background: #10b981; color: white; }}
-        .text-star {{ color: #3b82f6; }}
-        .text-night {{ color: #8b5cf6; }}
-        .text-ocean {{ color: #10b981; }}
         @media (max-width: 640px) {{
             body {{ padding: 12px; }}
             .group-rank-list {{ flex-direction: column; }}
-            th, td {{ padding: 8px 4px; font-size: 0.9rem; }}
+            th, td {{ padding: 10px 6px; font-size: 0.85rem; }}
+            .daily-score {{ padding: 2px 4px; font-size: 0.7rem; }}
         }}
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🏆 学长团个人分数板</h1>
-        <div class="update-time">最后更新：{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</div>
-        
-        <div class="search-box">
-            <input type="text" id="search" placeholder="🔍 输入姓名搜索...">
+        <div class="header">
+            <h1>🏫 训育处 · 学长团个人分数板</h1>
+            <div class="subtitle">
+                <span>Prefects' Personal Scoreboard</span>
+                <span class="update-time">更新：{datetime.now().strftime('%Y-%m-%d %H:%M')}</span>
+            </div>
+            <div class="search-box">
+                <input type="text" id="search" placeholder="🔍 输入姓名或学号搜索...">
+            </div>
         </div>
 
         <div class="group-rank-header">
-            <div class="group-rank-title">📊 组别总分排名</div>
+            <div class="group-rank-title">📋 组别总分排名</div>
             <div class="group-rank-list" id="groupRankList">
 """
 
-# 添加组别排名卡片
-group_colors = {
-    "星穹组": "color-star",
-    "夜曜组": "color-night", 
-    "沧澜组": "color-ocean"
-}
-
-group_color_classes = {
-    "星穹组": "star",
-    "夜曜组": "night",
-    "沧澜组": "ocean"
+# 添加组别排名卡片 - 素色风格
+group_border_classes = {
+    "星穹组": "border-star",
+    "夜曜组": "border-night", 
+    "沧澜组": "border-ocean"
 }
 
 for i, (group_name, total) in enumerate(sorted_groups):
-    color_class = group_colors.get(group_name, "color-star")
-    badge_class = group_color_classes.get(group_name, "star")
-    rank_emoji = "🥇" if i == 0 else "🥈" if i == 1 else "🥉" if i == 2 else f"{i+1}."
+    border_class = group_border_classes.get(group_name, "border-star")
+    rank_display = "第1名" if i == 0 else "第2名" if i == 1 else "第3名" if i == 2 else f"第{i+1}名"
     html += f"""
-                <div class="group-rank-item {color_class}" data-group="{group_name}">
-                    <div class="group-rank-name">{rank_emoji} {group_name}</div>
+                <div class="group-rank-item {border_class}" data-group="{group_name}">
+                    <div class="group-rank-name">{group_name}</div>
                     <div class="group-rank-score">{int(total)} <small>分</small></div>
+                    <div style="font-size:0.8rem; color:#95a5a6; margin-top:4px;">{rank_display}</div>
                 </div>
     """
 
@@ -389,22 +449,21 @@ for group_name, members in group_data.items():
     # 按总分排序成员
     sorted_members = sorted(members, key=lambda x: x["total"], reverse=True)
     active_class = "active" if group_name == sorted_groups[0][0] else ""
-    color_class = group_color_classes.get(group_name, "star")
     
     html += f"""
         <div class="group-section {active_class}" id="group-{group_name}" data-group="{group_name}">
             <div class="group-header">
                 <span class="group-name">{group_name}</span>
-                <span class="group-total">总分：{int(group_totals[group_name])}</span>
+                <span class="group-total">总分 {int(group_totals[group_name])}</span>
             </div>
             <table>
                 <thead>
                     <tr>
-                        <th>排名</th>
+                        <th style="width:60px">名次</th>
                         <th>姓名</th>
-                        <th>班级</th>
-                        <th>学号</th>
-                        <th>总分</th>
+                        <th style="width:80px">班级</th>
+                        <th style="width:100px">学号</th>
+                        <th style="width:80px">总分</th>
                         <th>每日得分</th>
                     </tr>
                 </thead>
@@ -415,21 +474,37 @@ for group_name, members in group_data.items():
         rank_class = "rank-1" if rank == 1 else ""
         # 生成每日得分小标签
         daily_html = ""
+        score_count = 0
         for i, score in enumerate(p["daily_scores"]):
             if score > 0:
+                score_count += 1
                 date_str = p["dates"][i] if i < len(p["dates"]) else f"D{i+1}"
                 # 格式化日期，只显示月-日
                 if isinstance(date_str, str) and "00:00" in date_str:
-                    date_str = date_str[5:10]  # 取 "03-02" 这样的格式
+                    try:
+                        date_str = date_str[5:10]  # 取 "03-02" 这样的格式
+                    except:
+                        date_str = f"D{i+1}"
                 daily_html += f'<span class="daily-score" title="{date_str}">{int(score)}</span>'
         
+        # 如果没有分数，显示横线
+        if score_count == 0:
+            daily_html = '<span style="color:#bdc3c7; font-size:0.8rem;">—</span>'
+        
+        # 处理学号显示
+        student_id_display = ""
+        if isinstance(p['student_id'], (int, float)):
+            student_id_display = str(int(p['student_id']))
+        else:
+            student_id_display = p['student_id']
+        
         html += f"""
-                    <tr class="{rank_class}" data-name="{p['name_cn']} {p['name_en']}">
+                    <tr class="{rank_class}" data-name="{p['name_cn']} {p['name_en']} {student_id_display}">
                         <td>{rank}</td>
-                        <td><strong>{p['name_cn']}</strong><br><small>{p['name_en']}</small></td>
+                        <td><strong>{p['name_cn']}</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">{p['name_en'][:20] + '...' if len(p['name_en']) > 20 else p['name_en']}</span></td>
                         <td>{p['class']}</td>
-                        <td>{int(p['student_id']) if isinstance(p['student_id'], (int, float)) else p['student_id']}</td>
-                        <td><span class="score-badge bg-{color_class}">{int(p['total'])}</span></td>
+                        <td>{student_id_display}</td>
+                        <td><span class="score-badge">{int(p['total'])}</span></td>
                         <td><div class="daily-scores">{daily_html}</div></td>
                     </tr>
         """
@@ -440,8 +515,11 @@ for group_name, members in group_data.items():
         </div>
     """
 
-# 添加搜索脚本
+# 添加页脚和搜索脚本
 html += """
+        <div class="footer">
+            ⚖️ 训育处  ·  数据每日自动更新  ·  仅供参考
+        </div>
     </div>
 
     <script>
@@ -503,8 +581,10 @@ html += """
                 const nameAttr = row.dataset.name ? row.dataset.name.toLowerCase() : '';
                 const nameCell = row.querySelector('td:nth-child(2)');
                 const nameText = nameCell ? nameCell.innerText.toLowerCase() : '';
+                const idCell = row.querySelector('td:nth-child(4)');
+                const idText = idCell ? idCell.innerText.toLowerCase() : '';
                 
-                if (nameAttr.includes(searchTerm) || nameText.includes(searchTerm)) {
+                if (nameAttr.includes(searchTerm) || nameText.includes(searchTerm) || idText.includes(searchTerm)) {
                     row.style.display = '';
                     row.classList.add('search-highlight');
                     
