@@ -43,41 +43,41 @@ print(f"找到 {len(dates)} 个日期")
 # ===== 成员名单 =====
 members_list = [
     # 星穹组 (10人)
-    {"group": "星穹组", "name_cn": "陈展艺", "name_en": "IVAN TAN ZHAN YI", "class": "S2FA", "student_id": "22038"},
-    {"group": "星穹组", "name_cn": "侯展扬", "name_en": "HOW ZHAN YANG", "class": "S2Y", "student_id": "22100"},
-    {"group": "星穹组", "name_cn": "邱嘉瑞", "name_en": "KATHERINE KHOO JAI RUI", "class": "J3T", "student_id": "24076"},
-    {"group": "星穹组", "name_cn": "莎哈娜", "name_en": "SADHANA A/P SASU BAKIAN", "class": "J3T", "student_id": "24078"},
-    {"group": "星穹组", "name_cn": "李韡翰", "name_en": "LEE WEI HANN", "class": "J3K", "student_id": "24068"},
-    {"group": "星穹组", "name_cn": "彭绍洋", "name_en": "PEH SHAO YANG", "class": "J3T", "student_id": "24088"},
-    {"group": "星穹组", "name_cn": "梁纹璇", "name_en": "LEONG WEN XUAN", "class": "J2Y", "student_id": "25035"},
-    {"group": "星穹组", "name_cn": "尤嘉乐", "name_en": "JUSTIN YEW JIA LE", "class": "J2Y", "student_id": "25046"},
-    {"group": "星穹组", "name_cn": "许艳棋", "name_en": "KHOR YAN QI", "class": "J1Y", "student_id": "26018"},
-    {"group": "星穹组", "name_cn": "林隽毓", "name_en": "LIM JOON YI", "class": "J1Y", "student_id": "26032"},
+    {"group": "星穹组", "name_cn": "陈展艺", "name_en": "IVAN TAN ZHAN YI", "class": "S2FA", "student_id": "22038", "order": 1},
+    {"group": "星穹组", "name_cn": "侯展扬", "name_en": "HOW ZHAN YANG", "class": "S2Y", "student_id": "22100", "order": 2},
+    {"group": "星穹组", "name_cn": "邱嘉瑞", "name_en": "KATHERINE KHOO JAI RUI", "class": "J3T", "student_id": "24076", "order": 3},
+    {"group": "星穹组", "name_cn": "莎哈娜", "name_en": "SADHANA A/P SASU BAKIAN", "class": "J3T", "student_id": "24078", "order": 4},
+    {"group": "星穹组", "name_cn": "李韡翰", "name_en": "LEE WEI HANN", "class": "J3K", "student_id": "24068", "order": 5},
+    {"group": "星穹组", "name_cn": "彭绍洋", "name_en": "PEH SHAO YANG", "class": "J3T", "student_id": "24088", "order": 6},
+    {"group": "星穹组", "name_cn": "梁纹璇", "name_en": "LEONG WEN XUAN", "class": "J2Y", "student_id": "25035", "order": 7},
+    {"group": "星穹组", "name_cn": "尤嘉乐", "name_en": "JUSTIN YEW JIA LE", "class": "J2Y", "student_id": "25046", "order": 8},
+    {"group": "星穹组", "name_cn": "许艳棋", "name_en": "KHOR YAN QI", "class": "J1Y", "student_id": "26018", "order": 9},
+    {"group": "星穹组", "name_cn": "林隽毓", "name_en": "LIM JOON YI", "class": "J1Y", "student_id": "26032", "order": 10},
     
     # 夜曜组 (11人)
-    {"group": "夜曜组", "name_cn": "李竑证", "name_en": "LEE HOONG ZHENG", "class": "S2FA", "student_id": "22040"},
-    {"group": "夜曜组", "name_cn": "廖若含", "name_en": "LIEW XIN YU", "class": "S2Y", "student_id": "22029"},
-    {"group": "夜曜组", "name_cn": "林芷嫣", "name_en": "LIM ZHI YAN", "class": "S2Y", "student_id": "22083"},
-    {"group": "夜曜组", "name_cn": "周柔慈", "name_en": "CHEO ROU ZHI", "class": "S2K", "student_id": "22051"},
-    {"group": "夜曜组", "name_cn": "林骏喨", "name_en": "LIM TEIK LIANG", "class": "J3T", "student_id": "24083"},
-    {"group": "夜曜组", "name_cn": "林宜彤", "name_en": "LIM YEE TONG", "class": "J2Y", "student_id": "25036"},
-    {"group": "夜曜组", "name_cn": "潘宛瑜", "name_en": "TRACY PHUAH WANYU", "class": "J2Y", "student_id": "25071"},
-    {"group": "夜曜组", "name_cn": "符传吉", "name_en": "FOO CHUAN JI", "class": "J2Y", "student_id": "25044"},
-    {"group": "夜曜组", "name_cn": "陈欣怡", "name_en": "CINDY TAN XIN YI", "class": "J2F", "student_id": "25058"},
-    {"group": "夜曜组", "name_cn": "丽亚", "name_en": "DHIYA ZULAIKHA DARWISYAH BINTI YUSNIZAN", "class": "J2F", "student_id": "25059"},
-    {"group": "夜曜组", "name_cn": "郑宜桐", "name_en": "TEH YEE THONG", "class": "J1Y", "student_id": "26024"},
+    {"group": "夜曜组", "name_cn": "李竑证", "name_en": "LEE HOONG ZHENG", "class": "S2FA", "student_id": "22040", "order": 1},
+    {"group": "夜曜组", "name_cn": "廖若含", "name_en": "LIEW XIN YU", "class": "S2Y", "student_id": "22029", "order": 2},
+    {"group": "夜曜组", "name_cn": "林芷嫣", "name_en": "LIM ZHI YAN", "class": "S2Y", "student_id": "22083", "order": 3},
+    {"group": "夜曜组", "name_cn": "周柔慈", "name_en": "CHEO ROU ZHI", "class": "S2K", "student_id": "22051", "order": 4},
+    {"group": "夜曜组", "name_cn": "林骏喨", "name_en": "LIM TEIK LIANG", "class": "J3T", "student_id": "24083", "order": 5},
+    {"group": "夜曜组", "name_cn": "林宜彤", "name_en": "LIM YEE TONG", "class": "J2Y", "student_id": "25036", "order": 6},
+    {"group": "夜曜组", "name_cn": "潘宛瑜", "name_en": "TRACY PHUAH WANYU", "class": "J2Y", "student_id": "25071", "order": 7},
+    {"group": "夜曜组", "name_cn": "符传吉", "name_en": "FOO CHUAN JI", "class": "J2Y", "student_id": "25044", "order": 8},
+    {"group": "夜曜组", "name_cn": "陈欣怡", "name_en": "CINDY TAN XIN YI", "class": "J2F", "student_id": "25058", "order": 9},
+    {"group": "夜曜组", "name_cn": "丽亚", "name_en": "DHIYA ZULAIKHA DARWISYAH BINTI YUSNIZAN", "class": "J2F", "student_id": "25059", "order": 10},
+    {"group": "夜曜组", "name_cn": "郑宜桐", "name_en": "TEH YEE THONG", "class": "J1Y", "student_id": "26024", "order": 11},
     
     # 沧澜组 (10人)
-    {"group": "沧澜组", "name_cn": "浦源政", "name_en": "POH YUAN ZHENG", "class": "S2Y", "student_id": "22044"},
-    {"group": "沧澜组", "name_cn": "吴贝优", "name_en": "GOH BEI YO", "class": "S2Y", "student_id": "22021"},
-    {"group": "沧澜组", "name_cn": "林沛筠", "name_en": "LIM PEI JUN", "class": "S2Y", "student_id": "22030"},
-    {"group": "沧澜组", "name_cn": "陈诗惠", "name_en": "CHAN SHI HUI", "class": "S2FA", "student_id": "22017"},
-    {"group": "沧澜组", "name_cn": "郑憶欣", "name_en": "TEE YEE XIN", "class": "S1Y", "student_id": "23065"},
-    {"group": "沧澜组", "name_cn": "谢楷棋", "name_en": "CHEAH KHAI QI", "class": "S1T", "student_id": "23013"},
-    {"group": "沧澜组", "name_cn": "蔡善恩", "name_en": "CHUAH SHAN EN", "class": "J3F", "student_id": "24039"},
-    {"group": "沧澜组", "name_cn": "许家绮", "name_en": "KOO JIA QI", "class": "J2Y", "student_id": "25031"},
-    {"group": "沧澜组", "name_cn": "张子欣", "name_en": "TEON ZI XIN", "class": "J2F", "student_id": "25070"},
-    {"group": "沧澜组", "name_cn": "施锦轩", "name_en": "SEE JIN XUAN", "class": "J1T", "student_id": "26092"}
+    {"group": "沧澜组", "name_cn": "浦源政", "name_en": "POH YUAN ZHENG", "class": "S2Y", "student_id": "22044", "order": 1},
+    {"group": "沧澜组", "name_cn": "吴贝优", "name_en": "GOH BEI YO", "class": "S2Y", "student_id": "22021", "order": 2},
+    {"group": "沧澜组", "name_cn": "林沛筠", "name_en": "LIM PEI JUN", "class": "S2Y", "student_id": "22030", "order": 3},
+    {"group": "沧澜组", "name_cn": "陈诗惠", "name_en": "CHAN SHI HUI", "class": "S2FA", "student_id": "22017", "order": 4},
+    {"group": "沧澜组", "name_cn": "郑憶欣", "name_en": "TEE YEE XIN", "class": "S1Y", "student_id": "23065", "order": 5},
+    {"group": "沧澜组", "name_cn": "谢楷棋", "name_en": "CHEAH KHAI QI", "class": "S1T", "student_id": "23013", "order": 6},
+    {"group": "沧澜组", "name_cn": "蔡善恩", "name_en": "CHUAH SHAN EN", "class": "J3F", "student_id": "24039", "order": 7},
+    {"group": "沧澜组", "name_cn": "许家绮", "name_en": "KOO JIA QI", "class": "J2Y", "student_id": "25031", "order": 8},
+    {"group": "沧澜组", "name_cn": "张子欣", "name_en": "TEON ZI XIN", "class": "J2F", "student_id": "25070", "order": 9},
+    {"group": "沧澜组", "name_cn": "施锦轩", "name_en": "SEE JIN XUAN", "class": "J1T", "student_id": "26092", "order": 10}
 ]
 
 # 自动匹配每一行
@@ -120,6 +120,7 @@ for member in members_list:
                 
                 people.append({
                     "group": member["group"],
+                    "order": member["order"],
                     "name_cn": member["name_cn"],
                     "name_en": member["name_en"],
                     "class": member["class"],
@@ -137,7 +138,7 @@ for member in members_list:
 
 print(f"\n总共找到 {len(people)} 人")
 
-# 按组别整理
+# 按组别整理，保持原顺序
 group_data = {g: [] for g in ["星穹组", "夜曜组", "沧澜组"]}
 group_totals = {g: 0 for g in ["星穹组", "夜曜组", "沧澜组"]}
 
@@ -145,13 +146,17 @@ for p in people:
     group_data[p["group"]].append(p)
     group_totals[p["group"]] += p["total"]
 
+# 每个组内按order排序
+for g in group_data:
+    group_data[g].sort(key=lambda x: x["order"])
+
 # 计算组排名
 sorted_groups = sorted(group_totals.items(), key=lambda x: x[1], reverse=True)
 group_rank = {}
 for i, (g, _) in enumerate(sorted_groups, 1):
     group_rank[g] = i
 
-# 生成HTML - 手机优化版
+# 生成HTML - 美观版
 html = f"""<!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -165,228 +170,269 @@ html = f"""<!DOCTYPE html>
             padding: 0;
         }}
         body {{
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Microsoft YaHei', sans-serif;
-            background: #f5f5f5;
-            padding: 12px;
-            color: #2c3e50;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Microsoft YaHei', sans-serif;
+            background: #f8fafc;
+            padding: 16px;
+            color: #1e293b;
         }}
         .container {{
-            max-width: 100%;
+            max-width: 1200px;
             margin: 0 auto;
         }}
         
         /* 头部 */
         .header {{
             background: white;
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border: 1px solid #eef2f6;
         }}
         h1 {{
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 600;
+            letter-spacing: -0.02em;
             margin-bottom: 4px;
+            background: linear-gradient(135deg, #1e293b, #334155);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }}
-        .update-time {{
-            color: #95a5a6;
-            font-size: 0.8rem;
+        .subtitle {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-top: 4px;
         }}
         .search-box {{
-            margin-top: 12px;
+            margin-top: 16px;
         }}
         #search {{
             width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #dce1e5;
-            border-radius: 30px;
+            padding: 14px 18px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 40px;
             font-size: 1rem;
             background: white;
+            transition: all 0.2s;
         }}
         #search:focus {{
             outline: none;
-            border-color: #2c3e50;
+            border-color: #94a3b8;
+            box-shadow: 0 0 0 3px rgba(148,163,184,0.1);
         }}
         
-        /* 组排名 - 横向滚动 */
-        .rank-bar {{
-            display: flex;
+        /* 组排名卡片 */
+        .rank-grid {{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 12px;
-            margin-bottom: 20px;
-            overflow-x: auto;
-            padding: 4px 0 8px 0;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-        }}
-        .rank-bar::-webkit-scrollbar {{
-            display: none;
+            margin-bottom: 24px;
         }}
         .rank-card {{
-            flex: 0 0 auto;
-            width: 140px;
             background: white;
-            border-radius: 16px;
-            padding: 14px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-radius: 20px;
+            padding: 16px 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            border: 1px solid #eef2f6;
+            cursor: pointer;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
-            border-left: 6px solid;
-            cursor: pointer;
-            transition: transform 0.1s;
+            gap: 10px;
         }}
         .rank-card:active {{
             transform: scale(0.98);
+            background: #f8fafc;
         }}
-        .rank-1 {{ border-left-color: #ffd700; }}
-        .rank-2 {{ border-left-color: #c0c0c0; }}
-        .rank-3 {{ border-left-color: #cd7f32; }}
-        
+        .rank-1 {{
+            background: linear-gradient(135deg, #fef9e7, #fff);
+            border-left: 4px solid #fbbf24;
+        }}
+        .rank-2 {{
+            background: linear-gradient(135deg, #f1f5f9, #fff);
+            border-left: 4px solid #94a3b8;
+        }}
+        .rank-3 {{
+            background: linear-gradient(135deg, #fef3e7, #fff);
+            border-left: 4px solid #f97316;
+        }}
         .rank-icon {{
-            font-size: 1.8rem;
-            margin-right: 10px;
+            font-size: 2rem;
+            line-height: 1;
         }}
         .rank-info {{
             flex: 1;
         }}
         .rank-name {{
-            font-size: 1rem;
             font-weight: 600;
+            font-size: 1rem;
             margin-bottom: 2px;
         }}
         .rank-score {{
+            font-weight: 700;
             font-size: 1.2rem;
-            font-weight: 600;
+            color: #0f172a;
         }}
         .rank-score small {{
             font-size: 0.7rem;
             font-weight: 400;
-            color: #7f8c8d;
+            color: #64748b;
+            margin-left: 2px;
         }}
         
-        /* 组别卡片 - 垂直排列 */
-        .group-container {{
+        /* 三组布局 */
+        .groups {{
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 20px;
         }}
         .group-card {{
             background: white;
-            border-radius: 20px;
-            padding: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+            border: 1px solid #eef2f6;
             scroll-margin-top: 10px;
         }}
         .group-header {{
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #ecf0f1;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f1f5f9;
         }}
         .group-title {{
             font-size: 1.3rem;
             font-weight: 600;
+            letter-spacing: -0.01em;
         }}
-        .group-rank-badge {{
-            background: #2c3e50;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 0.8rem;
+        .group-badge {{
+            background: #f1f5f9;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.85rem;
             font-weight: 500;
+            color: #334155;
         }}
         
-        /* 成员列表 */
-        .member-list {{
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        /* 表格样式 */
+        .member-table {{
+            width: 100%;
+            border-collapse: collapse;
         }}
-        .member-row {{
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            background: #f8fafc;
-            border-radius: 14px;
-            border-left: 3px solid transparent;
-        }}
-        .member-info {{
-            flex: 1;
-            min-width: 0;
-        }}
-        .member-name {{
+        .member-table th {{
+            text-align: left;
+            padding: 8px 4px;
+            font-size: 0.75rem;
             font-weight: 600;
-            font-size: 1rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }}
-        .member-class {{
-            font-size: 0.7rem;
-            color: #7f8c8d;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .member-table td {{
+            padding: 10px 4px;
+            border-bottom: 1px solid #f1f5f9;
+        }}
+        .member-table tr:last-child td {{
+            border-bottom: none;
         }}
         
-        /* 每日得分 - 日期小标签 */
-        .daily-scores {{
-            display: flex;
-            gap: 2px;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-            max-width: 160px;
-        }}
-        .score-tag {{
-            background: #ecf0f1;
-            padding: 3px 5px;
-            border-radius: 12px;
-            font-size: 0.65rem;
+        /* 序号 */
+        .rank-number {{
             font-weight: 500;
-            color: #2c3e50;
+            color: #94a3b8;
+            width: 35px;
+        }}
+        
+        /* 姓名信息 */
+        .name-cell {{
+            min-width: 110px;
+        }}
+        .name-cn {{
+            font-weight: 600;
+            font-size: 0.95rem;
+        }}
+        .name-en {{
+            font-size: 0.7rem;
+            color: #64748b;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 120px;
+        }}
+        
+        /* 班级学号 */
+        .info-cell {{
+            font-size: 0.85rem;
+            color: #475569;
+            white-space: nowrap;
+        }}
+        .info-small {{
+            font-size: 0.7rem;
+            color: #94a3b8;
+        }}
+        
+        /* 分数标签 */
+        .scores-cell {{
+            max-width: 180px;
+        }}
+        .score-tags {{
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }}
+        .score-item {{
+            background: #f1f5f9;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 500;
             display: inline-flex;
             align-items: center;
+            gap: 4px;
             white-space: nowrap;
         }}
-        .score-positive {{
-            background: #d4edda;
-            color: #155724;
-            font-weight: 600;
+        .score-item.has-score {{
+            background: #e0f2fe;
+            color: #0369a1;
         }}
         .score-date {{
-            margin-right: 2px;
             opacity: 0.7;
         }}
         .score-value {{
-            font-weight: 600;
+            font-weight: 700;
         }}
         
-        /* 总分徽章 */
-        .total-badge {{
-            min-width: 45px;
-            text-align: center;
+        /* 总分 */
+        .total-cell {{
             font-weight: 700;
-            color: #2c3e50;
-            background: #e9ecef;
-            padding: 4px 6px;
-            border-radius: 20px;
-            margin-left: 6px;
-            font-size: 0.85rem;
-            flex-shrink: 0;
+            font-size: 1rem;
+            color: #0f172a;
+            text-align: right;
+            width: 50px;
         }}
         
         .footer {{
-            margin-top: 24px;
+            margin-top: 32px;
             text-align: center;
-            color: #95a5a6;
+            color: #94a3b8;
             font-size: 0.75rem;
             padding: 16px;
+            border-top: 1px solid #e2e8f0;
         }}
         
-        /* 触摸优化 */
-        .member-row, .rank-card {{
-            -webkit-tap-highlight-color: transparent;
+        /* 移动端优化 */
+        @media (max-width: 640px) {{
+            body {{ padding: 12px; }}
+            .rank-grid {{ gap: 8px; }}
+            .rank-card {{ padding: 12px 8px; }}
+            .rank-icon {{ font-size: 1.6rem; }}
+            .score-tags {{ gap: 2px; }}
+            .score-item {{ padding: 2px 6px; font-size: 0.65rem; }}
         }}
     </style>
 </head>
@@ -394,14 +440,17 @@ html = f"""<!DOCTYPE html>
     <div class="container">
         <div class="header">
             <h1>🏫 学长团分数板</h1>
-            <div class="update-time">更新：{datetime.now().strftime('%m-%d %H:%M')}</div>
+            <div class="subtitle">
+                <span>Prefects' Scoreboard</span>
+                <span>{datetime.now().strftime('%Y.%m.%d %H:%M')}</span>
+            </div>
             <div class="search-box">
-                <input type="text" id="search" placeholder="🔍 搜姓名">
+                <input type="text" id="search" placeholder="🔍 搜索姓名或英文名...">
             </div>
         </div>
 
-        <!-- 组排名 - 点击跳转 -->
-        <div class="rank-bar">
+        <!-- 组排名卡片 -->
+        <div class="rank-grid">
 """
 
 # 添加组排名卡片
@@ -411,7 +460,7 @@ for i, (g, total) in enumerate(sorted_groups, 1):
     group_id = group_ids[g]
     html += f"""
             <div class="rank-card rank-{i}" onclick="document.getElementById('{group_id}').scrollIntoView({{behavior: 'smooth'}})">
-                <div class="rank-icon">{rank_icons[i]}</div>
+                <span class="rank-icon">{rank_icons[i]}</span>
                 <div class="rank-info">
                     <div class="rank-name">{g}</div>
                     <div class="rank-score">{int(total)}<small>分</small></div>
@@ -422,12 +471,11 @@ for i, (g, total) in enumerate(sorted_groups, 1):
 html += """
         </div>
 
-        <!-- 三组垂直排列 -->
-        <div class="group-container">
+        <!-- 三组 -->
+        <div class="groups">
 """
 
-# 按顺序添加三个组
-group_ids = {"星穹组": "group-xingqiong", "夜曜组": "group-yeyao", "沧澜组": "group-canglan"}
+# 添加三个组
 for group_name in ["星穹组", "夜曜组", "沧澜组"]:
     members = group_data[group_name]
     rank = group_rank[group_name]
@@ -437,75 +485,81 @@ for group_name in ["星穹组", "夜曜组", "沧澜组"]:
             <div class="group-card" id="{group_id}">
                 <div class="group-header">
                     <span class="group-title">{group_name}</span>
-                    <span class="group-rank-badge">第{rank}名 · {int(group_totals[group_name])}分</span>
+                    <span class="group-badge">第{rank}名 · {int(group_totals[group_name])}分</span>
                 </div>
-                <div class="member-list">
+                <table class="member-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>姓名</th>
+                            <th>班级</th>
+                            <th>学号</th>
+                            <th>每日得分</th>
+                            <th>总分</th>
+                        </tr>
+                    </thead>
+                    <tbody>
     """
     
     for member in members:
-        # 生成每日得分标签（显示日期+分数）
+        # 生成每日得分标签
         score_tags = ""
-        # 只显示有分数的日期，按日期排序
+        # 显示最近5个有分数的日期
         sorted_dates = sorted(member["score_dict"].keys())
-        for date in sorted_dates[-5:]:  # 只显示最近5个有分数的日期
+        for date in sorted_dates[-5:]:
             score = member["score_dict"][date]
-            score_tags += f'<span class="score-tag score-positive"><span class="score-date">{date}</span><span class="score-value">{int(score)}</span></span>'
+            score_tags += f'<span class="score-item has-score"><span class="score-date">{date}</span><span class="score-value">{int(score)}</span></span>'
         
-        # 如果没有分数，显示一个占位
         if not score_tags:
-            score_tags = '<span class="score-tag">-</span>'
+            score_tags = '<span class="score-item">-</span>'
+        
+        # 截断英文名
+        name_en_short = member['name_en'][:20] + "..." if len(member['name_en']) > 20 else member['name_en']
         
         html += f"""
-                    <div class="member-row" data-name="{member['name_cn']} {member['name_en']}">
-                        <div class="member-info">
-                            <div class="member-name">{member['name_cn']}</div>
-                            <div class="member-class">{member['class']}</div>
-                        </div>
-                        <div class="daily-scores">
-                            {score_tags}
-                        </div>
-                        <div class="total-badge">{int(member['total'])}</div>
-                    </div>
+                        <tr data-search="{member['name_cn']} {member['name_en']} {member['class']} {member['student_id']}">
+                            <td class="rank-number">{member['order']}</td>
+                            <td class="name-cell">
+                                <div class="name-cn">{member['name_cn']}</div>
+                                <div class="name-en">{name_en_short}</div>
+                            </td>
+                            <td class="info-cell">{member['class']}</td>
+                            <td class="info-cell">{member['student_id']}</td>
+                            <td class="scores-cell"><div class="score-tags">{score_tags}</div></td>
+                            <td class="total-cell">{int(member['total'])}</td>
+                        </tr>
         """
     
     html += """
-                </div>
+                    </tbody>
+                </table>
             </div>
     """
 
 html += """
         </div>
         <div class="footer">
-            👆 点击排名卡片跳转 · 显示有分数的日期
+            👆 点击组排名卡片快速跳转 · 显示最近5次得分
         </div>
     </div>
 
     <script>
         const searchInput = document.getElementById('search');
-        const allRows = document.querySelectorAll('.member-row');
+        const allRows = document.querySelectorAll('tbody tr');
         
         searchInput.addEventListener('input', (e) => {
             const searchTerm = e.target.value.toLowerCase().trim();
             
             if (searchTerm === '') {
-                allRows.forEach(row => row.style.display = 'flex');
+                allRows.forEach(row => row.style.display = '');
                 return;
             }
             
             allRows.forEach(row => {
-                const searchText = row.getAttribute('data-name').toLowerCase();
-                row.style.display = searchText.includes(searchTerm) ? 'flex' : 'none';
+                const searchText = row.getAttribute('data-search').toLowerCase();
+                row.style.display = searchText.includes(searchTerm) ? '' : 'none';
             });
         });
-
-        // 触摸优化
-        let startX;
-        const rankBar = document.querySelector('.rank-bar');
-        if (rankBar) {
-            rankBar.addEventListener('touchstart', (e) => {
-                startX = e.touches[0].pageX;
-            });
-        }
     </script>
 </body>
 </html>
@@ -516,6 +570,5 @@ with open("index.html", "w", encoding="utf-8") as f:
     f.write(html)
 
 print(f"\n✅ 生成成功！共 {len(people)} 人")
-print(f"日期范围: {dates[0]} 至 {dates[-1]}")
 for g in ["星穹组", "夜曜组", "沧澜组"]:
     print(f"  {g}: {len(group_data[g])}人, {int(group_totals[g])}分, 第{group_rank[g]}名")
