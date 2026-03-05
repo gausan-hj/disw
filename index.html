@@ -27,7 +27,6 @@
             padding: 24px;
             margin-bottom: 24px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border: 1px solid #eaeef2;
         }
         h1 {
             font-size: 1.8rem;
@@ -50,16 +49,11 @@
             border-radius: 30px;
             font-size: 0.95rem;
         }
-        #search:focus {
-            outline: none;
-            border-color: #9aa6b2;
-        }
         .group-rank-header {
             background: white;
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 24px;
-            border: 1px solid #eaeef2;
         }
         .group-rank-title {
             font-size: 1.2rem;
@@ -81,7 +75,6 @@
             padding: 16px;
             border-left: 4px solid #9aa6b2;
             cursor: pointer;
-            border: 1px solid #e9ecef;
         }
         .group-rank-item:hover {
             background: #f1f4f8;
@@ -94,11 +87,6 @@
         .group-rank-score {
             font-size: 1.6rem;
             font-weight: 500;
-        }
-        .group-rank-score small {
-            font-size: 0.9rem;
-            font-weight: 400;
-            color: #7f8c8d;
         }
         .tabs {
             display: flex;
@@ -114,9 +102,6 @@
             font-size: 0.95rem;
             cursor: pointer;
         }
-        .tab:hover {
-            background: #f1f4f8;
-        }
         .tab.active {
             background: #2c3e50;
             color: white;
@@ -127,7 +112,6 @@
             background: white;
             border-radius: 12px;
             padding: 24px;
-            border: 1px solid #eaeef2;
         }
         .group-section.active {
             display: block;
@@ -151,7 +135,6 @@
             background: #f8fafc;
             padding: 6px 16px;
             border-radius: 30px;
-            border: 1px solid #e9ecef;
         }
         table {
             width: 100%;
@@ -163,14 +146,10 @@
             background: #f8fafc;
             font-weight: 500;
             color: #4a5b6b;
-            border-bottom: 1px solid #e2e8f0;
         }
         td {
             padding: 14px 12px;
             border-bottom: 1px solid #edf2f7;
-        }
-        tr:hover {
-            background: #fafcfd;
         }
         .score-badge {
             background: #ecf0f1;
@@ -179,16 +158,12 @@
             font-weight: 500;
             display: inline-block;
         }
-        .search-highlight {
-            background: #fff9e6;
-        }
         .footer {
             margin-top: 32px;
             text-align: center;
             color: #95a5a6;
             font-size: 0.85rem;
             padding: 16px;
-            border-top: 1px solid #e9ecef;
         }
     </style>
 </head>
@@ -196,7 +171,7 @@
     <div class="container">
         <div class="header">
             <h1>🏫 训育处 · 学长团分数板</h1>
-            <div class="update-time">更新：2026-03-05 12:17</div>
+            <div class="update-time">更新：2026-03-05 12:23</div>
             <div class="search-box">
                 <input type="text" id="search" placeholder="🔍 输入姓名搜索...">
             </div>
@@ -254,83 +229,75 @@
                 </thead>
                 <tbody>
     
-                    <tr data-name="邱嘉瑞 KATHERINE KHOO JAI RUI 24076">
+                    <tr data-name="邱嘉瑞 KATHERINE KHOO JAI RUI">
                         <td>1</td>
-                        <td><strong>邱嘉瑞</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">KATHERINE KHOO JAI R</span></td>
+                        <td><strong>邱嘉瑞</strong><br><span style="font-size:0.8rem;">KATHERINE KHOO JAI R</span></td>
                         <td>J3T</td>
                         <td>24076</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="莎哈娜 SADHANA A/P SASU BAKIAN 24078">
+                    <tr data-name="莎哈娜 SADHANA A/P SASU BAKIAN">
                         <td>2</td>
-                        <td><strong>莎哈娜</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">SADHANA A/P SASU BAK</span></td>
+                        <td><strong>莎哈娜</strong><br><span style="font-size:0.8rem;">SADHANA A/P SASU BAK</span></td>
                         <td>J3T</td>
                         <td>24078</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="李韡翰 LEE WEI HANN 24068">
+                    <tr data-name="李韡翰 LEE WEI HANN">
                         <td>3</td>
-                        <td><strong>李韡翰</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">LEE WEI HANN</span></td>
+                        <td><strong>李韡翰</strong><br><span style="font-size:0.8rem;">LEE WEI HANN</span></td>
                         <td>J3K</td>
                         <td>24068</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="彭绍洋 PEH SHAO YANG 24088">
+                    <tr data-name="彭绍洋 PEH SHAO YANG">
                         <td>4</td>
-                        <td><strong>彭绍洋</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">PEH SHAO YANG</span></td>
+                        <td><strong>彭绍洋</strong><br><span style="font-size:0.8rem;">PEH SHAO YANG</span></td>
                         <td>J3T</td>
                         <td>24088</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="梁纹璇 LEONG WEN XUAN 25035">
+                    <tr data-name="梁纹璇 LEONG WEN XUAN">
                         <td>5</td>
-                        <td><strong>梁纹璇</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">LEONG WEN XUAN</span></td>
+                        <td><strong>梁纹璇</strong><br><span style="font-size:0.8rem;">LEONG WEN XUAN</span></td>
                         <td>J2Y</td>
                         <td>25035</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="尤嘉乐 JUSTIN YEW JIA LE 25046">
+                    <tr data-name="尤嘉乐 JUSTIN YEW JIA LE">
                         <td>6</td>
-                        <td><strong>尤嘉乐</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">JUSTIN YEW JIA LE</span></td>
+                        <td><strong>尤嘉乐</strong><br><span style="font-size:0.8rem;">JUSTIN YEW JIA LE</span></td>
                         <td>J2Y</td>
                         <td>25046</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="许艳棋 KHOR YAN QI 26018">
+                    <tr data-name="许艳棋 KHOR YAN QI">
                         <td>7</td>
-                        <td><strong>许艳棋</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">KHOR YAN QI</span></td>
+                        <td><strong>许艳棋</strong><br><span style="font-size:0.8rem;">KHOR YAN QI</span></td>
                         <td>J1Y</td>
                         <td>26018</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="林隽毓 LIM JOON YI 26032">
+                    <tr data-name="林隽毓 LIM JOON YI">
                         <td>8</td>
-                        <td><strong>林隽毓</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">LIM JOON YI</span></td>
+                        <td><strong>林隽毓</strong><br><span style="font-size:0.8rem;">LIM JOON YI</span></td>
                         <td>J1Y</td>
                         <td>26032</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="李竑证 LEE HOONG ZHENG 22040">
+                    <tr data-name="李竑证 LEE HOONG ZHENG">
                         <td>9</td>
-                        <td><strong>李竑证</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">LEE HOONG ZHENG</span></td>
+                        <td><strong>李竑证</strong><br><span style="font-size:0.8rem;">LEE HOONG ZHENG</span></td>
                         <td>S2FA</td>
                         <td>22040</td>
-                        <td><span class="score-badge">0</span></td>
-                    </tr>
-        
-                    <tr data-name="廖若含 LIEW XIN YU 22029">
-                        <td>10</td>
-                        <td><strong>廖若含</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">LIEW XIN YU</span></td>
-                        <td>S2Y</td>
-                        <td>22029</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
@@ -355,91 +322,91 @@
                 </thead>
                 <tbody>
     
-                    <tr data-name="周柔慈 CHEO ROU ZHI 22051">
+                    <tr data-name="林芷嫣 LIM ZHI YAN">
                         <td>1</td>
-                        <td><strong>周柔慈</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">CHEO ROU ZHI</span></td>
+                        <td><strong>林芷嫣</strong><br><span style="font-size:0.8rem;">LIM ZHI YAN</span></td>
+                        <td>S2Y</td>
+                        <td>22083</td>
+                        <td><span class="score-badge">0</span></td>
+                    </tr>
+        
+                    <tr data-name="周柔慈 CHEO ROU ZHI">
+                        <td>2</td>
+                        <td><strong>周柔慈</strong><br><span style="font-size:0.8rem;">CHEO ROU ZHI</span></td>
                         <td>S2K</td>
                         <td>22051</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="林骏喨 LIM TEIK LIANG 24083">
-                        <td>2</td>
-                        <td><strong>林骏喨</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">LIM TEIK LIANG</span></td>
+                    <tr data-name="林骏喨 LIM TEIK LIANG">
+                        <td>3</td>
+                        <td><strong>林骏喨</strong><br><span style="font-size:0.8rem;">LIM TEIK LIANG</span></td>
                         <td>J3T</td>
                         <td>24083</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="林宜彤 LIM YEE TONG 25036">
-                        <td>3</td>
-                        <td><strong>林宜彤</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">LIM YEE TONG</span></td>
+                    <tr data-name="林宜彤 LIM YEE TONG">
+                        <td>4</td>
+                        <td><strong>林宜彤</strong><br><span style="font-size:0.8rem;">LIM YEE TONG</span></td>
                         <td>J2Y</td>
                         <td>25036</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="潘宛瑜 TRACY PHUAH WANYU 25071">
-                        <td>4</td>
-                        <td><strong>潘宛瑜</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">TRACY PHUAH WANYU</span></td>
+                    <tr data-name="潘宛瑜 TRACY PHUAH WANYU">
+                        <td>5</td>
+                        <td><strong>潘宛瑜</strong><br><span style="font-size:0.8rem;">TRACY PHUAH WANYU</span></td>
                         <td>J2Y</td>
                         <td>25071</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="符传吉 FOO CHUAN JI 25044">
-                        <td>5</td>
-                        <td><strong>符传吉</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">FOO CHUAN JI</span></td>
+                    <tr data-name="符传吉 FOO CHUAN JI">
+                        <td>6</td>
+                        <td><strong>符传吉</strong><br><span style="font-size:0.8rem;">FOO CHUAN JI</span></td>
                         <td>J2Y</td>
                         <td>25044</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="陈欣怡 CINDY TAN XIN YI 25058">
-                        <td>6</td>
-                        <td><strong>陈欣怡</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">CINDY TAN XIN YI</span></td>
+                    <tr data-name="陈欣怡 CINDY TAN XIN YI">
+                        <td>7</td>
+                        <td><strong>陈欣怡</strong><br><span style="font-size:0.8rem;">CINDY TAN XIN YI</span></td>
                         <td>J2F</td>
                         <td>25058</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="丽亚 DHIYA ZULAIKHA DARWISYAH BINTI YUSNIZAN 25059">
-                        <td>7</td>
-                        <td><strong>丽亚</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">DHIYA ZULAIKHA DARWI</span></td>
+                    <tr data-name="丽亚 DHIYA ZULAIKHA DARWISYAH BINTI YUSNIZAN">
+                        <td>8</td>
+                        <td><strong>丽亚</strong><br><span style="font-size:0.8rem;">DHIYA ZULAIKHA DARWI</span></td>
                         <td>J2F</td>
                         <td>25059</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="郑宜桐 TEH YEE THONG 26024">
-                        <td>8</td>
-                        <td><strong>郑宜桐</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">TEH YEE THONG</span></td>
+                    <tr data-name="郑宜桐 TEH YEE THONG">
+                        <td>9</td>
+                        <td><strong>郑宜桐</strong><br><span style="font-size:0.8rem;">TEH YEE THONG</span></td>
                         <td>J1Y</td>
                         <td>26024</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="浦源政 POH YUAN ZHENG 22044">
-                        <td>9</td>
-                        <td><strong>浦源政</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">POH YUAN ZHENG</span></td>
+                    <tr data-name="浦源政 POH YUAN ZHENG">
+                        <td>10</td>
+                        <td><strong>浦源政</strong><br><span style="font-size:0.8rem;">POH YUAN ZHENG</span></td>
                         <td>S2Y</td>
                         <td>22044</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="吴贝优 GOH BEI YO 22021">
-                        <td>10</td>
-                        <td><strong>吴贝优</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">GOH BEI YO</span></td>
+                    <tr data-name="吴贝优 GOH BEI YO">
+                        <td>11</td>
+                        <td><strong>吴贝优</strong><br><span style="font-size:0.8rem;">GOH BEI YO</span></td>
                         <td>S2Y</td>
                         <td>22021</td>
-                        <td><span class="score-badge">0</span></td>
-                    </tr>
-        
-                    <tr data-name="林沛筠 LIM PEI JUN 22030">
-                        <td>11</td>
-                        <td><strong>林沛筠</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">LIM PEI JUN</span></td>
-                        <td>S2Y</td>
-                        <td>22030</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
@@ -464,49 +431,57 @@
                 </thead>
                 <tbody>
     
-                    <tr data-name="郑憶欣 TEE YEE XIN 23065">
+                    <tr data-name="陈诗惠 CHAN SHI HUI">
                         <td>1</td>
-                        <td><strong>郑憶欣</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">TEE YEE XIN</span></td>
+                        <td><strong>陈诗惠</strong><br><span style="font-size:0.8rem;">CHAN SHI HUI</span></td>
+                        <td>S2FA</td>
+                        <td>22017</td>
+                        <td><span class="score-badge">0</span></td>
+                    </tr>
+        
+                    <tr data-name="郑憶欣 TEE YEE XIN">
+                        <td>2</td>
+                        <td><strong>郑憶欣</strong><br><span style="font-size:0.8rem;">TEE YEE XIN</span></td>
                         <td>S1Y</td>
                         <td>23065</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="谢楷棋 CHEAH KHAI QI 23013">
-                        <td>2</td>
-                        <td><strong>谢楷棋</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">CHEAH KHAI QI</span></td>
+                    <tr data-name="谢楷棋 CHEAH KHAI QI">
+                        <td>3</td>
+                        <td><strong>谢楷棋</strong><br><span style="font-size:0.8rem;">CHEAH KHAI QI</span></td>
                         <td>S1T</td>
                         <td>23013</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="蔡善恩 CHUAH SHAN EN 24039">
-                        <td>3</td>
-                        <td><strong>蔡善恩</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">CHUAH SHAN EN</span></td>
+                    <tr data-name="蔡善恩 CHUAH SHAN EN">
+                        <td>4</td>
+                        <td><strong>蔡善恩</strong><br><span style="font-size:0.8rem;">CHUAH SHAN EN</span></td>
                         <td>J3F</td>
                         <td>24039</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="许家绮 KOO JIA QI 25031">
-                        <td>4</td>
-                        <td><strong>许家绮</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">KOO JIA QI</span></td>
+                    <tr data-name="许家绮 KOO JIA QI">
+                        <td>5</td>
+                        <td><strong>许家绮</strong><br><span style="font-size:0.8rem;">KOO JIA QI</span></td>
                         <td>J2Y</td>
                         <td>25031</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="张子欣 TEON ZI XIN 25070">
-                        <td>5</td>
-                        <td><strong>张子欣</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">TEON ZI XIN</span></td>
+                    <tr data-name="张子欣 TEON ZI XIN">
+                        <td>6</td>
+                        <td><strong>张子欣</strong><br><span style="font-size:0.8rem;">TEON ZI XIN</span></td>
                         <td>J2F</td>
                         <td>25070</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
         
-                    <tr data-name="施锦轩 SEE JIN XUAN 26092">
-                        <td>6</td>
-                        <td><strong>施锦轩</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">SEE JIN XUAN</span></td>
+                    <tr data-name="施锦轩 SEE JIN XUAN">
+                        <td>7</td>
+                        <td><strong>施锦轩</strong><br><span style="font-size:0.8rem;">SEE JIN XUAN</span></td>
                         <td>J1T</td>
                         <td>26092</td>
                         <td><span class="score-badge">0</span></td>
@@ -516,9 +491,7 @@
             </table>
         </div>
     
-        <div class="footer">
-            训育处 · 数据每日自动更新
-        </div>
+        <div class="footer">训育处 · 数据每日自动更新</div>
     </div>
 
     <script>
@@ -553,30 +526,13 @@
         
         searchInput.addEventListener('input', (e) => {
             const searchTerm = e.target.value.toLowerCase().trim();
-            
             if (searchTerm === '') {
-                allRows.forEach(row => {
-                    row.style.display = '';
-                    row.classList.remove('search-highlight');
-                });
+                allRows.forEach(row => row.style.display = '');
                 return;
             }
-            
             allRows.forEach(row => {
                 const nameAttr = row.dataset.name.toLowerCase();
-                if (nameAttr.includes(searchTerm)) {
-                    row.style.display = '';
-                    row.classList.add('search-highlight');
-                    const groupSection = row.closest('.group-section');
-                    const groupName = groupSection.dataset.group;
-                    const targetTab = Array.from(tabs).find(tab => tab.dataset.group === groupName);
-                    if (targetTab && !targetTab.classList.contains('active')) {
-                        targetTab.click();
-                    }
-                } else {
-                    row.style.display = 'none';
-                    row.classList.remove('search-highlight');
-                }
+                row.style.display = nameAttr.includes(searchTerm) ? '' : 'none';
             });
         });
     </script>
