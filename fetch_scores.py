@@ -1,73 +1,87 @@
 import pandas as pd
-import json
 from datetime import datetime
 
 # ===== 你要修改的地方 =====
-SHEET_ID = "1YVa3nLUBW80j2nA4mudEqLH91RJ0FSRytmoDqmbyUJk"  # 从链接中获取，比如：1AbcDefGhiJklMnoPqrStUvWxYz
-SHEET_NAME = "Sheet3"  # 默认是Sheet3，如果不对就改
+SHEET_ID = "1YVa3nLUBW80j2nA4mudEqLH91RJ0FSRytmoDqmbyUJk"
+SHEET_NAME = "Sheet3"
 # ========================
 
 # 生成Google Sheets的CSV导出链接
 url = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet={SHEET_NAME}"
 
-# 读取数据
-df = pd.read_csv(url)
+# 读取数据，不把第一行当列名
+print("正在从 Google Sheets 读取数据...")
+df = pd.read_csv(url, header=None)
 
-# 打印前几行看看结构（调试用）
-print("数据预览：")
-print(df.head())
-print("列名：")
-print(df.columns.tolist())
+print(f"读取到 {len(df)} 行数据")
 
-# 手动处理数据
-# 根据你给的Excel，数据结构是：
-# 第0行：标题 "学长团个人分数板"
-# 第1行：空 + 组名 "星穹组"
-# 第2行开始：序号、学号、班级、中文名、英文名、性别、是否留宿、然后每天分数...
-
-# 找到组别的分隔行
-groups = []
-current_group = None
-start_row = 0
-
+# 解析数据
 people = []
+current_group = None
+dates = []  # 存储日期
 
-for i, row in df.iterrows():
-    row_list = row.tolist()
+# 先读取第一行获取日期
+if len(df) > 0:
+    first_row = df.iloc[0].tolist()
+    # 从第7列（索引7）开始是日期
+    for i in range(7, len(first_row)):
+        if pd.notna(first_row[i]):
+            dates.append(first_row[i])
+        else:
+            dates.append(f"Day{i-6}")
+
+print(f"找到 {len(dates)} 个日期")
+
+# 遍历每一行
+for i in range(len(df)):
+    row = df.iloc[i].tolist()
     
-    # 检查是否是组别标题行
-    if pd.notna(row_list[1]) and isinstance(row_list[1], str) and "组" in row_list[1]:
-        current_group = row_list[1]
-        groups.append({"name": current_group, "start": i + 1})
+    # 检查是否是组别标题行（B列有"星穹组"、"夜曜组"等）
+    if len(row) > 1 and pd.notna(row[1]) and isinstance(row[1], str) and "组" in row[1]:
+        current_group = row[1]
+        print(f"第{i}行: 找到组别 {current_group}")
         continue
     
-    # 如果是人员数据行（有序号，且是数字）
-    if pd.notna(row_list[0]) and isinstance(row_list[0], (int, float)):
+    # 检查是否是人员数据行（A列有序号，且是数字）
+    if len(row) > 0 and pd.notna(row[0]) and isinstance(row[0], (int, float)):
         if current_group:
             # 提取基本信息
+            # A列: 序号
+            # B列: 学号
+            # C列: 班级
+            # D列: 中文名
+            # E列: 英文名
+            # F列: 性别
+            # G列: 是否留宿
+            # H列开始: 每日分数
+            
             person = {
                 "group": current_group,
-                "no": row_list[0],
-                "student_id": row_list[1],
-                "class": row_list[2],
-                "name_cn": row_list[3],
-                "name_en": row_list[4],
-                "gender": row_list[5],
-                "boarding": row_list[6],
-                "daily_scores": []
+                "no": row[0],
+                "student_id": row[1] if len(row) > 1 else "",
+                "class": row[2] if len(row) > 2 else "",
+                "name_cn": row[3] if len(row) > 3 else "",
+                "name_en": row[4] if len(row) > 4 else "",
+                "gender": row[5] if len(row) > 5 else "",
+                "boarding": row[6] if len(row) > 6 else "",
+                "daily_scores": [],
+                "dates": dates
             }
             
-            # 提取每天分数（从第7列开始）
-            for j in range(7, len(row_list)):
-                if pd.notna(row_list[j]) and isinstance(row_list[j], (int, float)):
-                    person["daily_scores"].append(row_list[j])
-                else:
-                    person["daily_scores"].append(0)
+            # 提取每天分数（从第8列开始，索引7）
+            for j in range(7, len(row)):
+                if j < 7 + len(dates):  # 只取有日期的列
+                    if pd.notna(row[j]) and isinstance(row[j], (int, float)):
+                        person["daily_scores"].append(row[j])
+                    else:
+                        person["daily_scores"].append(0)
             
             # 计算总分
             person["total"] = sum(person["daily_scores"])
             
             people.append(person)
+
+print(f"总共解析到 {len(people)} 位成员")
 
 # 按组别整理
 group_data = {}
@@ -76,6 +90,17 @@ for p in people:
     if g not in group_data:
         group_data[g] = []
     group_data[g].append(p)
+
+print(f"组别分布: {list(group_data.keys())}")
+
+# 如果没有解析到任何人，输出错误信息
+if len(people) == 0:
+    print("❌ 错误：没有解析到任何成员！")
+    print("请检查：")
+    print("1. Google Sheets 的权限是否设置为“任何知道链接的人可查看”")
+    print("2. Sheet 名字是否正确（当前是 Sheet3）")
+    print("3. 数据格式是否和 Excel 一致")
+    exit(1)
 
 # 计算各组总分
 group_totals = {}
@@ -163,6 +188,7 @@ html = f"""
             padding: 16px;
             border-left: 6px solid;
             transition: transform 0.2s;
+            cursor: pointer;
         }}
         .group-rank-item:hover {{
             transform: translateY(-2px);
@@ -262,6 +288,7 @@ html = f"""
             padding: 4px 8px;
             border-radius: 20px;
             font-size: 0.85rem;
+            font-weight: 600;
         }}
         .daily-scores {{
             display: flex;
@@ -376,6 +403,7 @@ for group_name, members in group_data.items():
                         <th>排名</th>
                         <th>姓名</th>
                         <th>班级</th>
+                        <th>学号</th>
                         <th>总分</th>
                         <th>每日得分</th>
                     </tr>
@@ -389,13 +417,18 @@ for group_name, members in group_data.items():
         daily_html = ""
         for i, score in enumerate(p["daily_scores"]):
             if score > 0:
-                daily_html += f'<span class="daily-score">D{i+1}:{int(score)}</span>'
+                date_str = p["dates"][i] if i < len(p["dates"]) else f"D{i+1}"
+                # 格式化日期，只显示月-日
+                if isinstance(date_str, str) and "00:00" in date_str:
+                    date_str = date_str[5:10]  # 取 "03-02" 这样的格式
+                daily_html += f'<span class="daily-score" title="{date_str}">{int(score)}</span>'
         
         html += f"""
                     <tr class="{rank_class}" data-name="{p['name_cn']} {p['name_en']}">
                         <td>{rank}</td>
                         <td><strong>{p['name_cn']}</strong><br><small>{p['name_en']}</small></td>
                         <td>{p['class']}</td>
+                        <td>{int(p['student_id']) if isinstance(p['student_id'], (int, float)) else p['student_id']}</td>
                         <td><span class="score-badge bg-{color_class}">{int(p['total'])}</span></td>
                         <td><div class="daily-scores">{daily_html}</div></td>
                     </tr>
@@ -439,7 +472,6 @@ html += """
         groupRankItems.forEach(item => {
             item.addEventListener('click', () => {
                 const groupName = item.dataset.group;
-                // 找到对应的标签并点击
                 const targetTab = Array.from(tabs).find(tab => tab.dataset.group === groupName);
                 if (targetTab) {
                     targetTab.click();
@@ -455,7 +487,6 @@ html += """
             const searchTerm = e.target.value.toLowerCase().trim();
             
             if (searchTerm === '') {
-                // 如果搜索框为空，显示所有行
                 allRows.forEach(row => {
                     row.style.display = '';
                     row.classList.remove('search-highlight');
@@ -463,16 +494,15 @@ html += """
                 return;
             }
             
-            // 先隐藏所有行
             allRows.forEach(row => {
                 row.style.display = 'none';
                 row.classList.remove('search-highlight');
             });
             
-            // 搜索匹配的行
             allRows.forEach(row => {
-                const nameAttr = row.dataset.name.toLowerCase();
-                const nameText = row.querySelector('td:nth-child(2)').innerText.toLowerCase();
+                const nameAttr = row.dataset.name ? row.dataset.name.toLowerCase() : '';
+                const nameCell = row.querySelector('td:nth-child(2)');
+                const nameText = nameCell ? nameCell.innerText.toLowerCase() : '';
                 
                 if (nameAttr.includes(searchTerm) || nameText.includes(searchTerm)) {
                     row.style.display = '';
@@ -480,10 +510,12 @@ html += """
                     
                     // 自动切换到该组
                     const groupSection = row.closest('.group-section');
-                    const groupName = groupSection.dataset.group;
-                    const targetTab = Array.from(tabs).find(tab => tab.dataset.group === groupName);
-                    if (targetTab && !targetTab.classList.contains('active')) {
-                        targetTab.click();
+                    if (groupSection) {
+                        const groupName = groupSection.dataset.group;
+                        const targetTab = Array.from(tabs).find(tab => tab.dataset.group === groupName);
+                        if (targetTab && !targetTab.classList.contains('active')) {
+                            targetTab.click();
+                        }
                     }
                 }
             });
@@ -497,5 +529,7 @@ html += """
 with open("index.html", "w", encoding="utf-8") as f:
     f.write(html)
 
-print("✅ HTML 生成成功！")
-
+print(f"✅ HTML 生成成功！共 {len(people)} 位成员")
+print(f"组别: {list(group_data.keys())}")
+for g, members in group_data.items():
+    print(f"  {g}: {len(members)} 人")
