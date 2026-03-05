@@ -2,13 +2,14 @@ name: Update Scoreboard
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '5 10 * * *'  # 每天10:05运行一次（给你安心）
+    - cron: '0 */3 * * *'  # 每3小时一次
   workflow_dispatch:
 
 jobs:
   build:
     permissions:
-      contents: write  # 添加这行
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
