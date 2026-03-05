@@ -1,1 +1,33 @@
+name: Update Scoreboard
 
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install pandas gspread requests beautifulsoup4 lxml
+
+      - name: Run fetch script
+        run: python fetch_scores.py
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add index.html
+          git diff --quiet && git diff --staged --quiet || git commit -m "自动更新分数板"
+          git push
