@@ -15,16 +15,15 @@ df = pd.read_csv(url, header=None)
 
 print(f"读取到 {len(df)} 行数据")
 
-# ===== 组别所在行 =====
-# 第2行：星穹组
-# 第14行：夜曜组
-# 第27行：沧澜组
-# ====================
+# 根据你发的Excel，组别分别在：
+# 第2行（索引2）：星穹组
+# 第13行（索引13）：夜曜组（因为星穹组后面有空行）
+# 第26行（索引26）：沧澜组
 
 group_positions = {
     2: "星穹组",
-    14: "夜曜组",
-    27: "沧澜组"
+    13: "夜曜组",
+    26: "沧澜组"
 }
 
 # 解析数据
@@ -42,27 +41,29 @@ for i in range(len(df)):
     
     # 检查是否是人员数据行（A列有序号）
     if len(row) > 0 and pd.notna(row[0]) and isinstance(row[0], (int, float)):
+        # 跳过TOTAL行
+        if len(row) > 4 and row[4] == "TOTAL":
+            continue
+            
         if current_group:
             # 提取基本信息
             name_cn = row[3] if len(row) > 3 else ""
             name_en = row[4] if len(row) > 4 else ""
-            student_class = row[2] if len(row) > 2 else ""
-            student_id = row[1] if len(row) > 1 else ""
-            
-            # 计算总分：从第7列（索引7）开始的所有数字加起来
-            total_score = 0
-            for j in range(7, len(row)):
-                if pd.notna(row[j]) and isinstance(row[j], (int, float)):
-                    total_score += row[j]
             
             # 只添加有名字的人
             if name_cn or name_en:
+                # 计算总分：从第7列（索引7）开始的所有数字加起来
+                total_score = 0
+                for j in range(7, len(row)):
+                    if pd.notna(row[j]) and isinstance(row[j], (int, float)):
+                        total_score += row[j]
+                
                 people.append({
                     "group": current_group,
                     "name_cn": name_cn,
                     "name_en": name_en,
-                    "class": student_class,
-                    "student_id": student_id,
+                    "class": row[2] if len(row) > 2 else "",
+                    "student_id": row[1] if len(row) > 1 else "",
                     "total": total_score
                 })
 
@@ -85,7 +86,7 @@ for g, members in group_data.items():
 # 按总分排序组别
 sorted_groups = sorted(group_totals.items(), key=lambda x: x[1], reverse=True)
 
-# 生成HTML
+# 生成HTML（用之前那个最简版本）
 html = f"""
 <!DOCTYPE html>
 <html lang="zh">
@@ -115,7 +116,6 @@ html = f"""
             padding: 24px;
             margin-bottom: 24px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border: 1px solid #eaeef2;
         }}
         h1 {{
             font-size: 1.8rem;
@@ -138,16 +138,11 @@ html = f"""
             border-radius: 30px;
             font-size: 0.95rem;
         }}
-        #search:focus {{
-            outline: none;
-            border-color: #9aa6b2;
-        }}
         .group-rank-header {{
             background: white;
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 24px;
-            border: 1px solid #eaeef2;
         }}
         .group-rank-title {{
             font-size: 1.2rem;
@@ -169,7 +164,6 @@ html = f"""
             padding: 16px;
             border-left: 4px solid #9aa6b2;
             cursor: pointer;
-            border: 1px solid #e9ecef;
         }}
         .group-rank-item:hover {{
             background: #f1f4f8;
@@ -182,11 +176,6 @@ html = f"""
         .group-rank-score {{
             font-size: 1.6rem;
             font-weight: 500;
-        }}
-        .group-rank-score small {{
-            font-size: 0.9rem;
-            font-weight: 400;
-            color: #7f8c8d;
         }}
         .tabs {{
             display: flex;
@@ -202,9 +191,6 @@ html = f"""
             font-size: 0.95rem;
             cursor: pointer;
         }}
-        .tab:hover {{
-            background: #f1f4f8;
-        }}
         .tab.active {{
             background: #2c3e50;
             color: white;
@@ -215,7 +201,6 @@ html = f"""
             background: white;
             border-radius: 12px;
             padding: 24px;
-            border: 1px solid #eaeef2;
         }}
         .group-section.active {{
             display: block;
@@ -239,7 +224,6 @@ html = f"""
             background: #f8fafc;
             padding: 6px 16px;
             border-radius: 30px;
-            border: 1px solid #e9ecef;
         }}
         table {{
             width: 100%;
@@ -251,14 +235,10 @@ html = f"""
             background: #f8fafc;
             font-weight: 500;
             color: #4a5b6b;
-            border-bottom: 1px solid #e2e8f0;
         }}
         td {{
             padding: 14px 12px;
             border-bottom: 1px solid #edf2f7;
-        }}
-        tr:hover {{
-            background: #fafcfd;
         }}
         .score-badge {{
             background: #ecf0f1;
@@ -267,16 +247,12 @@ html = f"""
             font-weight: 500;
             display: inline-block;
         }}
-        .search-highlight {{
-            background: #fff9e6;
-        }}
         .footer {{
             margin-top: 32px;
             text-align: center;
             color: #95a5a6;
             font-size: 0.85rem;
             padding: 16px;
-            border-top: 1px solid #e9ecef;
         }}
     </style>
 </head>
@@ -326,7 +302,6 @@ html += """
 
 # 添加每个组别的表格
 for group_name, members in group_data.items():
-    # 按总分排序
     sorted_members = sorted(members, key=lambda x: x["total"], reverse=True)
     active_class = "active" if group_name == sorted_groups[0][0] else ""
     
@@ -351,16 +326,12 @@ for group_name, members in group_data.items():
     
     for rank, p in enumerate(sorted_members, 1):
         # 处理学号显示
-        student_id_display = ""
-        if isinstance(p['student_id'], (int, float)):
-            student_id_display = str(int(p['student_id']))
-        else:
-            student_id_display = p['student_id']
+        student_id_display = str(int(p['student_id'])) if isinstance(p['student_id'], (int, float)) else p['student_id']
         
         html += f"""
-                    <tr data-name="{p['name_cn']} {p['name_en']} {student_id_display}">
+                    <tr data-name="{p['name_cn']} {p['name_en']}">
                         <td>{rank}</td>
-                        <td><strong>{p['name_cn']}</strong><br><span style="font-size:0.8rem; color:#7f8c8d;">{p['name_en'][:20]}</span></td>
+                        <td><strong>{p['name_cn']}</strong><br><span style="font-size:0.8rem;">{p['name_en'][:20]}</span></td>
                         <td>{p['class']}</td>
                         <td>{student_id_display}</td>
                         <td><span class="score-badge">{int(p['total'])}</span></td>
@@ -373,11 +344,8 @@ for group_name, members in group_data.items():
         </div>
     """
 
-# 添加页脚和搜索脚本
 html += """
-        <div class="footer">
-            训育处 · 数据每日自动更新
-        </div>
+        <div class="footer">训育处 · 数据每日自动更新</div>
     </div>
 
     <script>
@@ -412,30 +380,13 @@ html += """
         
         searchInput.addEventListener('input', (e) => {
             const searchTerm = e.target.value.toLowerCase().trim();
-            
             if (searchTerm === '') {
-                allRows.forEach(row => {
-                    row.style.display = '';
-                    row.classList.remove('search-highlight');
-                });
+                allRows.forEach(row => row.style.display = '');
                 return;
             }
-            
             allRows.forEach(row => {
                 const nameAttr = row.dataset.name.toLowerCase();
-                if (nameAttr.includes(searchTerm)) {
-                    row.style.display = '';
-                    row.classList.add('search-highlight');
-                    const groupSection = row.closest('.group-section');
-                    const groupName = groupSection.dataset.group;
-                    const targetTab = Array.from(tabs).find(tab => tab.dataset.group === groupName);
-                    if (targetTab && !targetTab.classList.contains('active')) {
-                        targetTab.click();
-                    }
-                } else {
-                    row.style.display = 'none';
-                    row.classList.remove('search-highlight');
-                }
+                row.style.display = nameAttr.includes(searchTerm) ? '' : 'none';
             });
         });
     </script>
