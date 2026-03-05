@@ -2,7 +2,7 @@ name: Update Scoreboard
 
 on:
   schedule:
-    - cron: '5 10 * * *'  # 每天10:05运行一次（给你安心）
+    - cron: '10 14 * * *'  # 每天10:05运行一次（给你安心）
     - cron: '0 */3 * * *'  # 每3小时一次
   workflow_dispatch:
 
