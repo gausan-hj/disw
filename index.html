@@ -11,228 +11,269 @@
             padding: 0;
         }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Microsoft YaHei', sans-serif;
-            background: #f5f5f5;
-            padding: 12px;
-            color: #2c3e50;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Microsoft YaHei', sans-serif;
+            background: #f8fafc;
+            padding: 16px;
+            color: #1e293b;
         }
         .container {
-            max-width: 100%;
+            max-width: 1200px;
             margin: 0 auto;
         }
         
         /* 头部 */
         .header {
             background: white;
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border: 1px solid #eef2f6;
         }
         h1 {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 600;
+            letter-spacing: -0.02em;
             margin-bottom: 4px;
+            background: linear-gradient(135deg, #1e293b, #334155);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .update-time {
-            color: #95a5a6;
-            font-size: 0.8rem;
+        .subtitle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-top: 4px;
         }
         .search-box {
-            margin-top: 12px;
+            margin-top: 16px;
         }
         #search {
             width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #dce1e5;
-            border-radius: 30px;
+            padding: 14px 18px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 40px;
             font-size: 1rem;
             background: white;
+            transition: all 0.2s;
         }
         #search:focus {
             outline: none;
-            border-color: #2c3e50;
+            border-color: #94a3b8;
+            box-shadow: 0 0 0 3px rgba(148,163,184,0.1);
         }
         
-        /* 组排名 - 横向滚动 */
-        .rank-bar {
-            display: flex;
+        /* 组排名卡片 */
+        .rank-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 12px;
-            margin-bottom: 20px;
-            overflow-x: auto;
-            padding: 4px 0 8px 0;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-        }
-        .rank-bar::-webkit-scrollbar {
-            display: none;
+            margin-bottom: 24px;
         }
         .rank-card {
-            flex: 0 0 auto;
-            width: 140px;
             background: white;
-            border-radius: 16px;
-            padding: 14px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-radius: 20px;
+            padding: 16px 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            border: 1px solid #eef2f6;
+            cursor: pointer;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
-            border-left: 6px solid;
-            cursor: pointer;
-            transition: transform 0.1s;
+            gap: 10px;
         }
         .rank-card:active {
             transform: scale(0.98);
+            background: #f8fafc;
         }
-        .rank-1 { border-left-color: #ffd700; }
-        .rank-2 { border-left-color: #c0c0c0; }
-        .rank-3 { border-left-color: #cd7f32; }
-        
+        .rank-1 {
+            background: linear-gradient(135deg, #fef9e7, #fff);
+            border-left: 4px solid #fbbf24;
+        }
+        .rank-2 {
+            background: linear-gradient(135deg, #f1f5f9, #fff);
+            border-left: 4px solid #94a3b8;
+        }
+        .rank-3 {
+            background: linear-gradient(135deg, #fef3e7, #fff);
+            border-left: 4px solid #f97316;
+        }
         .rank-icon {
-            font-size: 1.8rem;
-            margin-right: 10px;
+            font-size: 2rem;
+            line-height: 1;
         }
         .rank-info {
             flex: 1;
         }
         .rank-name {
-            font-size: 1rem;
             font-weight: 600;
+            font-size: 1rem;
             margin-bottom: 2px;
         }
         .rank-score {
+            font-weight: 700;
             font-size: 1.2rem;
-            font-weight: 600;
+            color: #0f172a;
         }
         .rank-score small {
             font-size: 0.7rem;
             font-weight: 400;
-            color: #7f8c8d;
+            color: #64748b;
+            margin-left: 2px;
         }
         
-        /* 组别卡片 - 垂直排列 */
-        .group-container {
+        /* 三组布局 */
+        .groups {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 20px;
         }
         .group-card {
             background: white;
-            border-radius: 20px;
-            padding: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+            border: 1px solid #eef2f6;
             scroll-margin-top: 10px;
         }
         .group-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #ecf0f1;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f1f5f9;
         }
         .group-title {
             font-size: 1.3rem;
             font-weight: 600;
+            letter-spacing: -0.01em;
         }
-        .group-rank-badge {
-            background: #2c3e50;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 0.8rem;
+        .group-badge {
+            background: #f1f5f9;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.85rem;
             font-weight: 500;
+            color: #334155;
         }
         
-        /* 成员列表 */
-        .member-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        /* 表格样式 */
+        .member-table {
+            width: 100%;
+            border-collapse: collapse;
         }
-        .member-row {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            background: #f8fafc;
-            border-radius: 14px;
-            border-left: 3px solid transparent;
-        }
-        .member-info {
-            flex: 1;
-            min-width: 0;
-        }
-        .member-name {
+        .member-table th {
+            text-align: left;
+            padding: 8px 4px;
+            font-size: 0.75rem;
             font-weight: 600;
-            font-size: 1rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
-        .member-class {
-            font-size: 0.7rem;
-            color: #7f8c8d;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .member-table td {
+            padding: 10px 4px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .member-table tr:last-child td {
+            border-bottom: none;
         }
         
-        /* 每日得分 - 日期小标签 */
-        .daily-scores {
-            display: flex;
-            gap: 2px;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-            max-width: 160px;
-        }
-        .score-tag {
-            background: #ecf0f1;
-            padding: 3px 5px;
-            border-radius: 12px;
-            font-size: 0.65rem;
+        /* 序号 */
+        .rank-number {
             font-weight: 500;
-            color: #2c3e50;
+            color: #94a3b8;
+            width: 35px;
+        }
+        
+        /* 姓名信息 */
+        .name-cell {
+            min-width: 110px;
+        }
+        .name-cn {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .name-en {
+            font-size: 0.7rem;
+            color: #64748b;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 120px;
+        }
+        
+        /* 班级学号 */
+        .info-cell {
+            font-size: 0.85rem;
+            color: #475569;
+            white-space: nowrap;
+        }
+        .info-small {
+            font-size: 0.7rem;
+            color: #94a3b8;
+        }
+        
+        /* 分数标签 */
+        .scores-cell {
+            max-width: 180px;
+        }
+        .score-tags {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        .score-item {
+            background: #f1f5f9;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 500;
             display: inline-flex;
             align-items: center;
+            gap: 4px;
             white-space: nowrap;
         }
-        .score-positive {
-            background: #d4edda;
-            color: #155724;
-            font-weight: 600;
+        .score-item.has-score {
+            background: #e0f2fe;
+            color: #0369a1;
         }
         .score-date {
-            margin-right: 2px;
             opacity: 0.7;
         }
         .score-value {
-            font-weight: 600;
+            font-weight: 700;
         }
         
-        /* 总分徽章 */
-        .total-badge {
-            min-width: 45px;
-            text-align: center;
+        /* 总分 */
+        .total-cell {
             font-weight: 700;
-            color: #2c3e50;
-            background: #e9ecef;
-            padding: 4px 6px;
-            border-radius: 20px;
-            margin-left: 6px;
-            font-size: 0.85rem;
-            flex-shrink: 0;
+            font-size: 1rem;
+            color: #0f172a;
+            text-align: right;
+            width: 50px;
         }
         
         .footer {
-            margin-top: 24px;
+            margin-top: 32px;
             text-align: center;
-            color: #95a5a6;
+            color: #94a3b8;
             font-size: 0.75rem;
             padding: 16px;
+            border-top: 1px solid #e2e8f0;
         }
         
-        /* 触摸优化 */
-        .member-row, .rank-card {
-            -webkit-tap-highlight-color: transparent;
+        /* 移动端优化 */
+        @media (max-width: 640px) {
+            body { padding: 12px; }
+            .rank-grid { gap: 8px; }
+            .rank-card { padding: 12px 8px; }
+            .rank-icon { font-size: 1.6rem; }
+            .score-tags { gap: 2px; }
+            .score-item { padding: 2px 6px; font-size: 0.65rem; }
         }
     </style>
 </head>
@@ -240,17 +281,20 @@
     <div class="container">
         <div class="header">
             <h1>🏫 学长团分数板</h1>
-            <div class="update-time">更新：03-05 13:22</div>
+            <div class="subtitle">
+                <span>Prefects' Scoreboard</span>
+                <span>2026.03.05 13:28</span>
+            </div>
             <div class="search-box">
-                <input type="text" id="search" placeholder="🔍 搜姓名">
+                <input type="text" id="search" placeholder="🔍 搜索姓名或英文名...">
             </div>
         </div>
 
-        <!-- 组排名 - 点击跳转 -->
-        <div class="rank-bar">
+        <!-- 组排名卡片 -->
+        <div class="rank-grid">
 
             <div class="rank-card rank-1" onclick="document.getElementById('group-yeyao').scrollIntoView({behavior: 'smooth'})">
-                <div class="rank-icon">🥇</div>
+                <span class="rank-icon">🥇</span>
                 <div class="rank-info">
                     <div class="rank-name">夜曜组</div>
                     <div class="rank-score">35<small>分</small></div>
@@ -258,7 +302,7 @@
             </div>
 
             <div class="rank-card rank-2" onclick="document.getElementById('group-canglan').scrollIntoView({behavior: 'smooth'})">
-                <div class="rank-icon">🥈</div>
+                <span class="rank-icon">🥈</span>
                 <div class="rank-info">
                     <div class="rank-name">沧澜组</div>
                     <div class="rank-score">14<small>分</small></div>
@@ -266,7 +310,7 @@
             </div>
 
             <div class="rank-card rank-3" onclick="document.getElementById('group-xingqiong').scrollIntoView({behavior: 'smooth'})">
-                <div class="rank-icon">🥉</div>
+                <span class="rank-icon">🥉</span>
                 <div class="rank-info">
                     <div class="rank-name">星穹组</div>
                     <div class="rank-score">12<small>分</small></div>
@@ -275,412 +319,470 @@
 
         </div>
 
-        <!-- 三组垂直排列 -->
-        <div class="group-container">
+        <!-- 三组 -->
+        <div class="groups">
 
             <div class="group-card" id="group-xingqiong">
                 <div class="group-header">
                     <span class="group-title">星穹组</span>
-                    <span class="group-rank-badge">第3名 · 12分</span>
+                    <span class="group-badge">第3名 · 12分</span>
                 </div>
-                <div class="member-list">
+                <table class="member-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>姓名</th>
+                            <th>班级</th>
+                            <th>学号</th>
+                            <th>每日得分</th>
+                            <th>总分</th>
+                        </tr>
+                    </thead>
+                    <tbody>
     
-                    <div class="member-row" data-name="陈展艺 IVAN TAN ZHAN YI">
-                        <div class="member-info">
-                            <div class="member-name">陈展艺</div>
-                            <div class="member-class">S2FA</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag">-</span>
-                        </div>
-                        <div class="total-badge">0</div>
-                    </div>
+                        <tr data-search="陈展艺 IVAN TAN ZHAN YI S2FA 22038">
+                            <td class="rank-number">1</td>
+                            <td class="name-cell">
+                                <div class="name-cn">陈展艺</div>
+                                <div class="name-en">IVAN TAN ZHAN YI</div>
+                            </td>
+                            <td class="info-cell">S2FA</td>
+                            <td class="info-cell">22038</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item">-</span></div></td>
+                            <td class="total-cell">0</td>
+                        </tr>
         
-                    <div class="member-row" data-name="侯展扬 HOW ZHAN YANG">
-                        <div class="member-info">
-                            <div class="member-name">侯展扬</div>
-                            <div class="member-class">S2Y</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag">-</span>
-                        </div>
-                        <div class="total-badge">0</div>
-                    </div>
+                        <tr data-search="侯展扬 HOW ZHAN YANG S2Y 22100">
+                            <td class="rank-number">2</td>
+                            <td class="name-cell">
+                                <div class="name-cn">侯展扬</div>
+                                <div class="name-en">HOW ZHAN YANG</div>
+                            </td>
+                            <td class="info-cell">S2Y</td>
+                            <td class="info-cell">22100</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item">-</span></div></td>
+                            <td class="total-cell">0</td>
+                        </tr>
         
-                    <div class="member-row" data-name="邱嘉瑞 KATHERINE KHOO JAI RUI">
-                        <div class="member-info">
-                            <div class="member-name">邱嘉瑞</div>
-                            <div class="member-class">J3T</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag score-positive"><span class="score-date">5/3</span><span class="score-value">3</span></span>
-                        </div>
-                        <div class="total-badge">3</div>
-                    </div>
+                        <tr data-search="邱嘉瑞 KATHERINE KHOO JAI RUI J3T 24076">
+                            <td class="rank-number">3</td>
+                            <td class="name-cell">
+                                <div class="name-cn">邱嘉瑞</div>
+                                <div class="name-en">KATHERINE KHOO JAI R...</div>
+                            </td>
+                            <td class="info-cell">J3T</td>
+                            <td class="info-cell">24076</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">3</span></span></div></td>
+                            <td class="total-cell">3</td>
+                        </tr>
         
-                    <div class="member-row" data-name="莎哈娜 SADHANA A/P SASU BAKIAN">
-                        <div class="member-info">
-                            <div class="member-name">莎哈娜</div>
-                            <div class="member-class">J3T</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag">-</span>
-                        </div>
-                        <div class="total-badge">0</div>
-                    </div>
+                        <tr data-search="莎哈娜 SADHANA A/P SASU BAKIAN J3T 24078">
+                            <td class="rank-number">4</td>
+                            <td class="name-cell">
+                                <div class="name-cn">莎哈娜</div>
+                                <div class="name-en">SADHANA A/P SASU BAK...</div>
+                            </td>
+                            <td class="info-cell">J3T</td>
+                            <td class="info-cell">24078</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item">-</span></div></td>
+                            <td class="total-cell">0</td>
+                        </tr>
         
-                    <div class="member-row" data-name="李韡翰 LEE WEI HANN">
-                        <div class="member-info">
-                            <div class="member-name">李韡翰</div>
-                            <div class="member-class">J3K</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag score-positive"><span class="score-date">5/3</span><span class="score-value">1</span></span>
-                        </div>
-                        <div class="total-badge">1</div>
-                    </div>
+                        <tr data-search="李韡翰 LEE WEI HANN J3K 24068">
+                            <td class="rank-number">5</td>
+                            <td class="name-cell">
+                                <div class="name-cn">李韡翰</div>
+                                <div class="name-en">LEE WEI HANN</div>
+                            </td>
+                            <td class="info-cell">J3K</td>
+                            <td class="info-cell">24068</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">1</span></span></div></td>
+                            <td class="total-cell">1</td>
+                        </tr>
         
-                    <div class="member-row" data-name="彭绍洋 PEH SHAO YANG">
-                        <div class="member-info">
-                            <div class="member-name">彭绍洋</div>
-                            <div class="member-class">J3T</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag">-</span>
-                        </div>
-                        <div class="total-badge">0</div>
-                    </div>
+                        <tr data-search="彭绍洋 PEH SHAO YANG J3T 24088">
+                            <td class="rank-number">6</td>
+                            <td class="name-cell">
+                                <div class="name-cn">彭绍洋</div>
+                                <div class="name-en">PEH SHAO YANG</div>
+                            </td>
+                            <td class="info-cell">J3T</td>
+                            <td class="info-cell">24088</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item">-</span></div></td>
+                            <td class="total-cell">0</td>
+                        </tr>
         
-                    <div class="member-row" data-name="梁纹璇 LEONG WEN XUAN">
-                        <div class="member-info">
-                            <div class="member-name">梁纹璇</div>
-                            <div class="member-class">J2Y</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag">-</span>
-                        </div>
-                        <div class="total-badge">0</div>
-                    </div>
+                        <tr data-search="梁纹璇 LEONG WEN XUAN J2Y 25035">
+                            <td class="rank-number">7</td>
+                            <td class="name-cell">
+                                <div class="name-cn">梁纹璇</div>
+                                <div class="name-en">LEONG WEN XUAN</div>
+                            </td>
+                            <td class="info-cell">J2Y</td>
+                            <td class="info-cell">25035</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item">-</span></div></td>
+                            <td class="total-cell">0</td>
+                        </tr>
         
-                    <div class="member-row" data-name="尤嘉乐 JUSTIN YEW JIA LE">
-                        <div class="member-info">
-                            <div class="member-name">尤嘉乐</div>
-                            <div class="member-class">J2Y</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag score-positive"><span class="score-date">2/3</span><span class="score-value">1</span></span><span class="score-tag score-positive"><span class="score-date">3/3</span><span class="score-value">3</span></span><span class="score-tag score-positive"><span class="score-date">5/3</span><span class="score-value">4</span></span>
-                        </div>
-                        <div class="total-badge">8</div>
-                    </div>
+                        <tr data-search="尤嘉乐 JUSTIN YEW JIA LE J2Y 25046">
+                            <td class="rank-number">8</td>
+                            <td class="name-cell">
+                                <div class="name-cn">尤嘉乐</div>
+                                <div class="name-en">JUSTIN YEW JIA LE</div>
+                            </td>
+                            <td class="info-cell">J2Y</td>
+                            <td class="info-cell">25046</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">2/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">3/3</span><span class="score-value">3</span></span><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">4</span></span></div></td>
+                            <td class="total-cell">8</td>
+                        </tr>
         
-                    <div class="member-row" data-name="许艳棋 KHOR YAN QI">
-                        <div class="member-info">
-                            <div class="member-name">许艳棋</div>
-                            <div class="member-class">J1Y</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag">-</span>
-                        </div>
-                        <div class="total-badge">0</div>
-                    </div>
+                        <tr data-search="许艳棋 KHOR YAN QI J1Y 26018">
+                            <td class="rank-number">9</td>
+                            <td class="name-cell">
+                                <div class="name-cn">许艳棋</div>
+                                <div class="name-en">KHOR YAN QI</div>
+                            </td>
+                            <td class="info-cell">J1Y</td>
+                            <td class="info-cell">26018</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item">-</span></div></td>
+                            <td class="total-cell">0</td>
+                        </tr>
         
-                    <div class="member-row" data-name="林隽毓 LIM JOON YI">
-                        <div class="member-info">
-                            <div class="member-name">林隽毓</div>
-                            <div class="member-class">J1Y</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag">-</span>
-                        </div>
-                        <div class="total-badge">0</div>
-                    </div>
+                        <tr data-search="林隽毓 LIM JOON YI J1Y 26032">
+                            <td class="rank-number">10</td>
+                            <td class="name-cell">
+                                <div class="name-cn">林隽毓</div>
+                                <div class="name-en">LIM JOON YI</div>
+                            </td>
+                            <td class="info-cell">J1Y</td>
+                            <td class="info-cell">26032</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item">-</span></div></td>
+                            <td class="total-cell">0</td>
+                        </tr>
         
-                </div>
+                    </tbody>
+                </table>
             </div>
     
             <div class="group-card" id="group-yeyao">
                 <div class="group-header">
                     <span class="group-title">夜曜组</span>
-                    <span class="group-rank-badge">第1名 · 35分</span>
+                    <span class="group-badge">第1名 · 35分</span>
                 </div>
-                <div class="member-list">
+                <table class="member-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>姓名</th>
+                            <th>班级</th>
+                            <th>学号</th>
+                            <th>每日得分</th>
+                            <th>总分</th>
+                        </tr>
+                    </thead>
+                    <tbody>
     
-                    <div class="member-row" data-name="李竑证 LEE HOONG ZHENG">
-                        <div class="member-info">
-                            <div class="member-name">李竑证</div>
-                            <div class="member-class">S2FA</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag score-positive"><span class="score-date">2/3</span><span class="score-value">1</span></span>
-                        </div>
-                        <div class="total-badge">1</div>
-                    </div>
+                        <tr data-search="李竑证 LEE HOONG ZHENG S2FA 22040">
+                            <td class="rank-number">1</td>
+                            <td class="name-cell">
+                                <div class="name-cn">李竑证</div>
+                                <div class="name-en">LEE HOONG ZHENG</div>
+                            </td>
+                            <td class="info-cell">S2FA</td>
+                            <td class="info-cell">22040</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">2/3</span><span class="score-value">1</span></span></div></td>
+                            <td class="total-cell">1</td>
+                        </tr>
         
-                    <div class="member-row" data-name="廖若含 LIEW XIN YU">
-                        <div class="member-info">
-                            <div class="member-name">廖若含</div>
-                            <div class="member-class">S2Y</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag">-</span>
-                        </div>
-                        <div class="total-badge">0</div>
-                    </div>
+                        <tr data-search="廖若含 LIEW XIN YU S2Y 22029">
+                            <td class="rank-number">2</td>
+                            <td class="name-cell">
+                                <div class="name-cn">廖若含</div>
+                                <div class="name-en">LIEW XIN YU</div>
+                            </td>
+                            <td class="info-cell">S2Y</td>
+                            <td class="info-cell">22029</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item">-</span></div></td>
+                            <td class="total-cell">0</td>
+                        </tr>
         
-                    <div class="member-row" data-name="林芷嫣 LIM ZHI YAN">
-                        <div class="member-info">
-                            <div class="member-name">林芷嫣</div>
-                            <div class="member-class">S2Y</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag">-</span>
-                        </div>
-                        <div class="total-badge">0</div>
-                    </div>
+                        <tr data-search="林芷嫣 LIM ZHI YAN S2Y 22083">
+                            <td class="rank-number">3</td>
+                            <td class="name-cell">
+                                <div class="name-cn">林芷嫣</div>
+                                <div class="name-en">LIM ZHI YAN</div>
+                            </td>
+                            <td class="info-cell">S2Y</td>
+                            <td class="info-cell">22083</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item">-</span></div></td>
+                            <td class="total-cell">0</td>
+                        </tr>
         
-                    <div class="member-row" data-name="周柔慈 CHEO ROU ZHI">
-                        <div class="member-info">
-                            <div class="member-name">周柔慈</div>
-                            <div class="member-class">S2K</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag score-positive"><span class="score-date">5/3</span><span class="score-value">1</span></span>
-                        </div>
-                        <div class="total-badge">1</div>
-                    </div>
+                        <tr data-search="周柔慈 CHEO ROU ZHI S2K 22051">
+                            <td class="rank-number">4</td>
+                            <td class="name-cell">
+                                <div class="name-cn">周柔慈</div>
+                                <div class="name-en">CHEO ROU ZHI</div>
+                            </td>
+                            <td class="info-cell">S2K</td>
+                            <td class="info-cell">22051</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">1</span></span></div></td>
+                            <td class="total-cell">1</td>
+                        </tr>
         
-                    <div class="member-row" data-name="林骏喨 LIM TEIK LIANG">
-                        <div class="member-info">
-                            <div class="member-name">林骏喨</div>
-                            <div class="member-class">J3T</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag score-positive"><span class="score-date">2/3</span><span class="score-value">1</span></span><span class="score-tag score-positive"><span class="score-date">3/3</span><span class="score-value">1</span></span><span class="score-tag score-positive"><span class="score-date">5/3</span><span class="score-value">1</span></span>
-                        </div>
-                        <div class="total-badge">3</div>
-                    </div>
+                        <tr data-search="林骏喨 LIM TEIK LIANG J3T 24083">
+                            <td class="rank-number">5</td>
+                            <td class="name-cell">
+                                <div class="name-cn">林骏喨</div>
+                                <div class="name-en">LIM TEIK LIANG</div>
+                            </td>
+                            <td class="info-cell">J3T</td>
+                            <td class="info-cell">24083</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">2/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">3/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">1</span></span></div></td>
+                            <td class="total-cell">3</td>
+                        </tr>
         
-                    <div class="member-row" data-name="林宜彤 LIM YEE TONG">
-                        <div class="member-info">
-                            <div class="member-name">林宜彤</div>
-                            <div class="member-class">J2Y</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag score-positive"><span class="score-date">3/3</span><span class="score-value">1</span></span><span class="score-tag score-positive"><span class="score-date">4/3</span><span class="score-value">2</span></span>
-                        </div>
-                        <div class="total-badge">3</div>
-                    </div>
+                        <tr data-search="林宜彤 LIM YEE TONG J2Y 25036">
+                            <td class="rank-number">6</td>
+                            <td class="name-cell">
+                                <div class="name-cn">林宜彤</div>
+                                <div class="name-en">LIM YEE TONG</div>
+                            </td>
+                            <td class="info-cell">J2Y</td>
+                            <td class="info-cell">25036</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">3/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">4/3</span><span class="score-value">2</span></span></div></td>
+                            <td class="total-cell">3</td>
+                        </tr>
         
-                    <div class="member-row" data-name="潘宛瑜 TRACY PHUAH WANYU">
-                        <div class="member-info">
-                            <div class="member-name">潘宛瑜</div>
-                            <div class="member-class">J2Y</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag score-positive"><span class="score-date">4/3</span><span class="score-value">3</span></span>
-                        </div>
-                        <div class="total-badge">3</div>
-                    </div>
+                        <tr data-search="潘宛瑜 TRACY PHUAH WANYU J2Y 25071">
+                            <td class="rank-number">7</td>
+                            <td class="name-cell">
+                                <div class="name-cn">潘宛瑜</div>
+                                <div class="name-en">TRACY PHUAH WANYU</div>
+                            </td>
+                            <td class="info-cell">J2Y</td>
+                            <td class="info-cell">25071</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">4/3</span><span class="score-value">3</span></span></div></td>
+                            <td class="total-cell">3</td>
+                        </tr>
         
-                    <div class="member-row" data-name="符传吉 FOO CHUAN JI">
-                        <div class="member-info">
-                            <div class="member-name">符传吉</div>
-                            <div class="member-class">J2Y</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag score-positive"><span class="score-date">2/3</span><span class="score-value">1</span></span><span class="score-tag score-positive"><span class="score-date">3/3</span><span class="score-value">3</span></span><span class="score-tag score-positive"><span class="score-date">5/3</span><span class="score-value">1</span></span>
-                        </div>
-                        <div class="total-badge">5</div>
-                    </div>
+                        <tr data-search="符传吉 FOO CHUAN JI J2Y 25044">
+                            <td class="rank-number">8</td>
+                            <td class="name-cell">
+                                <div class="name-cn">符传吉</div>
+                                <div class="name-en">FOO CHUAN JI</div>
+                            </td>
+                            <td class="info-cell">J2Y</td>
+                            <td class="info-cell">25044</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">2/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">3/3</span><span class="score-value">3</span></span><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">1</span></span></div></td>
+                            <td class="total-cell">5</td>
+                        </tr>
         
-                    <div class="member-row" data-name="陈欣怡 CINDY TAN XIN YI">
-                        <div class="member-info">
-                            <div class="member-name">陈欣怡</div>
-                            <div class="member-class">J2F</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag score-positive"><span class="score-date">2/3</span><span class="score-value">1</span></span><span class="score-tag score-positive"><span class="score-date">4/3</span><span class="score-value">1</span></span><span class="score-tag score-positive"><span class="score-date">5/3</span><span class="score-value">4</span></span>
-                        </div>
-                        <div class="total-badge">6</div>
-                    </div>
+                        <tr data-search="陈欣怡 CINDY TAN XIN YI J2F 25058">
+                            <td class="rank-number">9</td>
+                            <td class="name-cell">
+                                <div class="name-cn">陈欣怡</div>
+                                <div class="name-en">CINDY TAN XIN YI</div>
+                            </td>
+                            <td class="info-cell">J2F</td>
+                            <td class="info-cell">25058</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">2/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">4/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">4</span></span></div></td>
+                            <td class="total-cell">6</td>
+                        </tr>
         
-                    <div class="member-row" data-name="丽亚 DHIYA ZULAIKHA DARWISYAH BINTI YUSNIZAN">
-                        <div class="member-info">
-                            <div class="member-name">丽亚</div>
-                            <div class="member-class">J2F</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag score-positive"><span class="score-date">2/3</span><span class="score-value">2</span></span><span class="score-tag score-positive"><span class="score-date">4/3</span><span class="score-value">6</span></span><span class="score-tag score-positive"><span class="score-date">5/3</span><span class="score-value">4</span></span>
-                        </div>
-                        <div class="total-badge">12</div>
-                    </div>
+                        <tr data-search="丽亚 DHIYA ZULAIKHA DARWISYAH BINTI YUSNIZAN J2F 25059">
+                            <td class="rank-number">10</td>
+                            <td class="name-cell">
+                                <div class="name-cn">丽亚</div>
+                                <div class="name-en">DHIYA ZULAIKHA DARWI...</div>
+                            </td>
+                            <td class="info-cell">J2F</td>
+                            <td class="info-cell">25059</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">2/3</span><span class="score-value">2</span></span><span class="score-item has-score"><span class="score-date">4/3</span><span class="score-value">6</span></span><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">4</span></span></div></td>
+                            <td class="total-cell">12</td>
+                        </tr>
         
-                    <div class="member-row" data-name="郑宜桐 TEH YEE THONG">
-                        <div class="member-info">
-                            <div class="member-name">郑宜桐</div>
-                            <div class="member-class">J1Y</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag score-positive"><span class="score-date">4/3</span><span class="score-value">1</span></span>
-                        </div>
-                        <div class="total-badge">1</div>
-                    </div>
+                        <tr data-search="郑宜桐 TEH YEE THONG J1Y 26024">
+                            <td class="rank-number">11</td>
+                            <td class="name-cell">
+                                <div class="name-cn">郑宜桐</div>
+                                <div class="name-en">TEH YEE THONG</div>
+                            </td>
+                            <td class="info-cell">J1Y</td>
+                            <td class="info-cell">26024</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">4/3</span><span class="score-value">1</span></span></div></td>
+                            <td class="total-cell">1</td>
+                        </tr>
         
-                </div>
+                    </tbody>
+                </table>
             </div>
     
             <div class="group-card" id="group-canglan">
                 <div class="group-header">
                     <span class="group-title">沧澜组</span>
-                    <span class="group-rank-badge">第2名 · 14分</span>
+                    <span class="group-badge">第2名 · 14分</span>
                 </div>
-                <div class="member-list">
+                <table class="member-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>姓名</th>
+                            <th>班级</th>
+                            <th>学号</th>
+                            <th>每日得分</th>
+                            <th>总分</th>
+                        </tr>
+                    </thead>
+                    <tbody>
     
-                    <div class="member-row" data-name="浦源政 POH YUAN ZHENG">
-                        <div class="member-info">
-                            <div class="member-name">浦源政</div>
-                            <div class="member-class">S2Y</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag">-</span>
-                        </div>
-                        <div class="total-badge">0</div>
-                    </div>
+                        <tr data-search="浦源政 POH YUAN ZHENG S2Y 22044">
+                            <td class="rank-number">1</td>
+                            <td class="name-cell">
+                                <div class="name-cn">浦源政</div>
+                                <div class="name-en">POH YUAN ZHENG</div>
+                            </td>
+                            <td class="info-cell">S2Y</td>
+                            <td class="info-cell">22044</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item">-</span></div></td>
+                            <td class="total-cell">0</td>
+                        </tr>
         
-                    <div class="member-row" data-name="吴贝优 GOH BEI YO">
-                        <div class="member-info">
-                            <div class="member-name">吴贝优</div>
-                            <div class="member-class">S2Y</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag">-</span>
-                        </div>
-                        <div class="total-badge">0</div>
-                    </div>
+                        <tr data-search="吴贝优 GOH BEI YO S2Y 22021">
+                            <td class="rank-number">2</td>
+                            <td class="name-cell">
+                                <div class="name-cn">吴贝优</div>
+                                <div class="name-en">GOH BEI YO</div>
+                            </td>
+                            <td class="info-cell">S2Y</td>
+                            <td class="info-cell">22021</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item">-</span></div></td>
+                            <td class="total-cell">0</td>
+                        </tr>
         
-                    <div class="member-row" data-name="林沛筠 LIM PEI JUN">
-                        <div class="member-info">
-                            <div class="member-name">林沛筠</div>
-                            <div class="member-class">S2Y</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag">-</span>
-                        </div>
-                        <div class="total-badge">0</div>
-                    </div>
+                        <tr data-search="林沛筠 LIM PEI JUN S2Y 22030">
+                            <td class="rank-number">3</td>
+                            <td class="name-cell">
+                                <div class="name-cn">林沛筠</div>
+                                <div class="name-en">LIM PEI JUN</div>
+                            </td>
+                            <td class="info-cell">S2Y</td>
+                            <td class="info-cell">22030</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item">-</span></div></td>
+                            <td class="total-cell">0</td>
+                        </tr>
         
-                    <div class="member-row" data-name="陈诗惠 CHAN SHI HUI">
-                        <div class="member-info">
-                            <div class="member-name">陈诗惠</div>
-                            <div class="member-class">S2FA</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag score-positive"><span class="score-date">4/3</span><span class="score-value">3</span></span>
-                        </div>
-                        <div class="total-badge">3</div>
-                    </div>
+                        <tr data-search="陈诗惠 CHAN SHI HUI S2FA 22017">
+                            <td class="rank-number">4</td>
+                            <td class="name-cell">
+                                <div class="name-cn">陈诗惠</div>
+                                <div class="name-en">CHAN SHI HUI</div>
+                            </td>
+                            <td class="info-cell">S2FA</td>
+                            <td class="info-cell">22017</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">4/3</span><span class="score-value">3</span></span></div></td>
+                            <td class="total-cell">3</td>
+                        </tr>
         
-                    <div class="member-row" data-name="郑憶欣 TEE YEE XIN">
-                        <div class="member-info">
-                            <div class="member-name">郑憶欣</div>
-                            <div class="member-class">S1Y</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag score-positive"><span class="score-date">5/3</span><span class="score-value">1</span></span>
-                        </div>
-                        <div class="total-badge">1</div>
-                    </div>
+                        <tr data-search="郑憶欣 TEE YEE XIN S1Y 23065">
+                            <td class="rank-number">5</td>
+                            <td class="name-cell">
+                                <div class="name-cn">郑憶欣</div>
+                                <div class="name-en">TEE YEE XIN</div>
+                            </td>
+                            <td class="info-cell">S1Y</td>
+                            <td class="info-cell">23065</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">1</span></span></div></td>
+                            <td class="total-cell">1</td>
+                        </tr>
         
-                    <div class="member-row" data-name="谢楷棋 CHEAH KHAI QI">
-                        <div class="member-info">
-                            <div class="member-name">谢楷棋</div>
-                            <div class="member-class">S1T</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag">-</span>
-                        </div>
-                        <div class="total-badge">0</div>
-                    </div>
+                        <tr data-search="谢楷棋 CHEAH KHAI QI S1T 23013">
+                            <td class="rank-number">6</td>
+                            <td class="name-cell">
+                                <div class="name-cn">谢楷棋</div>
+                                <div class="name-en">CHEAH KHAI QI</div>
+                            </td>
+                            <td class="info-cell">S1T</td>
+                            <td class="info-cell">23013</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item">-</span></div></td>
+                            <td class="total-cell">0</td>
+                        </tr>
         
-                    <div class="member-row" data-name="蔡善恩 CHUAH SHAN EN">
-                        <div class="member-info">
-                            <div class="member-name">蔡善恩</div>
-                            <div class="member-class">J3F</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag">-</span>
-                        </div>
-                        <div class="total-badge">0</div>
-                    </div>
+                        <tr data-search="蔡善恩 CHUAH SHAN EN J3F 24039">
+                            <td class="rank-number">7</td>
+                            <td class="name-cell">
+                                <div class="name-cn">蔡善恩</div>
+                                <div class="name-en">CHUAH SHAN EN</div>
+                            </td>
+                            <td class="info-cell">J3F</td>
+                            <td class="info-cell">24039</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item">-</span></div></td>
+                            <td class="total-cell">0</td>
+                        </tr>
         
-                    <div class="member-row" data-name="许家绮 KOO JIA QI">
-                        <div class="member-info">
-                            <div class="member-name">许家绮</div>
-                            <div class="member-class">J2Y</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag score-positive"><span class="score-date">3/3</span><span class="score-value">2</span></span><span class="score-tag score-positive"><span class="score-date">4/3</span><span class="score-value">4</span></span>
-                        </div>
-                        <div class="total-badge">6</div>
-                    </div>
+                        <tr data-search="许家绮 KOO JIA QI J2Y 25031">
+                            <td class="rank-number">8</td>
+                            <td class="name-cell">
+                                <div class="name-cn">许家绮</div>
+                                <div class="name-en">KOO JIA QI</div>
+                            </td>
+                            <td class="info-cell">J2Y</td>
+                            <td class="info-cell">25031</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">3/3</span><span class="score-value">2</span></span><span class="score-item has-score"><span class="score-date">4/3</span><span class="score-value">4</span></span></div></td>
+                            <td class="total-cell">6</td>
+                        </tr>
         
-                    <div class="member-row" data-name="张子欣 TEON ZI XIN">
-                        <div class="member-info">
-                            <div class="member-name">张子欣</div>
-                            <div class="member-class">J2F</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag score-positive"><span class="score-date">4/3</span><span class="score-value">2</span></span>
-                        </div>
-                        <div class="total-badge">2</div>
-                    </div>
+                        <tr data-search="张子欣 TEON ZI XIN J2F 25070">
+                            <td class="rank-number">9</td>
+                            <td class="name-cell">
+                                <div class="name-cn">张子欣</div>
+                                <div class="name-en">TEON ZI XIN</div>
+                            </td>
+                            <td class="info-cell">J2F</td>
+                            <td class="info-cell">25070</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">4/3</span><span class="score-value">2</span></span></div></td>
+                            <td class="total-cell">2</td>
+                        </tr>
         
-                    <div class="member-row" data-name="施锦轩 SEE JIN XUAN">
-                        <div class="member-info">
-                            <div class="member-name">施锦轩</div>
-                            <div class="member-class">J1T</div>
-                        </div>
-                        <div class="daily-scores">
-                            <span class="score-tag score-positive"><span class="score-date">5/3</span><span class="score-value">2</span></span>
-                        </div>
-                        <div class="total-badge">2</div>
-                    </div>
+                        <tr data-search="施锦轩 SEE JIN XUAN J1T 26092">
+                            <td class="rank-number">10</td>
+                            <td class="name-cell">
+                                <div class="name-cn">施锦轩</div>
+                                <div class="name-en">SEE JIN XUAN</div>
+                            </td>
+                            <td class="info-cell">J1T</td>
+                            <td class="info-cell">26092</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">2</span></span></div></td>
+                            <td class="total-cell">2</td>
+                        </tr>
         
-                </div>
+                    </tbody>
+                </table>
             </div>
     
         </div>
         <div class="footer">
-            👆 点击排名卡片跳转 · 显示有分数的日期
+            👆 点击组排名卡片快速跳转 · 显示最近5次得分
         </div>
     </div>
 
     <script>
         const searchInput = document.getElementById('search');
-        const allRows = document.querySelectorAll('.member-row');
+        const allRows = document.querySelectorAll('tbody tr');
         
         searchInput.addEventListener('input', (e) => {
             const searchTerm = e.target.value.toLowerCase().trim();
             
             if (searchTerm === '') {
-                allRows.forEach(row => row.style.display = 'flex');
+                allRows.forEach(row => row.style.display = '');
                 return;
             }
             
             allRows.forEach(row => {
-                const searchText = row.getAttribute('data-name').toLowerCase();
-                row.style.display = searchText.includes(searchTerm) ? 'flex' : 'none';
+                const searchText = row.getAttribute('data-search').toLowerCase();
+                row.style.display = searchText.includes(searchTerm) ? '' : 'none';
             });
         });
-
-        // 触摸优化
-        let startX;
-        const rankBar = document.querySelector('.rank-bar');
-        if (rankBar) {
-            rankBar.addEventListener('touchstart', (e) => {
-                startX = e.touches[0].pageX;
-            });
-        }
     </script>
 </body>
 </html>
