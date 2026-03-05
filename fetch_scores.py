@@ -15,58 +15,72 @@ df = pd.read_csv(url, header=None)
 
 print(f"读取到 {len(df)} 行数据")
 
-# ===== 组别位置 =====
-group_positions = {
-    2: "星穹组",   # 第3行
-    14: "夜曜组",  # 第15行
-    27: "沧澜组"   # 第28行
-}
+# ===== 直接把名字写死，绝对不会错 =====
+members_list = [
+    # 星穹组 (10人)
+    {"group": "星穹组", "name_cn": "陈展艺", "name_en": "IVAN TAN ZHAN YI", "class": "S2FA", "student_id": "22038", "row_index": 3},
+    {"group": "星穹组", "name_cn": "侯展扬", "name_en": "HOW ZHAN YANG", "class": "S2Y", "student_id": "22100", "row_index": 4},
+    {"group": "星穹组", "name_cn": "邱嘉瑞", "name_en": "KATHERINE KHOO JAI RUI", "class": "J3T", "student_id": "24076", "row_index": 5},
+    {"group": "星穹组", "name_cn": "莎哈娜", "name_en": "SADHANA A/P SASU BAKIAN", "class": "J3T", "student_id": "24078", "row_index": 6},
+    {"group": "星穹组", "name_cn": "李韡翰", "name_en": "LEE WEI HANN", "class": "J3K", "student_id": "24068", "row_index": 7},
+    {"group": "星穹组", "name_cn": "彭绍洋", "name_en": "PEH SHAO YANG", "class": "J3T", "student_id": "24088", "row_index": 8},
+    {"group": "星穹组", "name_cn": "梁纹璇", "name_en": "LEONG WEN XUAN", "class": "J2Y", "student_id": "25035", "row_index": 9},
+    {"group": "星穹组", "name_cn": "尤嘉乐", "name_en": "JUSTIN YEW JIA LE", "class": "J2Y", "student_id": "25046", "row_index": 10},
+    {"group": "星穹组", "name_cn": "许艳棋", "name_en": "KHOR YAN QI", "class": "J1Y", "student_id": "26018", "row_index": 11},
+    {"group": "星穹组", "name_cn": "林隽毓", "name_en": "LIM JOON YI", "class": "J1Y", "student_id": "26032", "row_index": 12},
+    
+    # 夜曜组 (11人)
+    {"group": "夜曜组", "name_cn": "李竑证", "name_en": "LEE HOONG ZHENG", "class": "S2FA", "student_id": "22040", "row_index": 15},
+    {"group": "夜曜组", "name_cn": "廖若含", "name_en": "LIEW XIN YU", "class": "S2Y", "student_id": "22029", "row_index": 16},
+    {"group": "夜曜组", "name_cn": "林芷嫣", "name_en": "LIM ZHI YAN", "class": "S2Y", "student_id": "22083", "row_index": 17},
+    {"group": "夜曜组", "name_cn": "周柔慈", "name_en": "CHEO ROU ZHI", "class": "S2K", "student_id": "22051", "row_index": 18},
+    {"group": "夜曜组", "name_cn": "林骏喨", "name_en": "LIM TEIK LIANG", "class": "J3T", "student_id": "24083", "row_index": 19},
+    {"group": "夜曜组", "name_cn": "林宜彤", "name_en": "LIM YEE TONG", "class": "J2Y", "student_id": "25036", "row_index": 20},
+    {"group": "夜曜组", "name_cn": "潘宛瑜", "name_en": "TRACY PHUAH WANYU", "class": "J2Y", "student_id": "25071", "row_index": 21},
+    {"group": "夜曜组", "name_cn": "符传吉", "name_en": "FOO CHUAN JI", "class": "J2Y", "student_id": "25044", "row_index": 22},
+    {"group": "夜曜组", "name_cn": "陈欣怡", "name_en": "CINDY TAN XIN YI", "class": "J2F", "student_id": "25058", "row_index": 23},
+    {"group": "夜曜组", "name_cn": "丽亚", "name_en": "DHIYA ZULAIKHA DARWISYAH BINTI YUSNIZAN", "class": "J2F", "student_id": "25059", "row_index": 24},
+    {"group": "夜曜组", "name_cn": "郑宜桐", "name_en": "TEH YEE THONG", "class": "J1Y", "student_id": "26024", "row_index": 25},
+    
+    # 沧澜组 (10人)
+    {"group": "沧澜组", "name_cn": "浦源政", "name_en": "POH YUAN ZHENG", "class": "S2Y", "student_id": "22044", "row_index": 28},
+    {"group": "沧澜组", "name_cn": "吴贝优", "name_en": "GOH BEI YO", "class": "S2Y", "student_id": "22021", "row_index": 29},
+    {"group": "沧澜组", "name_cn": "林沛筠", "name_en": "LIM PEI JUN", "class": "S2Y", "student_id": "22030", "row_index": 30},
+    {"group": "沧澜组", "name_cn": "陈诗惠", "name_en": "CHAN SHI HUI", "class": "S2FA", "student_id": "22017", "row_index": 31},
+    {"group": "沧澜组", "name_cn": "郑憶欣", "name_en": "TEE YEE XIN", "class": "S1Y", "student_id": "23065", "row_index": 32},
+    {"group": "沧澜组", "name_cn": "谢楷棋", "name_en": "CHEAH KHAI QI", "class": "S1T", "student_id": "23013", "row_index": 33},
+    {"group": "沧澜组", "name_cn": "蔡善恩", "name_en": "CHUAH SHAN EN", "class": "J3F", "student_id": "24039", "row_index": 34},
+    {"group": "沧澜组", "name_cn": "许家绮", "name_en": "KOO JIA QI", "class": "J2Y", "student_id": "25031", "row_index": 35},
+    {"group": "沧澜组", "name_cn": "张子欣", "name_en": "TEON ZI XIN", "class": "J2F", "student_id": "25070", "row_index": 36},
+    {"group": "沧澜组", "name_cn": "施锦轩", "name_en": "SEE JIN XUAN", "class": "J1T", "student_id": "26092", "row_index": 37}
+]
 
-# 解析数据
+# 从Google Sheets提取分数
 people = []
-current_group = None
+for member in members_list:
+    row_idx = member["row_index"]
+    if row_idx < len(df):
+        row = df.iloc[row_idx].tolist()
+        
+        # 计算总分：从第7列开始的所有数字加起来
+        total_score = 0
+        for j in range(7, len(row)):
+            if pd.notna(row[j]) and isinstance(row[j], (int, float)):
+                total_score += row[j]
+        
+        people.append({
+            "group": member["group"],
+            "name_cn": member["name_cn"],
+            "name_en": member["name_en"],
+            "class": member["class"],
+            "student_id": member["student_id"],
+            "total": total_score
+        })
+        print(f"✓ {member['name_cn']}: {total_score}分")
+    else:
+        print(f"✗ 找不到第{row_idx}行: {member['name_cn']}")
 
-print("开始解析数据...")
-
-for i in range(len(df)):
-    row = df.iloc[i].tolist()
-    
-    # 检查是否是组别行
-    if i in group_positions:
-        current_group = group_positions[i]
-        print(f"第{i}行: 找到组别 {current_group}")
-        continue
-    
-    # 检查是否是人员数据行（A列有序号）
-    if len(row) > 0 and pd.notna(row[0]) and isinstance(row[0], (int, float)):
-        # 跳过TOTAL行
-        if len(row) > 4 and row[4] == "TOTAL":
-            continue
-            
-        if current_group:
-            # 提取基本信息
-            name_cn = row[3] if len(row) > 3 and pd.notna(row[3]) else ""
-            name_en = row[4] if len(row) > 4 and pd.notna(row[4]) else ""
-            
-            # 只添加有名字的人
-            if name_cn or name_en:
-                # 计算总分：从第7列开始的所有数字加起来
-                total_score = 0
-                for j in range(7, len(row)):
-                    if pd.notna(row[j]) and isinstance(row[j], (int, float)):
-                        total_score += row[j]
-                
-                people.append({
-                    "group": current_group,
-                    "name_cn": name_cn,
-                    "name_en": name_en,
-                    "class": row[2] if len(row) > 2 and pd.notna(row[2]) else "",
-                    "student_id": row[1] if len(row) > 1 and pd.notna(row[1]) else "",
-                    "total": total_score,
-                    "original_order": i  # 保留原始顺序
-                })
-
-print(f"总共解析到 {len(people)} 位成员")
+print(f"\n总共解析到 {len(people)} 位成员")
 
 # 按组别整理
 group_data = {}
@@ -80,15 +94,10 @@ for p in people:
     group_data[g].append(p)
     group_totals[g] += p["total"]
 
-# 每个组内按原始顺序排序（绝对不能乱）
-for g in group_data:
-    group_data[g].sort(key=lambda x: x["original_order"])
-
-print("\n✅ 解析结果：")
-for g in group_data:
-    print(f"{g}: {len(group_data[g])} 人, 组总分: {int(group_totals[g])}")
-    for p in group_data[g]:
-        print(f"  - {p['name_cn']}: {int(p['total'])}分")
+print("\n✅ 组别总分：")
+for g in ["星穹组", "夜曜组", "沧澜组"]:
+    if g in group_totals:
+        print(f"{g}: {int(group_totals[g])}分")
 
 # 计算组排名
 sorted_groups = sorted(group_totals.items(), key=lambda x: x[1], reverse=True)
@@ -96,7 +105,7 @@ group_rank = {}
 for i, (g, _) in enumerate(sorted_groups, 1):
     group_rank[g] = i
 
-# 生成HTML
+# 生成HTML（用之前的版本）
 html = f"""<!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -160,11 +169,8 @@ html = f"""<!DOCTYPE html>
             border-radius: 10px;
             padding: 16px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border-left: 6px solid;
+            border-left: 6px solid #b0bec5;
         }}
-        .rank-1 {{ border-left-color: #b0bec5; }}
-        .rank-2 {{ border-left-color: #b0bec5; }}
-        .rank-3 {{ border-left-color: #b0bec5; }}
         .rank-name {{
             font-size: 1.2rem;
             font-weight: 500;
@@ -247,11 +253,6 @@ html = f"""<!DOCTYPE html>
             font-size: 0.85rem;
             padding: 16px;
         }}
-        @media (max-width: 768px) {{
-            .group-container {{
-                flex-direction: column;
-            }}
-        }}
     </style>
 </head>
 <body>
@@ -271,7 +272,7 @@ html = f"""<!DOCTYPE html>
 for g, total in sorted_groups:
     rank = group_rank[g]
     html += f"""
-            <div class="rank-item rank-{rank}">
+            <div class="rank-item">
                 <div class="rank-name">{g}</div>
                 <div class="rank-score">{int(total)} <small>分</small></div>
                 <div style="font-size:0.9rem; color:#7f8c8d;">第{rank}名</div>
@@ -308,7 +309,7 @@ for group_name in group_order:
                     <tbody>
         """
         
-        # 严格按照原始顺序显示
+        # 按原顺序显示
         for idx, p in enumerate(members, 1):
             # 处理英文名
             name_en_display = p['name_en'][:15] + "..." if len(p['name_en']) > 15 else p['name_en']
@@ -365,6 +366,3 @@ with open("index.html", "w", encoding="utf-8") as f:
     f.write(html)
 
 print(f"\n✅ 生成成功！共 {len(people)} 人")
-for g in group_order:
-    if g in group_data:
-        print(f"{g}: {len(group_data[g])} 人, 总分: {int(group_totals[g])}, 第{group_rank[g]}名")
