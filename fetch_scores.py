@@ -68,7 +68,7 @@ for i in range(len(df)):
 
 print(f"总共解析到 {len(people)} 位成员")
 
-# 按组别整理，保持原始顺序
+# 按组别整理
 group_data = {}
 group_totals = {}
 
@@ -87,14 +87,16 @@ for g in group_data:
 print("\n✅ 解析结果：")
 for g in group_data:
     print(f"{g}: {len(group_data[g])} 人, 组总分: {int(group_totals[g])}")
-    # 打印所有人确认
     for p in group_data[g]:
         print(f"  - {p['name_cn']}: {int(p['total'])}分")
 
-# 按总分排序组别（用于顶部排名）
+# 计算组排名
 sorted_groups = sorted(group_totals.items(), key=lambda x: x[1], reverse=True)
+group_rank = {}
+for i, (g, _) in enumerate(sorted_groups, 1):
+    group_rank[g] = i
 
-# 生成HTML - 保持你之前的格式
+# 生成HTML
 html = f"""<!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -123,12 +125,10 @@ html = f"""<!DOCTYPE html>
             padding: 24px;
             margin-bottom: 24px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border: 1px solid #eaeef2;
         }}
         h1 {{
             font-size: 1.8rem;
             font-weight: 500;
-            color: #2c3e50;
             margin-bottom: 8px;
         }}
         .update-time {{
@@ -147,114 +147,75 @@ html = f"""<!DOCTYPE html>
             border-radius: 30px;
             font-size: 0.95rem;
         }}
-        #search:focus {{
-            outline: none;
-            border-color: #9aa6b2;
-        }}
-        .group-rank-header {{
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border: 1px solid #eaeef2;
-        }}
-        .group-rank-title {{
-            font-size: 1.2rem;
-            font-weight: 500;
-            color: #34495e;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #ecf0f1;
-        }}
-        .group-rank-list {{
+        .rank-bar {{
             display: flex;
             gap: 16px;
+            margin-bottom: 24px;
             flex-wrap: wrap;
         }}
-        .group-rank-item {{
+        .rank-item {{
             flex: 1;
-            min-width: 180px;
-            background: #f8fafc;
+            min-width: 200px;
+            background: white;
             border-radius: 10px;
             padding: 16px;
-            border-left: 4px solid;
-            transition: all 0.2s;
-            border: 1px solid #e9ecef;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-left: 6px solid;
         }}
-        .group-rank-name {{
-            font-size: 1.1rem;
+        .rank-1 {{ border-left-color: #b0bec5; }}
+        .rank-2 {{ border-left-color: #b0bec5; }}
+        .rank-3 {{ border-left-color: #b0bec5; }}
+        .rank-name {{
+            font-size: 1.2rem;
             font-weight: 500;
             margin-bottom: 8px;
-            color: #2c3e50;
         }}
-        .group-rank-score {{
-            font-size: 1.6rem;
+        .rank-score {{
+            font-size: 1.8rem;
             font-weight: 500;
-            color: #34495e;
         }}
-        .group-rank-score small {{
-            font-size: 0.9rem;
+        .rank-score small {{
+            font-size: 1rem;
             font-weight: 400;
             color: #7f8c8d;
         }}
-        .tabs {{
+        .group-container {{
             display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
+            gap: 24px;
             flex-wrap: wrap;
+            margin-top: 24px;
         }}
-        .tab {{
-            padding: 10px 24px;
-            background: white;
-            border: 1px solid #dce1e5;
-            border-radius: 30px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: #5d6d7e;
-            cursor: pointer;
-            transition: all 0.2s;
-        }}
-        .tab:hover {{
-            background: #f1f4f8;
-        }}
-        .tab.active {{
-            background: #2c3e50;
-            color: white;
-            border-color: #2c3e50;
-        }}
-        .group-section {{
-            display: none;
+        .group-card {{
+            flex: 1;
+            min-width: 300px;
             background: white;
             border-radius: 12px;
-            padding: 24px;
+            padding: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border: 1px solid #eaeef2;
-        }}
-        .group-section.active {{
-            display: block;
         }}
         .group-header {{
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid #ecf0f1;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #ecf0f1;
         }}
-        .group-name {{
+        .group-title {{
             font-size: 1.4rem;
             font-weight: 500;
-            color: #2c3e50;
         }}
-        .group-total {{
+        .group-title small {{
+            font-size: 0.9rem;
+            color: #95a5a6;
+            margin-left: 8px;
+        }}
+        .group-score {{
             font-size: 1.2rem;
             font-weight: 500;
-            color: #5d6d7e;
             background: #f8fafc;
-            padding: 6px 16px;
-            border-radius: 30px;
-            border: 1px solid #e9ecef;
+            padding: 4px 12px;
+            border-radius: 20px;
         }}
         table {{
             width: 100%;
@@ -262,26 +223,22 @@ html = f"""<!DOCTYPE html>
         }}
         th {{
             text-align: left;
-            padding: 14px 12px;
+            padding: 10px 8px;
             background: #f8fafc;
             font-weight: 500;
             color: #4a5b6b;
-            border-bottom: 2px solid #e2e8f0;
+            font-size: 0.9rem;
         }}
         td {{
-            padding: 14px 12px;
+            padding: 10px 8px;
             border-bottom: 1px solid #edf2f7;
-        }}
-        tr:hover {{
-            background: #fafcfd;
         }}
         .score-badge {{
             background: #ecf0f1;
-            padding: 6px 14px;
-            border-radius: 30px;
+            padding: 4px 10px;
+            border-radius: 20px;
             font-weight: 500;
             display: inline-block;
-            font-size: 1rem;
         }}
         .footer {{
             margin-top: 32px;
@@ -289,153 +246,99 @@ html = f"""<!DOCTYPE html>
             color: #95a5a6;
             font-size: 0.85rem;
             padding: 16px;
-            border-top: 1px solid #e9ecef;
         }}
-        
-        /* 组别颜色 - 素色 */
-        .border-star {{ border-left-color: #9aa6b2; }}
-        .border-night {{ border-left-color: #8a9aa8; }}
-        .border-ocean {{ border-left-color: #7f8fa6; }}
+        @media (max-width: 768px) {{
+            .group-container {{
+                flex-direction: column;
+            }}
+        }}
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🏫 训育处 · 学长团个人分数板</h1>
+            <h1>🏫 训育处 · 学长团分数板</h1>
             <div class="update-time">最后更新：{datetime.now().strftime('%Y-%m-%d %H:%M')}</div>
             <div class="search-box">
                 <input type="text" id="search" placeholder="🔍 输入姓名或学号搜索...">
             </div>
         </div>
 
-        <div class="group-rank-header">
-            <div class="group-rank-title">📊 组别总分排名</div>
-            <div class="group-rank-list" id="groupRankList">
+        <div class="rank-bar">
 """
 
-# 添加组别排名卡片
-group_border = {
-    "星穹组": "border-star",
-    "夜曜组": "border-night",
-    "沧澜组": "border-ocean"
-}
-
-for i, (group_name, total) in enumerate(sorted_groups):
-    border_class = group_border.get(group_name, "border-star")
-    rank_text = "第1名" if i == 0 else "第2名" if i == 1 else "第3名"
+# 添加组排名
+for g, total in sorted_groups:
+    rank = group_rank[g]
     html += f"""
-                <div class="group-rank-item {border_class}" data-group="{group_name}">
-                    <div class="group-rank-name">{group_name}</div>
-                    <div class="group-rank-score">{int(total)} <small>分</small></div>
-                    <div style="font-size:0.8rem; color:#95a5a6;">{rank_text}</div>
-                </div>
-    """
-
-html += """
+            <div class="rank-item rank-{rank}">
+                <div class="rank-name">{g}</div>
+                <div class="rank-score">{int(total)} <small>分</small></div>
+                <div style="font-size:0.9rem; color:#7f8c8d;">第{rank}名</div>
             </div>
-        </div>
-
-        <div class="tabs" id="tabs">
-"""
-
-# 添加标签页
-for group_name, _ in sorted_groups:
-    active_class = "active" if group_name == sorted_groups[0][0] else ""
-    html += f"""
-            <button class="tab {active_class}" data-group="{group_name}">{group_name}</button>
 """
 
 html += """
         </div>
+
+        <div class="group-container">
 """
 
-# 添加每个组别的表格 - 严格按照原始顺序！
-for group_name, members in group_data.items():
-    active_class = "active" if group_name == sorted_groups[0][0] else ""
-    
-    html += f"""
-        <div class="group-section {active_class}" data-group="{group_name}">
-            <div class="group-header">
-                <span class="group-name">{group_name}</span>
-                <span class="group-total">总分 {int(group_totals[group_name])}</span>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 60px">序号</th>
-                        <th>姓名</th>
-                        <th style="width: 100px">班级</th>
-                        <th style="width: 120px">学号</th>
-                        <th style="width: 100px">总分</th>
-                    </tr>
-                </thead>
-                <tbody>
-    """
-    
-    # 严格按照原始顺序显示（不排序！）
-    for idx, p in enumerate(members, 1):
-        # 处理学号显示
-        student_id_display = ""
-        if isinstance(p['student_id'], (int, float)):
-            student_id_display = str(int(p['student_id']))
-        else:
-            student_id_display = str(p['student_id'])
-        
-        # 处理英文名过长
-        name_en_display = p['name_en'][:25] + "..." if len(p['name_en']) > 25 else p['name_en']
+# 按顺序添加三个组
+group_order = ["星穹组", "夜曜组", "沧澜组"]
+for group_name in group_order:
+    if group_name in group_data:
+        members = group_data[group_name]
         
         html += f"""
-                    <tr data-name="{p['name_cn']} {p['name_en']} {student_id_display}">
-                        <td>{idx}</td>
-                        <td>
-                            <strong>{p['name_cn']}</strong><br>
-                            <span style="font-size:0.8rem; color:#7f8c8d;">{name_en_display}</span>
-                        </td>
-                        <td>{p['class']}</td>
-                        <td>{student_id_display}</td>
-                        <td><span class="score-badge">{int(p['total'])}</span></td>
-                    </tr>
+            <div class="group-card">
+                <div class="group-header">
+                    <span class="group-title">{group_name} <small>第{group_rank[group_name]}名</small></span>
+                    <span class="group-score">{int(group_totals[group_name])}分</span>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>姓名</th>
+                            <th>班级</th>
+                            <th>总分</th>
+                        </tr>
+                    </thead>
+                    <tbody>
         """
-    
-    html += """
-                </tbody>
-            </table>
-        </div>
-    """
+        
+        # 严格按照原始顺序显示
+        for idx, p in enumerate(members, 1):
+            # 处理英文名
+            name_en_display = p['name_en'][:15] + "..." if len(p['name_en']) > 15 else p['name_en']
+            
+            html += f"""
+                        <tr data-name="{p['name_cn']} {p['name_en']}">
+                            <td>{idx}</td>
+                            <td>
+                                <strong>{p['name_cn']}</strong><br>
+                                <span style="font-size:0.75rem; color:#7f8c8d;">{name_en_display}</span>
+                            </td>
+                            <td>{p['class']}</td>
+                            <td><span class="score-badge">{int(p['total'])}</span></td>
+                        </tr>
+            """
+        
+        html += """
+                    </tbody>
+                </table>
+            </div>
+        """
 
 html += """
+        </div>
         <div class="footer">
             训育处 · 数据每日自动更新 · 仅供参考
         </div>
     </div>
 
     <script>
-        const tabs = document.querySelectorAll('.tab');
-        const sections = document.querySelectorAll('.group-section');
-        const groupRankItems = document.querySelectorAll('.group-rank-item');
-        
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                const groupName = tab.dataset.group;
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                sections.forEach(section => {
-                    section.classList.remove('active');
-                    if (section.dataset.group === groupName) {
-                        section.classList.add('active');
-                    }
-                });
-            });
-        });
-
-        groupRankItems.forEach(item => {
-            item.addEventListener('click', () => {
-                const groupName = item.dataset.group;
-                const targetTab = Array.from(tabs).find(tab => tab.dataset.group === groupName);
-                if (targetTab) targetTab.click();
-            });
-        });
-
         const searchInput = document.getElementById('search');
         const allRows = document.querySelectorAll('tbody tr');
         
@@ -462,10 +365,6 @@ with open("index.html", "w", encoding="utf-8") as f:
     f.write(html)
 
 print(f"\n✅ 生成成功！共 {len(people)} 人")
-print("组别统计：")
-for g in ["星穹组", "夜曜组", "沧澜组"]:
+for g in group_order:
     if g in group_data:
-        print(f"  {g}: {len(group_data[g])} 人, 总分: {int(group_totals[g])}")
-        # 打印所有人确认
-        for p in group_data[g]:
-            print(f"    {p['name_cn']}: {int(p['total'])}分")
+        print(f"{g}: {len(group_data[g])} 人, 总分: {int(group_totals[g])}, 第{group_rank[g]}名")
