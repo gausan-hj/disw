@@ -1,0 +1,317 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学长团个人分数板</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f3f4f6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+        .update-time {
+            color: #6b7280;
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+        }
+        .search-box {
+            margin-bottom: 24px;
+        }
+        #search {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+        #search:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+        }
+        .group-rank-header {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .group-rank-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 16px;
+        }
+        .group-rank-list {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .group-rank-item {
+            flex: 1;
+            min-width: 200px;
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 16px;
+            border-left: 6px solid;
+            transition: transform 0.2s;
+        }
+        .group-rank-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .group-rank-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .group-rank-score {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .group-rank-score small {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #6b7280;
+        }
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .tab {
+            padding: 10px 20px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #4b5563;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tab:hover {
+            background: #f3f4f6;
+        }
+        .tab.active {
+            background: #1f2937;
+            color: white;
+            border-color: #1f2937;
+        }
+        .group-section {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .group-section.active {
+            display: block;
+        }
+        .group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        .group-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .group-total {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #4b5563;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            text-align: left;
+            padding: 12px 8px;
+            background: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+            border-radius: 8px 8px 0 0;
+        }
+        td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .rank-1 {
+            background: rgba(255,215,0,0.1);
+            font-weight: 600;
+        }
+        .rank-1 td:first-child::before {
+            content: "👑 ";
+        }
+        .score-badge {
+            background: #e5e7eb;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        .daily-scores {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+        .daily-score {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            color: #4b5563;
+        }
+        .search-highlight {
+            background: #fef3c7;
+        }
+        .color-star {
+            border-left-color: #3b82f6;
+        }
+        .color-night {
+            border-left-color: #8b5cf6;
+        }
+        .color-ocean {
+            border-left-color: #10b981;
+        }
+        .bg-star { background: #3b82f6; color: white; }
+        .bg-night { background: #8b5cf6; color: white; }
+        .bg-ocean { background: #10b981; color: white; }
+        .text-star { color: #3b82f6; }
+        .text-night { color: #8b5cf6; }
+        .text-ocean { color: #10b981; }
+        @media (max-width: 640px) {
+            body { padding: 12px; }
+            .group-rank-list { flex-direction: column; }
+            th, td { padding: 8px 4px; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏆 学长团个人分数板</h1>
+        <div class="update-time">最后更新：2026-03-05 11:52:54</div>
+        
+        <div class="search-box">
+            <input type="text" id="search" placeholder="🔍 输入姓名搜索...">
+        </div>
+
+        <div class="group-rank-header">
+            <div class="group-rank-title">📊 组别总分排名</div>
+            <div class="group-rank-list" id="groupRankList">
+
+            </div>
+        </div>
+
+        <div class="tabs" id="tabs">
+
+        </div>
+
+    </div>
+
+    <script>
+        // 标签页切换
+        const tabs = document.querySelectorAll('.tab');
+        const sections = document.querySelectorAll('.group-section');
+        const groupRankItems = document.querySelectorAll('.group-rank-item');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const groupName = tab.dataset.group;
+                
+                // 更新标签页激活状态
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // 更新显示区域
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                    if (section.dataset.group === groupName) {
+                        section.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        // 点击组别排名卡片切换到对应组
+        groupRankItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const groupName = item.dataset.group;
+                // 找到对应的标签并点击
+                const targetTab = Array.from(tabs).find(tab => tab.dataset.group === groupName);
+                if (targetTab) {
+                    targetTab.click();
+                }
+            });
+        });
+
+        // 搜索功能
+        const searchInput = document.getElementById('search');
+        const allRows = document.querySelectorAll('tbody tr');
+        
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                // 如果搜索框为空，显示所有行
+                allRows.forEach(row => {
+                    row.style.display = '';
+                    row.classList.remove('search-highlight');
+                });
+                return;
+            }
+            
+            // 先隐藏所有行
+            allRows.forEach(row => {
+                row.style.display = 'none';
+                row.classList.remove('search-highlight');
+            });
+            
+            // 搜索匹配的行
+            allRows.forEach(row => {
+                const nameAttr = row.dataset.name.toLowerCase();
+                const nameText = row.querySelector('td:nth-child(2)').innerText.toLowerCase();
+                
+                if (nameAttr.includes(searchTerm) || nameText.includes(searchTerm)) {
+                    row.style.display = '';
+                    row.classList.add('search-highlight');
+                    
+                    // 自动切换到该组
+                    const groupSection = row.closest('.group-section');
+                    const groupName = groupSection.dataset.group;
+                    const targetTab = Array.from(tabs).find(tab => tab.dataset.group === groupName);
+                    if (targetTab && !targetTab.classList.contains('active')) {
+                        targetTab.click();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
