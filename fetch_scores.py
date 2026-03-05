@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 
 # ===== 你要修改的地方 =====
-SHEET_ID = "https://docs.google.com/spreadsheets/d/1YVa3nLUBW80j2nA4mudEqLH91RJ0FSRytmoDqmbyUJk/edit?usp=drive_link"  # 从链接中获取，比如：1AbcDefGhiJklMnoPqrStUvWxYz
+SHEET_ID = "1YVa3nLUBW80j2nA4mudEqLH91RJ0FSRytmoDqmbyUJk"  # 从链接中获取，比如：1AbcDefGhiJklMnoPqrStUvWxYz
 SHEET_NAME = "Sheet3"  # 默认是Sheet3，如果不对就改
 # ========================
 
@@ -498,3 +498,4 @@ with open("index.html", "w", encoding="utf-8") as f:
     f.write(html)
 
 print("✅ HTML 生成成功！")
+
