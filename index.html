@@ -86,19 +86,18 @@
         }
         .rank-card:active {
             transform: scale(0.98);
-            background: #f8fafc;
         }
-        .rank-1 {
-            background: linear-gradient(135deg, #fef9e7, #fff);
+        .rank-card[data-group="星穹组"] {
+            background: linear-gradient(135deg, #fef3c7, white);
             border-left: 4px solid #fbbf24;
         }
-        .rank-2 {
-            background: linear-gradient(135deg, #f1f5f9, #fff);
-            border-left: 4px solid #94a3b8;
+        .rank-card[data-group="夜曜组"] {
+            background: linear-gradient(135deg, #ede9fe, white);
+            border-left: 4px solid #a78bfa;
         }
-        .rank-3 {
-            background: linear-gradient(135deg, #fef3e7, #fff);
-            border-left: 4px solid #f97316;
+        .rank-card[data-group="沧澜组"] {
+            background: linear-gradient(135deg, #dbeafe, white);
+            border-left: 4px solid #60a5fa;
         }
         .rank-icon {
             font-size: 2rem;
@@ -137,6 +136,16 @@
             box-shadow: 0 4px 16px rgba(0,0,0,0.03);
             border: 1px solid #eef2f6;
             scroll-margin-top: 10px;
+            border-top: 4px solid;
+        }
+        .group-card[data-group="星穹组"] {
+            border-top-color: #fbbf24;
+        }
+        .group-card[data-group="夜曜组"] {
+            border-top-color: #a78bfa;
+        }
+        .group-card[data-group="沧澜组"] {
+            border-top-color: #60a5fa;
         }
         .group-header {
             display: flex;
@@ -152,12 +161,21 @@
             letter-spacing: -0.01em;
         }
         .group-badge {
-            background: #f1f5f9;
             padding: 6px 14px;
             border-radius: 40px;
             font-size: 0.85rem;
             font-weight: 500;
-            color: #334155;
+            color: white;
+        }
+        .group-card[data-group="星穹组"] .group-badge {
+            background: #fbbf24;
+            color: #1e293b;
+        }
+        .group-card[data-group="夜曜组"] .group-badge {
+            background: #a78bfa;
+        }
+        .group-card[data-group="沧澜组"] .group-badge {
+            background: #60a5fa;
         }
         
         /* 表格样式 */
@@ -212,14 +230,10 @@
             color: #475569;
             white-space: nowrap;
         }
-        .info-small {
-            font-size: 0.7rem;
-            color: #94a3b8;
-        }
         
         /* 分数标签 */
         .scores-cell {
-            max-width: 180px;
+            max-width: 200px;
         }
         .score-tags {
             display: flex;
@@ -227,7 +241,6 @@
             flex-wrap: wrap;
         }
         .score-item {
-            background: #f1f5f9;
             padding: 4px 8px;
             border-radius: 20px;
             font-size: 0.7rem;
@@ -236,6 +249,8 @@
             align-items: center;
             gap: 4px;
             white-space: nowrap;
+            background: #f1f5f9;
+            color: #334155;
         }
         .score-item.has-score {
             background: #e0f2fe;
@@ -274,6 +289,13 @@
             .rank-icon { font-size: 1.6rem; }
             .score-tags { gap: 2px; }
             .score-item { padding: 2px 6px; font-size: 0.65rem; }
+            .member-table th {
+                font-size: 0.7rem;
+            }
+            .member-table td {
+                padding: 8px 2px;
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
@@ -283,17 +305,17 @@
             <h1>🏫 学长团分数板</h1>
             <div class="subtitle">
                 <span>Prefects' Scoreboard</span>
-                <span>2026.03.05 13:28</span>
+                <span>2026.03.05 13:43</span>
             </div>
             <div class="search-box">
-                <input type="text" id="search" placeholder="🔍 搜索姓名或英文名...">
+                <input type="text" id="search" placeholder="🔍 搜索姓名、英文名、班级或学号...">
             </div>
         </div>
 
         <!-- 组排名卡片 -->
         <div class="rank-grid">
 
-            <div class="rank-card rank-1" onclick="document.getElementById('group-yeyao').scrollIntoView({behavior: 'smooth'})">
+            <div class="rank-card" data-group="夜曜组" onclick="document.getElementById('group-yeyao').scrollIntoView({behavior: 'smooth'})">
                 <span class="rank-icon">🥇</span>
                 <div class="rank-info">
                     <div class="rank-name">夜曜组</div>
@@ -301,7 +323,7 @@
                 </div>
             </div>
 
-            <div class="rank-card rank-2" onclick="document.getElementById('group-canglan').scrollIntoView({behavior: 'smooth'})">
+            <div class="rank-card" data-group="沧澜组" onclick="document.getElementById('group-canglan').scrollIntoView({behavior: 'smooth'})">
                 <span class="rank-icon">🥈</span>
                 <div class="rank-info">
                     <div class="rank-name">沧澜组</div>
@@ -309,11 +331,11 @@
                 </div>
             </div>
 
-            <div class="rank-card rank-3" onclick="document.getElementById('group-xingqiong').scrollIntoView({behavior: 'smooth'})">
+            <div class="rank-card" data-group="星穹组" onclick="document.getElementById('group-xingqiong').scrollIntoView({behavior: 'smooth'})">
                 <span class="rank-icon">🥉</span>
                 <div class="rank-info">
                     <div class="rank-name">星穹组</div>
-                    <div class="rank-score">12<small>分</small></div>
+                    <div class="rank-score">13<small>分</small></div>
                 </div>
             </div>
 
@@ -322,10 +344,10 @@
         <!-- 三组 -->
         <div class="groups">
 
-            <div class="group-card" id="group-xingqiong">
+            <div class="group-card" data-group="星穹组" id="group-xingqiong">
                 <div class="group-header">
                     <span class="group-title">星穹组</span>
-                    <span class="group-badge">第3名 · 12分</span>
+                    <span class="group-badge">第3名 · 13分</span>
                 </div>
                 <table class="member-table">
                     <thead>
@@ -396,8 +418,8 @@
                             </td>
                             <td class="info-cell">J3K</td>
                             <td class="info-cell">24068</td>
-                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">1</span></span></div></td>
-                            <td class="total-cell">1</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">2</span></span></div></td>
+                            <td class="total-cell">2</td>
                         </tr>
         
                         <tr data-search="彭绍洋 PEH SHAO YANG J3T 24088">
@@ -464,7 +486,7 @@
                 </table>
             </div>
     
-            <div class="group-card" id="group-yeyao">
+            <div class="group-card" data-group="夜曜组" id="group-yeyao">
                 <div class="group-header">
                     <span class="group-title">夜曜组</span>
                     <span class="group-badge">第1名 · 35分</span>
@@ -490,8 +512,8 @@
                             </td>
                             <td class="info-cell">S2FA</td>
                             <td class="info-cell">22040</td>
-                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">2/3</span><span class="score-value">1</span></span></div></td>
-                            <td class="total-cell">1</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item">-</span></div></td>
+                            <td class="total-cell">0</td>
                         </tr>
         
                         <tr data-search="廖若含 LIEW XIN YU S2Y 22029">
@@ -598,8 +620,8 @@
                             </td>
                             <td class="info-cell">J2F</td>
                             <td class="info-cell">25059</td>
-                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">2/3</span><span class="score-value">2</span></span><span class="score-item has-score"><span class="score-date">4/3</span><span class="score-value">6</span></span><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">4</span></span></div></td>
-                            <td class="total-cell">12</td>
+                            <td class="scores-cell"><div class="score-tags"><span class="score-item has-score"><span class="score-date">2/3</span><span class="score-value">3</span></span><span class="score-item has-score"><span class="score-date">4/3</span><span class="score-value">6</span></span><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">4</span></span></div></td>
+                            <td class="total-cell">13</td>
                         </tr>
         
                         <tr data-search="郑宜桐 TEH YEE THONG J1Y 26024">
@@ -618,7 +640,7 @@
                 </table>
             </div>
     
-            <div class="group-card" id="group-canglan">
+            <div class="group-card" data-group="沧澜组" id="group-canglan">
                 <div class="group-header">
                     <span class="group-title">沧澜组</span>
                     <span class="group-badge">第2名 · 14分</span>
