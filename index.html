@@ -61,11 +61,8 @@
             border-radius: 10px;
             padding: 16px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border-left: 6px solid;
+            border-left: 6px solid #b0bec5;
         }
-        .rank-1 { border-left-color: #b0bec5; }
-        .rank-2 { border-left-color: #b0bec5; }
-        .rank-3 { border-left-color: #b0bec5; }
         .rank-name {
             font-size: 1.2rem;
             font-weight: 500;
@@ -148,18 +145,13 @@
             font-size: 0.85rem;
             padding: 16px;
         }
-        @media (max-width: 768px) {
-            .group-container {
-                flex-direction: column;
-            }
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>🏫 训育处 · 学长团分数板</h1>
-            <div class="update-time">最后更新：2026-03-05 12:46</div>
+            <div class="update-time">最后更新：2026-03-05 12:51</div>
             <div class="search-box">
                 <input type="text" id="search" placeholder="🔍 输入姓名或学号搜索...">
             </div>
@@ -167,19 +159,19 @@
 
         <div class="rank-bar">
 
-            <div class="rank-item rank-1">
+            <div class="rank-item">
                 <div class="rank-name">星穹组</div>
                 <div class="rank-score">0 <small>分</small></div>
                 <div style="font-size:0.9rem; color:#7f8c8d;">第1名</div>
             </div>
 
-            <div class="rank-item rank-2">
+            <div class="rank-item">
                 <div class="rank-name">夜曜组</div>
                 <div class="rank-score">0 <small>分</small></div>
                 <div style="font-size:0.9rem; color:#7f8c8d;">第2名</div>
             </div>
 
-            <div class="rank-item rank-3">
+            <div class="rank-item">
                 <div class="rank-name">沧澜组</div>
                 <div class="rank-score">0 <small>分</small></div>
                 <div style="font-size:0.9rem; color:#7f8c8d;">第3名</div>
@@ -205,8 +197,28 @@
                     </thead>
                     <tbody>
         
-                        <tr data-name="邱嘉瑞 KATHERINE KHOO JAI RUI">
+                        <tr data-name="陈展艺 IVAN TAN ZHAN YI">
                             <td>1</td>
+                            <td>
+                                <strong>陈展艺</strong><br>
+                                <span style="font-size:0.75rem; color:#7f8c8d;">IVAN TAN ZHAN Y...</span>
+                            </td>
+                            <td>S2FA</td>
+                            <td><span class="score-badge">0</span></td>
+                        </tr>
+            
+                        <tr data-name="侯展扬 HOW ZHAN YANG">
+                            <td>2</td>
+                            <td>
+                                <strong>侯展扬</strong><br>
+                                <span style="font-size:0.75rem; color:#7f8c8d;">HOW ZHAN YANG</span>
+                            </td>
+                            <td>S2Y</td>
+                            <td><span class="score-badge">0</span></td>
+                        </tr>
+            
+                        <tr data-name="邱嘉瑞 KATHERINE KHOO JAI RUI">
+                            <td>3</td>
                             <td>
                                 <strong>邱嘉瑞</strong><br>
                                 <span style="font-size:0.75rem; color:#7f8c8d;">KATHERINE KHOO ...</span>
@@ -216,7 +228,7 @@
                         </tr>
             
                         <tr data-name="莎哈娜 SADHANA A/P SASU BAKIAN">
-                            <td>2</td>
+                            <td>4</td>
                             <td>
                                 <strong>莎哈娜</strong><br>
                                 <span style="font-size:0.75rem; color:#7f8c8d;">SADHANA A/P SAS...</span>
@@ -226,7 +238,7 @@
                         </tr>
             
                         <tr data-name="李韡翰 LEE WEI HANN">
-                            <td>3</td>
+                            <td>5</td>
                             <td>
                                 <strong>李韡翰</strong><br>
                                 <span style="font-size:0.75rem; color:#7f8c8d;">LEE WEI HANN</span>
@@ -236,7 +248,7 @@
                         </tr>
             
                         <tr data-name="彭绍洋 PEH SHAO YANG">
-                            <td>4</td>
+                            <td>6</td>
                             <td>
                                 <strong>彭绍洋</strong><br>
                                 <span style="font-size:0.75rem; color:#7f8c8d;">PEH SHAO YANG</span>
@@ -246,7 +258,7 @@
                         </tr>
             
                         <tr data-name="梁纹璇 LEONG WEN XUAN">
-                            <td>5</td>
+                            <td>7</td>
                             <td>
                                 <strong>梁纹璇</strong><br>
                                 <span style="font-size:0.75rem; color:#7f8c8d;">LEONG WEN XUAN</span>
@@ -256,7 +268,7 @@
                         </tr>
             
                         <tr data-name="尤嘉乐 JUSTIN YEW JIA LE">
-                            <td>6</td>
+                            <td>8</td>
                             <td>
                                 <strong>尤嘉乐</strong><br>
                                 <span style="font-size:0.75rem; color:#7f8c8d;">JUSTIN YEW JIA ...</span>
@@ -266,7 +278,7 @@
                         </tr>
             
                         <tr data-name="许艳棋 KHOR YAN QI">
-                            <td>7</td>
+                            <td>9</td>
                             <td>
                                 <strong>许艳棋</strong><br>
                                 <span style="font-size:0.75rem; color:#7f8c8d;">KHOR YAN QI</span>
@@ -276,32 +288,12 @@
                         </tr>
             
                         <tr data-name="林隽毓 LIM JOON YI">
-                            <td>8</td>
+                            <td>10</td>
                             <td>
                                 <strong>林隽毓</strong><br>
                                 <span style="font-size:0.75rem; color:#7f8c8d;">LIM JOON YI</span>
                             </td>
                             <td>J1Y</td>
-                            <td><span class="score-badge">0</span></td>
-                        </tr>
-            
-                        <tr data-name="李竑证 LEE HOONG ZHENG">
-                            <td>9</td>
-                            <td>
-                                <strong>李竑证</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">LEE HOONG ZHENG</span>
-                            </td>
-                            <td>S2FA</td>
-                            <td><span class="score-badge">0</span></td>
-                        </tr>
-            
-                        <tr data-name="廖若含 LIEW XIN YU">
-                            <td>10</td>
-                            <td>
-                                <strong>廖若含</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">LIEW XIN YU</span>
-                            </td>
-                            <td>S2Y</td>
                             <td><span class="score-badge">0</span></td>
                         </tr>
             
@@ -325,8 +317,38 @@
                     </thead>
                     <tbody>
         
-                        <tr data-name="周柔慈 CHEO ROU ZHI">
+                        <tr data-name="李竑证 LEE HOONG ZHENG">
                             <td>1</td>
+                            <td>
+                                <strong>李竑证</strong><br>
+                                <span style="font-size:0.75rem; color:#7f8c8d;">LEE HOONG ZHENG</span>
+                            </td>
+                            <td>S2FA</td>
+                            <td><span class="score-badge">0</span></td>
+                        </tr>
+            
+                        <tr data-name="廖若含 LIEW XIN YU">
+                            <td>2</td>
+                            <td>
+                                <strong>廖若含</strong><br>
+                                <span style="font-size:0.75rem; color:#7f8c8d;">LIEW XIN YU</span>
+                            </td>
+                            <td>S2Y</td>
+                            <td><span class="score-badge">0</span></td>
+                        </tr>
+            
+                        <tr data-name="林芷嫣 LIM ZHI YAN">
+                            <td>3</td>
+                            <td>
+                                <strong>林芷嫣</strong><br>
+                                <span style="font-size:0.75rem; color:#7f8c8d;">LIM ZHI YAN</span>
+                            </td>
+                            <td>S2Y</td>
+                            <td><span class="score-badge">0</span></td>
+                        </tr>
+            
+                        <tr data-name="周柔慈 CHEO ROU ZHI">
+                            <td>4</td>
                             <td>
                                 <strong>周柔慈</strong><br>
                                 <span style="font-size:0.75rem; color:#7f8c8d;">CHEO ROU ZHI</span>
@@ -336,7 +358,7 @@
                         </tr>
             
                         <tr data-name="林骏喨 LIM TEIK LIANG">
-                            <td>2</td>
+                            <td>5</td>
                             <td>
                                 <strong>林骏喨</strong><br>
                                 <span style="font-size:0.75rem; color:#7f8c8d;">LIM TEIK LIANG</span>
@@ -346,7 +368,7 @@
                         </tr>
             
                         <tr data-name="林宜彤 LIM YEE TONG">
-                            <td>3</td>
+                            <td>6</td>
                             <td>
                                 <strong>林宜彤</strong><br>
                                 <span style="font-size:0.75rem; color:#7f8c8d;">LIM YEE TONG</span>
@@ -356,7 +378,7 @@
                         </tr>
             
                         <tr data-name="潘宛瑜 TRACY PHUAH WANYU">
-                            <td>4</td>
+                            <td>7</td>
                             <td>
                                 <strong>潘宛瑜</strong><br>
                                 <span style="font-size:0.75rem; color:#7f8c8d;">TRACY PHUAH WAN...</span>
@@ -366,7 +388,7 @@
                         </tr>
             
                         <tr data-name="符传吉 FOO CHUAN JI">
-                            <td>5</td>
+                            <td>8</td>
                             <td>
                                 <strong>符传吉</strong><br>
                                 <span style="font-size:0.75rem; color:#7f8c8d;">FOO CHUAN JI</span>
@@ -376,7 +398,7 @@
                         </tr>
             
                         <tr data-name="陈欣怡 CINDY TAN XIN YI">
-                            <td>6</td>
+                            <td>9</td>
                             <td>
                                 <strong>陈欣怡</strong><br>
                                 <span style="font-size:0.75rem; color:#7f8c8d;">CINDY TAN XIN Y...</span>
@@ -386,7 +408,7 @@
                         </tr>
             
                         <tr data-name="丽亚 DHIYA ZULAIKHA DARWISYAH BINTI YUSNIZAN">
-                            <td>7</td>
+                            <td>10</td>
                             <td>
                                 <strong>丽亚</strong><br>
                                 <span style="font-size:0.75rem; color:#7f8c8d;">DHIYA ZULAIKHA ...</span>
@@ -396,42 +418,12 @@
                         </tr>
             
                         <tr data-name="郑宜桐 TEH YEE THONG">
-                            <td>8</td>
+                            <td>11</td>
                             <td>
                                 <strong>郑宜桐</strong><br>
                                 <span style="font-size:0.75rem; color:#7f8c8d;">TEH YEE THONG</span>
                             </td>
                             <td>J1Y</td>
-                            <td><span class="score-badge">0</span></td>
-                        </tr>
-            
-                        <tr data-name="浦源政 POH YUAN ZHENG">
-                            <td>9</td>
-                            <td>
-                                <strong>浦源政</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">POH YUAN ZHENG</span>
-                            </td>
-                            <td>S2Y</td>
-                            <td><span class="score-badge">0</span></td>
-                        </tr>
-            
-                        <tr data-name="吴贝优 GOH BEI YO">
-                            <td>10</td>
-                            <td>
-                                <strong>吴贝优</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">GOH BEI YO</span>
-                            </td>
-                            <td>S2Y</td>
-                            <td><span class="score-badge">0</span></td>
-                        </tr>
-            
-                        <tr data-name="林沛筠 LIM PEI JUN">
-                            <td>11</td>
-                            <td>
-                                <strong>林沛筠</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">LIM PEI JUN</span>
-                            </td>
-                            <td>S2Y</td>
                             <td><span class="score-badge">0</span></td>
                         </tr>
             
@@ -455,8 +447,48 @@
                     </thead>
                     <tbody>
         
-                        <tr data-name="郑憶欣 TEE YEE XIN">
+                        <tr data-name="浦源政 POH YUAN ZHENG">
                             <td>1</td>
+                            <td>
+                                <strong>浦源政</strong><br>
+                                <span style="font-size:0.75rem; color:#7f8c8d;">POH YUAN ZHENG</span>
+                            </td>
+                            <td>S2Y</td>
+                            <td><span class="score-badge">0</span></td>
+                        </tr>
+            
+                        <tr data-name="吴贝优 GOH BEI YO">
+                            <td>2</td>
+                            <td>
+                                <strong>吴贝优</strong><br>
+                                <span style="font-size:0.75rem; color:#7f8c8d;">GOH BEI YO</span>
+                            </td>
+                            <td>S2Y</td>
+                            <td><span class="score-badge">0</span></td>
+                        </tr>
+            
+                        <tr data-name="林沛筠 LIM PEI JUN">
+                            <td>3</td>
+                            <td>
+                                <strong>林沛筠</strong><br>
+                                <span style="font-size:0.75rem; color:#7f8c8d;">LIM PEI JUN</span>
+                            </td>
+                            <td>S2Y</td>
+                            <td><span class="score-badge">0</span></td>
+                        </tr>
+            
+                        <tr data-name="陈诗惠 CHAN SHI HUI">
+                            <td>4</td>
+                            <td>
+                                <strong>陈诗惠</strong><br>
+                                <span style="font-size:0.75rem; color:#7f8c8d;">CHAN SHI HUI</span>
+                            </td>
+                            <td>S2FA</td>
+                            <td><span class="score-badge">0</span></td>
+                        </tr>
+            
+                        <tr data-name="郑憶欣 TEE YEE XIN">
+                            <td>5</td>
                             <td>
                                 <strong>郑憶欣</strong><br>
                                 <span style="font-size:0.75rem; color:#7f8c8d;">TEE YEE XIN</span>
@@ -466,7 +498,7 @@
                         </tr>
             
                         <tr data-name="谢楷棋 CHEAH KHAI QI">
-                            <td>2</td>
+                            <td>6</td>
                             <td>
                                 <strong>谢楷棋</strong><br>
                                 <span style="font-size:0.75rem; color:#7f8c8d;">CHEAH KHAI QI</span>
@@ -476,42 +508,12 @@
                         </tr>
             
                         <tr data-name="蔡善恩 CHUAH SHAN EN">
-                            <td>3</td>
+                            <td>7</td>
                             <td>
                                 <strong>蔡善恩</strong><br>
                                 <span style="font-size:0.75rem; color:#7f8c8d;">CHUAH SHAN EN</span>
                             </td>
                             <td>J3F</td>
-                            <td><span class="score-badge">0</span></td>
-                        </tr>
-            
-                        <tr data-name="许家绮 KOO JIA QI">
-                            <td>4</td>
-                            <td>
-                                <strong>许家绮</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">KOO JIA QI</span>
-                            </td>
-                            <td>J2Y</td>
-                            <td><span class="score-badge">0</span></td>
-                        </tr>
-            
-                        <tr data-name="张子欣 TEON ZI XIN">
-                            <td>5</td>
-                            <td>
-                                <strong>张子欣</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">TEON ZI XIN</span>
-                            </td>
-                            <td>J2F</td>
-                            <td><span class="score-badge">0</span></td>
-                        </tr>
-            
-                        <tr data-name="施锦轩 SEE JIN XUAN">
-                            <td>6</td>
-                            <td>
-                                <strong>施锦轩</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">SEE JIN XUAN</span>
-                            </td>
-                            <td>J1T</td>
                             <td><span class="score-badge">0</span></td>
                         </tr>
             
