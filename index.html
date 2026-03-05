@@ -17,7 +17,7 @@
             color: #2c3e50;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
         .header {
@@ -48,95 +48,64 @@
             border-radius: 30px;
             font-size: 0.95rem;
         }
-        .rank-bar {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-        }
-        .rank-item {
-            flex: 1;
-            min-width: 200px;
-            background: white;
-            border-radius: 10px;
-            padding: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border-left: 6px solid #b0bec5;
-        }
-        .rank-name {
-            font-size: 1.2rem;
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
-        .rank-score {
-            font-size: 1.8rem;
-            font-weight: 500;
-        }
-        .rank-score small {
-            font-size: 1rem;
-            font-weight: 400;
-            color: #7f8c8d;
-        }
         .group-container {
             display: flex;
             gap: 24px;
             flex-wrap: wrap;
-            margin-top: 24px;
         }
         .group-card {
             flex: 1;
-            min-width: 300px;
+            min-width: 400px;
             background: white;
             border-radius: 12px;
             padding: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         .group-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             margin-bottom: 16px;
             padding-bottom: 12px;
             border-bottom: 2px solid #ecf0f1;
         }
-        .group-title {
+        .group-name {
             font-size: 1.4rem;
             font-weight: 500;
-        }
-        .group-title small {
-            font-size: 0.9rem;
-            color: #95a5a6;
-            margin-left: 8px;
-        }
-        .group-score {
-            font-size: 1.2rem;
-            font-weight: 500;
-            background: #f8fafc;
-            padding: 4px 12px;
-            border-radius: 20px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
+            font-size: 0.9rem;
         }
         th {
             text-align: left;
-            padding: 10px 8px;
+            padding: 8px 4px;
             background: #f8fafc;
             font-weight: 500;
             color: #4a5b6b;
-            font-size: 0.9rem;
+            position: sticky;
+            top: 0;
         }
         td {
-            padding: 10px 8px;
+            padding: 8px 4px;
             border-bottom: 1px solid #edf2f7;
         }
-        .score-badge {
+        .scores {
+            display: flex;
+            gap: 2px;
+            flex-wrap: wrap;
+            max-width: 300px;
+        }
+        .score {
             background: #ecf0f1;
-            padding: 4px 10px;
-            border-radius: 20px;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            min-width: 28px;
+            text-align: center;
+        }
+        .score-positive {
+            background: #d4edda;
+            color: #155724;
             font-weight: 500;
-            display: inline-block;
         }
         .footer {
             margin-top: 32px;
@@ -145,435 +114,361 @@
             font-size: 0.85rem;
             padding: 16px;
         }
+        @media (max-width: 768px) {
+            .group-container {
+                flex-direction: column;
+            }
+            .group-card {
+                min-width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🏫 训育处 · 学长团分数板</h1>
-            <div class="update-time">最后更新：2026-03-05 12:56</div>
+            <h1>🏫 训育处 · 学长团每日分数板</h1>
+            <div class="update-time">最后更新：2026-03-05 13:02</div>
             <div class="search-box">
-                <input type="text" id="search" placeholder="🔍 输入姓名、班级或学号搜索...">
+                <input type="text" id="search" placeholder="🔍 输入姓名搜索...">
             </div>
-        </div>
-
-        <div class="rank-bar">
-
-            <div class="rank-item">
-                <div class="rank-name">夜曜组</div>
-                <div class="rank-score">69 <small>分</small></div>
-                <div style="font-size:0.9rem; color:#7f8c8d;">第1名</div>
-            </div>
-
-            <div class="rank-item">
-                <div class="rank-name">沧澜组</div>
-                <div class="rank-score">28 <small>分</small></div>
-                <div style="font-size:0.9rem; color:#7f8c8d;">第2名</div>
-            </div>
-
-            <div class="rank-item">
-                <div class="rank-name">星穹组</div>
-                <div class="rank-score">24 <small>分</small></div>
-                <div style="font-size:0.9rem; color:#7f8c8d;">第3名</div>
-            </div>
-
         </div>
 
         <div class="group-container">
 
             <div class="group-card">
                 <div class="group-header">
-                    <span class="group-title">星穹组 <small>第3名</small></span>
-                    <span class="group-score">24分</span>
+                    <span class="group-name">星穹组 (10人)</span>
                 </div>
                 <table>
                     <thead>
                         <tr>
-                            <th>序号</th>
                             <th>姓名</th>
                             <th>班级</th>
-                            <th>学号</th>
-                            <th>总分</th>
+                            <th>每日得分</th>
                         </tr>
                     </thead>
                     <tbody>
-        
-                        <tr data-name="陈展艺 IVAN TAN ZHAN YI" data-class="S2FA" data-id="22038">
-                            <td>1</td>
+    
+                        <tr data-name="陈展艺 IVAN TAN ZHAN YI">
                             <td>
                                 <strong>陈展艺</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">IVAN TAN ZHAN YI</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">IVAN TAN ZHAN YI</span>
                             </td>
                             <td>S2FA</td>
-                            <td>22038</td>
-                            <td><span class="score-badge">0</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="侯展扬 HOW ZHAN YANG" data-class="S2Y" data-id="22100">
-                            <td>2</td>
+        
+                        <tr data-name="侯展扬 HOW ZHAN YANG">
                             <td>
                                 <strong>侯展扬</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">HOW ZHAN YANG</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">HOW ZHAN YANG</span>
                             </td>
                             <td>S2Y</td>
-                            <td>22100</td>
-                            <td><span class="score-badge">3</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="邱嘉瑞 KATHERINE KHOO JAI RUI" data-class="J3T" data-id="24076">
-                            <td>3</td>
+        
+                        <tr data-name="邱嘉瑞 KATHERINE KHOO JAI RUI">
                             <td>
                                 <strong>邱嘉瑞</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">KATHERINE KHOO JAI RUI</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">KATHERINE KHOO JAI R...</span>
                             </td>
                             <td>J3T</td>
-                            <td>24076</td>
-                            <td><span class="score-badge">0</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score score-positive">3</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="莎哈娜 SADHANA A/P SASU BAKIAN" data-class="J3T" data-id="24078">
-                            <td>4</td>
+        
+                        <tr data-name="莎哈娜 SADHANA A/P SASU BAKIAN">
                             <td>
                                 <strong>莎哈娜</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">SADHANA A/P SASU BAKIAN</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">SADHANA A/P SASU BAK...</span>
                             </td>
                             <td>J3T</td>
-                            <td>24078</td>
-                            <td><span class="score-badge">1</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="李韡翰 LEE WEI HANN" data-class="J3K" data-id="24068">
-                            <td>5</td>
+        
+                        <tr data-name="李韡翰 LEE WEI HANN">
                             <td>
                                 <strong>李韡翰</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">LEE WEI HANN</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">LEE WEI HANN</span>
                             </td>
                             <td>J3K</td>
-                            <td>24068</td>
-                            <td><span class="score-badge">0</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score score-positive">1</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="彭绍洋 PEH SHAO YANG" data-class="J3T" data-id="24088">
-                            <td>6</td>
+        
+                        <tr data-name="彭绍洋 PEH SHAO YANG">
                             <td>
                                 <strong>彭绍洋</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">PEH SHAO YANG</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">PEH SHAO YANG</span>
                             </td>
                             <td>J3T</td>
-                            <td>24088</td>
-                            <td><span class="score-badge">0</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="梁纹璇 LEONG WEN XUAN" data-class="J2Y" data-id="25035">
-                            <td>7</td>
+        
+                        <tr data-name="梁纹璇 LEONG WEN XUAN">
                             <td>
                                 <strong>梁纹璇</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">LEONG WEN XUAN</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">LEONG WEN XUAN</span>
                             </td>
                             <td>J2Y</td>
-                            <td>25035</td>
-                            <td><span class="score-badge">8</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="尤嘉乐 JUSTIN YEW JIA LE" data-class="J2Y" data-id="25046">
-                            <td>8</td>
+        
+                        <tr data-name="尤嘉乐 JUSTIN YEW JIA LE">
                             <td>
                                 <strong>尤嘉乐</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">JUSTIN YEW JIA LE</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">JUSTIN YEW JIA LE</span>
                             </td>
                             <td>J2Y</td>
-                            <td>25046</td>
-                            <td><span class="score-badge">0</span></td>
+                            <td><div class="scores"><span class="score score-positive">1</span><span class="score score-positive">3</span><span class="score">-</span><span class="score score-positive">4</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="许艳棋 KHOR YAN QI" data-class="J1Y" data-id="26018">
-                            <td>9</td>
+        
+                        <tr data-name="许艳棋 KHOR YAN QI">
                             <td>
                                 <strong>许艳棋</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">KHOR YAN QI</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">KHOR YAN QI</span>
                             </td>
                             <td>J1Y</td>
-                            <td>26018</td>
-                            <td><span class="score-badge">0</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="林隽毓 LIM JOON YI" data-class="J1Y" data-id="26032">
-                            <td>10</td>
+        
+                        <tr data-name="林隽毓 LIM JOON YI">
                             <td>
                                 <strong>林隽毓</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">LIM JOON YI</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">LIM JOON YI</span>
                             </td>
                             <td>J1Y</td>
-                            <td>26032</td>
-                            <td><span class="score-badge">12</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
+        
                     </tbody>
                 </table>
             </div>
-        
+    
             <div class="group-card">
                 <div class="group-header">
-                    <span class="group-title">夜曜组 <small>第1名</small></span>
-                    <span class="group-score">69分</span>
+                    <span class="group-name">夜曜组 (11人)</span>
                 </div>
                 <table>
                     <thead>
                         <tr>
-                            <th>序号</th>
                             <th>姓名</th>
                             <th>班级</th>
-                            <th>学号</th>
-                            <th>总分</th>
+                            <th>每日得分</th>
                         </tr>
                     </thead>
                     <tbody>
-        
-                        <tr data-name="李竑证 LEE HOONG ZHENG" data-class="S2FA" data-id="22040">
-                            <td>1</td>
+    
+                        <tr data-name="李竑证 LEE HOONG ZHENG">
                             <td>
                                 <strong>李竑证</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">LEE HOONG ZHENG</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">LEE HOONG ZHENG</span>
                             </td>
                             <td>S2FA</td>
-                            <td>22040</td>
-                            <td><span class="score-badge">0</span></td>
+                            <td><div class="scores"><span class="score score-positive">1</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="廖若含 LIEW XIN YU" data-class="S2Y" data-id="22029">
-                            <td>2</td>
+        
+                        <tr data-name="廖若含 LIEW XIN YU">
                             <td>
                                 <strong>廖若含</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">LIEW XIN YU</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">LIEW XIN YU</span>
                             </td>
                             <td>S2Y</td>
-                            <td>22029</td>
-                            <td><span class="score-badge">0</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="林芷嫣 LIM ZHI YAN" data-class="S2Y" data-id="22083">
-                            <td>3</td>
+        
+                        <tr data-name="林芷嫣 LIM ZHI YAN">
                             <td>
                                 <strong>林芷嫣</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">LIM ZHI YAN</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">LIM ZHI YAN</span>
                             </td>
                             <td>S2Y</td>
-                            <td>22083</td>
-                            <td><span class="score-badge">1</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="周柔慈 CHEO ROU ZHI" data-class="S2K" data-id="22051">
-                            <td>4</td>
+        
+                        <tr data-name="周柔慈 CHEO ROU ZHI">
                             <td>
                                 <strong>周柔慈</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">CHEO ROU ZHI</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">CHEO ROU ZHI</span>
                             </td>
                             <td>S2K</td>
-                            <td>22051</td>
-                            <td><span class="score-badge">3</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score score-positive">1</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="林骏喨 LIM TEIK LIANG" data-class="J3T" data-id="24083">
-                            <td>5</td>
+        
+                        <tr data-name="林骏喨 LIM TEIK LIANG">
                             <td>
                                 <strong>林骏喨</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">LIM TEIK LIANG</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">LIM TEIK LIANG</span>
                             </td>
                             <td>J3T</td>
-                            <td>24083</td>
-                            <td><span class="score-badge">3</span></td>
+                            <td><div class="scores"><span class="score score-positive">1</span><span class="score score-positive">1</span><span class="score">-</span><span class="score score-positive">1</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="林宜彤 LIM YEE TONG" data-class="J2Y" data-id="25036">
-                            <td>6</td>
+        
+                        <tr data-name="林宜彤 LIM YEE TONG">
                             <td>
                                 <strong>林宜彤</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">LIM YEE TONG</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">LIM YEE TONG</span>
                             </td>
                             <td>J2Y</td>
-                            <td>25036</td>
-                            <td><span class="score-badge">3</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score score-positive">1</span><span class="score score-positive">2</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="潘宛瑜 TRACY PHUAH WANYU" data-class="J2Y" data-id="25071">
-                            <td>7</td>
+        
+                        <tr data-name="潘宛瑜 TRACY PHUAH WANYU">
                             <td>
                                 <strong>潘宛瑜</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">TRACY PHUAH WANYU</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">TRACY PHUAH WANYU</span>
                             </td>
                             <td>J2Y</td>
-                            <td>25071</td>
-                            <td><span class="score-badge">5</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score score-positive">3</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="符传吉 FOO CHUAN JI" data-class="J2Y" data-id="25044">
-                            <td>8</td>
+        
+                        <tr data-name="符传吉 FOO CHUAN JI">
                             <td>
                                 <strong>符传吉</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">FOO CHUAN JI</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">FOO CHUAN JI</span>
                             </td>
                             <td>J2Y</td>
-                            <td>25044</td>
-                            <td><span class="score-badge">6</span></td>
+                            <td><div class="scores"><span class="score score-positive">1</span><span class="score score-positive">3</span><span class="score">-</span><span class="score score-positive">1</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="陈欣怡 CINDY TAN XIN YI" data-class="J2F" data-id="25058">
-                            <td>9</td>
+        
+                        <tr data-name="陈欣怡 CINDY TAN XIN YI">
                             <td>
                                 <strong>陈欣怡</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">CINDY TAN XIN YI</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">CINDY TAN XIN YI</span>
                             </td>
                             <td>J2F</td>
-                            <td>25058</td>
-                            <td><span class="score-badge">12</span></td>
+                            <td><div class="scores"><span class="score score-positive">1</span><span class="score">-</span><span class="score score-positive">1</span><span class="score score-positive">4</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="丽亚 DHIYA ZULAIKHA DARWISYAH BINTI YUSNIZAN" data-class="J2F" data-id="25059">
-                            <td>10</td>
+        
+                        <tr data-name="丽亚 DHIYA ZULAIKHA DARWISYAH BINTI YUSNIZAN">
                             <td>
                                 <strong>丽亚</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">DHIYA ZULAIKHA DARWISYAH ...</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">DHIYA ZULAIKHA DARWI...</span>
                             </td>
                             <td>J2F</td>
-                            <td>25059</td>
-                            <td><span class="score-badge">1</span></td>
+                            <td><div class="scores"><span class="score score-positive">2</span><span class="score">-</span><span class="score score-positive">6</span><span class="score score-positive">4</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="郑宜桐 TEH YEE THONG" data-class="J1Y" data-id="26024">
-                            <td>11</td>
+        
+                        <tr data-name="郑宜桐 TEH YEE THONG">
                             <td>
                                 <strong>郑宜桐</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">TEH YEE THONG</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">TEH YEE THONG</span>
                             </td>
                             <td>J1Y</td>
-                            <td>26024</td>
-                            <td><span class="score-badge">35</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score score-positive">1</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
+        
                     </tbody>
                 </table>
             </div>
-        
+    
             <div class="group-card">
                 <div class="group-header">
-                    <span class="group-title">沧澜组 <small>第2名</small></span>
-                    <span class="group-score">28分</span>
+                    <span class="group-name">沧澜组 (10人)</span>
                 </div>
                 <table>
                     <thead>
                         <tr>
-                            <th>序号</th>
                             <th>姓名</th>
                             <th>班级</th>
-                            <th>学号</th>
-                            <th>总分</th>
+                            <th>每日得分</th>
                         </tr>
                     </thead>
                     <tbody>
-        
-                        <tr data-name="浦源政 POH YUAN ZHENG" data-class="S2Y" data-id="22044">
-                            <td>1</td>
+    
+                        <tr data-name="浦源政 POH YUAN ZHENG">
                             <td>
                                 <strong>浦源政</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">POH YUAN ZHENG</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">POH YUAN ZHENG</span>
                             </td>
                             <td>S2Y</td>
-                            <td>22044</td>
-                            <td><span class="score-badge">0</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="吴贝优 GOH BEI YO" data-class="S2Y" data-id="22021">
-                            <td>2</td>
+        
+                        <tr data-name="吴贝优 GOH BEI YO">
                             <td>
                                 <strong>吴贝优</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">GOH BEI YO</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">GOH BEI YO</span>
                             </td>
                             <td>S2Y</td>
-                            <td>22021</td>
-                            <td><span class="score-badge">3</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="林沛筠 LIM PEI JUN" data-class="S2Y" data-id="22030">
-                            <td>3</td>
+        
+                        <tr data-name="林沛筠 LIM PEI JUN">
                             <td>
                                 <strong>林沛筠</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">LIM PEI JUN</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">LIM PEI JUN</span>
                             </td>
                             <td>S2Y</td>
-                            <td>22030</td>
-                            <td><span class="score-badge">1</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="陈诗惠 CHAN SHI HUI" data-class="S2FA" data-id="22017">
-                            <td>4</td>
+        
+                        <tr data-name="陈诗惠 CHAN SHI HUI">
                             <td>
                                 <strong>陈诗惠</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">CHAN SHI HUI</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">CHAN SHI HUI</span>
                             </td>
                             <td>S2FA</td>
-                            <td>22017</td>
-                            <td><span class="score-badge">0</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score score-positive">3</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="郑憶欣 TEE YEE XIN" data-class="S1Y" data-id="23065">
-                            <td>5</td>
+        
+                        <tr data-name="郑憶欣 TEE YEE XIN">
                             <td>
                                 <strong>郑憶欣</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">TEE YEE XIN</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">TEE YEE XIN</span>
                             </td>
                             <td>S1Y</td>
-                            <td>23065</td>
-                            <td><span class="score-badge">0</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score score-positive">1</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="谢楷棋 CHEAH KHAI QI" data-class="S1T" data-id="23013">
-                            <td>6</td>
+        
+                        <tr data-name="谢楷棋 CHEAH KHAI QI">
                             <td>
                                 <strong>谢楷棋</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">CHEAH KHAI QI</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">CHEAH KHAI QI</span>
                             </td>
                             <td>S1T</td>
-                            <td>23013</td>
-                            <td><span class="score-badge">6</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="蔡善恩 CHUAH SHAN EN" data-class="J3F" data-id="24039">
-                            <td>7</td>
+        
+                        <tr data-name="蔡善恩 CHUAH SHAN EN">
                             <td>
                                 <strong>蔡善恩</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">CHUAH SHAN EN</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">CHUAH SHAN EN</span>
                             </td>
                             <td>J3F</td>
-                            <td>24039</td>
-                            <td><span class="score-badge">2</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="许家绮 KOO JIA QI" data-class="J2Y" data-id="25031">
-                            <td>8</td>
+        
+                        <tr data-name="许家绮 KOO JIA QI">
                             <td>
                                 <strong>许家绮</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">KOO JIA QI</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">KOO JIA QI</span>
                             </td>
                             <td>J2Y</td>
-                            <td>25031</td>
-                            <td><span class="score-badge">2</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score score-positive">2</span><span class="score score-positive">4</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
-                        <tr data-name="张子欣 TEON ZI XIN" data-class="J2F" data-id="25070">
-                            <td>9</td>
+        
+                        <tr data-name="张子欣 TEON ZI XIN">
                             <td>
                                 <strong>张子欣</strong><br>
-                                <span style="font-size:0.75rem; color:#7f8c8d;">TEON ZI XIN</span>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">TEON ZI XIN</span>
                             </td>
                             <td>J2F</td>
-                            <td>25070</td>
-                            <td><span class="score-badge">14</span></td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score score-positive">2</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
                         </tr>
-            
+        
+                        <tr data-name="施锦轩 SEE JIN XUAN">
+                            <td>
+                                <strong>施锦轩</strong><br>
+                                <span style="font-size:0.7rem; color:#7f8c8d;">SEE JIN XUAN</span>
+                            </td>
+                            <td>J1T</td>
+                            <td><div class="scores"><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score score-positive">2</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span><span class="score">-</span></div></td>
+                        </tr>
+        
                     </tbody>
                 </table>
             </div>
-        
+    
         </div>
         <div class="footer">
             训育处 · 数据每日自动更新 · 仅供参考
@@ -593,11 +488,7 @@
             }
             
             allRows.forEach(row => {
-                const name = row.getAttribute('data-name').toLowerCase();
-                const className = row.getAttribute('data-class').toLowerCase();
-                const studentId = row.getAttribute('data-id').toLowerCase();
-                const searchText = name + ' ' + className + ' ' + studentId;
-                
+                const searchText = row.getAttribute('data-name').toLowerCase();
                 if (searchText.includes(searchTerm)) {
                     row.style.display = '';
                 } else {
