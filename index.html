@@ -5,14 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>训育处 - 学长团分数板</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
         body {
             font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
             background: #f5f5f5;
             padding: 24px;
             color: #2c3e50;
         }
-        .container { max-width: 1200px; margin: 0 auto; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
         .header {
             background: white;
             border-radius: 12px;
@@ -20,9 +27,20 @@
             margin-bottom: 24px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
-        h1 { font-size: 1.8rem; font-weight: 500; margin-bottom: 8px; }
-        .update-time { color: #95a5a6; font-size: 0.9rem; margin-top: 8px; }
-        .search-box { margin-top: 16px; }
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        .update-time {
+            color: #95a5a6;
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+        .search-box {
+            margin-top: 16px;
+        }
         #search {
             width: 100%;
             max-width: 400px;
@@ -31,90 +49,56 @@
             border-radius: 30px;
             font-size: 0.95rem;
         }
-        .group-rank-header {
+        #search:focus {
+            outline: none;
+            border-color: #9aa6b2;
+        }
+        .group-card {
             background: white;
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-left: 6px solid;
         }
-        .group-rank-title {
-            font-size: 1.2rem;
-            font-weight: 500;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #ecf0f1;
-        }
-        .group-rank-list {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-        .group-rank-item {
-            flex: 1;
-            min-width: 180px;
-            background: #f8fafc;
-            border-radius: 10px;
-            padding: 16px;
-            border-left: 4px solid #9aa6b2;
-            cursor: pointer;
-        }
-        .group-rank-item:hover { background: #f1f4f8; }
-        .group-rank-name { font-size: 1.1rem; font-weight: 500; margin-bottom: 8px; }
-        .group-rank-score { font-size: 1.6rem; font-weight: 500; }
-        .tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        .tab {
-            padding: 10px 24px;
-            background: white;
-            border: 1px solid #dce1e5;
-            border-radius: 30px;
-            font-size: 0.95rem;
-            cursor: pointer;
-        }
-        .tab.active {
-            background: #2c3e50;
-            color: white;
-            border-color: #2c3e50;
-        }
-        .group-section {
-            display: none;
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-        }
-        .group-section.active { display: block; }
         .group-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            padding-bottom: 16px;
+            padding-bottom: 12px;
             border-bottom: 1px solid #ecf0f1;
         }
-        .group-name { font-size: 1.4rem; font-weight: 500; }
+        .group-name {
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
         .group-total {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 500;
             color: #5d6d7e;
             background: #f8fafc;
-            padding: 6px 16px;
+            padding: 6px 20px;
             border-radius: 30px;
         }
-        table { width: 100%; border-collapse: collapse; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
         th {
             text-align: left;
-            padding: 14px 12px;
+            padding: 12px 8px;
             background: #f8fafc;
             font-weight: 500;
             color: #4a5b6b;
+            border-bottom: 2px solid #e2e8f0;
         }
         td {
-            padding: 14px 12px;
+            padding: 12px 8px;
             border-bottom: 1px solid #edf2f7;
+        }
+        tr:hover {
+            background: #fafcfd;
         }
         .score-badge {
             background: #ecf0f1;
@@ -130,54 +114,30 @@
             font-size: 0.85rem;
             padding: 16px;
         }
+        
+        /* 组别颜色 */
+        .group-star {
+            border-left-color: #9aa6b2;
+        }
+        .group-night {
+            border-left-color: #8a9aa8;
+        }
+        .group-ocean {
+            border-left-color: #7f8fa6;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🏫 训育处 · 学长团分数板</h1>
-            <div class="update-time">更新：2026-03-05 12:27</div>
+            <h1>🏫 训育处 · 学长团个人分数板</h1>
+            <div class="update-time">最后更新：2026-03-05 12:32</div>
             <div class="search-box">
-                <input type="text" id="search" placeholder="🔍 输入姓名搜索...">
+                <input type="text" id="search" placeholder="🔍 输入姓名或学号搜索...">
             </div>
         </div>
 
-        <div class="group-rank-header">
-            <div class="group-rank-title">📊 组别总分排名</div>
-            <div class="group-rank-list" id="groupRankList">
-
-                <div class="group-rank-item" data-group="星穹组">
-                    <div class="group-rank-name">星穹组</div>
-                    <div class="group-rank-score">0 <small>分</small></div>
-                    <div style="font-size:0.8rem; color:#95a5a6;">第1名</div>
-                </div>
-    
-                <div class="group-rank-item" data-group="夜曜组">
-                    <div class="group-rank-name">夜曜组</div>
-                    <div class="group-rank-score">0 <small>分</small></div>
-                    <div style="font-size:0.8rem; color:#95a5a6;">第2名</div>
-                </div>
-    
-                <div class="group-rank-item" data-group="沧澜组">
-                    <div class="group-rank-name">沧澜组</div>
-                    <div class="group-rank-score">0 <small>分</small></div>
-                    <div style="font-size:0.8rem; color:#95a5a6;">第3名</div>
-                </div>
-    
-            </div>
-        </div>
-
-        <div class="tabs" id="tabs">
-
-            <button class="tab active" data-group="星穹组">星穹组</button>
-
-            <button class="tab " data-group="夜曜组">夜曜组</button>
-
-            <button class="tab " data-group="沧澜组">沧澜组</button>
-
-        </div>
-
-        <div class="group-section active" data-group="星穹组">
+        <div class="group-card group-star">
             <div class="group-header">
                 <span class="group-name">星穹组</span>
                 <span class="group-total">总分 0</span>
@@ -185,100 +145,130 @@
             <table>
                 <thead>
                     <tr>
-                        <th>名次</th>
+                        <th style="width: 60px">序号</th>
                         <th>姓名</th>
-                        <th>班级</th>
-                        <th>学号</th>
-                        <th>总分</th>
+                        <th style="width: 100px">班级</th>
+                        <th style="width: 120px">学号</th>
+                        <th style="width: 100px">总分</th>
                     </tr>
                 </thead>
                 <tbody>
-    
-                    <tr data-name="邱嘉瑞 KATHERINE KHOO JAI RUI">
+        
+                    <tr data-name="邱嘉瑞 KATHERINE KHOO JAI RUI 24076">
                         <td>1</td>
-                        <td><strong>邱嘉瑞</strong><br><span style="font-size:0.8rem;">KATHERINE KHOO JAI R</span></td>
+                        <td>
+                            <strong>邱嘉瑞</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">KATHERINE KHOO JAI RUI</span>
+                        </td>
                         <td>J3T</td>
                         <td>24076</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="莎哈娜 SADHANA A/P SASU BAKIAN">
+            
+                    <tr data-name="莎哈娜 SADHANA A/P SASU BAKIAN 24078">
                         <td>2</td>
-                        <td><strong>莎哈娜</strong><br><span style="font-size:0.8rem;">SADHANA A/P SASU BAK</span></td>
+                        <td>
+                            <strong>莎哈娜</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">SADHANA A/P SASU BAKIAN</span>
+                        </td>
                         <td>J3T</td>
                         <td>24078</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="李韡翰 LEE WEI HANN">
+            
+                    <tr data-name="李韡翰 LEE WEI HANN 24068">
                         <td>3</td>
-                        <td><strong>李韡翰</strong><br><span style="font-size:0.8rem;">LEE WEI HANN</span></td>
+                        <td>
+                            <strong>李韡翰</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">LEE WEI HANN</span>
+                        </td>
                         <td>J3K</td>
                         <td>24068</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="彭绍洋 PEH SHAO YANG">
+            
+                    <tr data-name="彭绍洋 PEH SHAO YANG 24088">
                         <td>4</td>
-                        <td><strong>彭绍洋</strong><br><span style="font-size:0.8rem;">PEH SHAO YANG</span></td>
+                        <td>
+                            <strong>彭绍洋</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">PEH SHAO YANG</span>
+                        </td>
                         <td>J3T</td>
                         <td>24088</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="梁纹璇 LEONG WEN XUAN">
+            
+                    <tr data-name="梁纹璇 LEONG WEN XUAN 25035">
                         <td>5</td>
-                        <td><strong>梁纹璇</strong><br><span style="font-size:0.8rem;">LEONG WEN XUAN</span></td>
+                        <td>
+                            <strong>梁纹璇</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">LEONG WEN XUAN</span>
+                        </td>
                         <td>J2Y</td>
                         <td>25035</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="尤嘉乐 JUSTIN YEW JIA LE">
+            
+                    <tr data-name="尤嘉乐 JUSTIN YEW JIA LE 25046">
                         <td>6</td>
-                        <td><strong>尤嘉乐</strong><br><span style="font-size:0.8rem;">JUSTIN YEW JIA LE</span></td>
+                        <td>
+                            <strong>尤嘉乐</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">JUSTIN YEW JIA LE</span>
+                        </td>
                         <td>J2Y</td>
                         <td>25046</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="许艳棋 KHOR YAN QI">
+            
+                    <tr data-name="许艳棋 KHOR YAN QI 26018">
                         <td>7</td>
-                        <td><strong>许艳棋</strong><br><span style="font-size:0.8rem;">KHOR YAN QI</span></td>
+                        <td>
+                            <strong>许艳棋</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">KHOR YAN QI</span>
+                        </td>
                         <td>J1Y</td>
                         <td>26018</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="林隽毓 LIM JOON YI">
+            
+                    <tr data-name="林隽毓 LIM JOON YI 26032">
                         <td>8</td>
-                        <td><strong>林隽毓</strong><br><span style="font-size:0.8rem;">LIM JOON YI</span></td>
+                        <td>
+                            <strong>林隽毓</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">LIM JOON YI</span>
+                        </td>
                         <td>J1Y</td>
                         <td>26032</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="李竑证 LEE HOONG ZHENG">
+            
+                    <tr data-name="李竑证 LEE HOONG ZHENG 22040">
                         <td>9</td>
-                        <td><strong>李竑证</strong><br><span style="font-size:0.8rem;">LEE HOONG ZHENG</span></td>
+                        <td>
+                            <strong>李竑证</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">LEE HOONG ZHENG</span>
+                        </td>
                         <td>S2FA</td>
                         <td>22040</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="廖若含 LIEW XIN YU">
+            
+                    <tr data-name="廖若含 LIEW XIN YU 22029">
                         <td>10</td>
-                        <td><strong>廖若含</strong><br><span style="font-size:0.8rem;">LIEW XIN YU</span></td>
+                        <td>
+                            <strong>廖若含</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">LIEW XIN YU</span>
+                        </td>
                         <td>S2Y</td>
                         <td>22029</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
+            
                 </tbody>
             </table>
         </div>
-    
-        <div class="group-section " data-group="夜曜组">
+        
+        <div class="group-card group-night">
             <div class="group-header">
                 <span class="group-name">夜曜组</span>
                 <span class="group-total">总分 0</span>
@@ -286,108 +276,141 @@
             <table>
                 <thead>
                     <tr>
-                        <th>名次</th>
+                        <th style="width: 60px">序号</th>
                         <th>姓名</th>
-                        <th>班级</th>
-                        <th>学号</th>
-                        <th>总分</th>
+                        <th style="width: 100px">班级</th>
+                        <th style="width: 120px">学号</th>
+                        <th style="width: 100px">总分</th>
                     </tr>
                 </thead>
                 <tbody>
-    
-                    <tr data-name="周柔慈 CHEO ROU ZHI">
+        
+                    <tr data-name="周柔慈 CHEO ROU ZHI 22051">
                         <td>1</td>
-                        <td><strong>周柔慈</strong><br><span style="font-size:0.8rem;">CHEO ROU ZHI</span></td>
+                        <td>
+                            <strong>周柔慈</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">CHEO ROU ZHI</span>
+                        </td>
                         <td>S2K</td>
                         <td>22051</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="林骏喨 LIM TEIK LIANG">
+            
+                    <tr data-name="林骏喨 LIM TEIK LIANG 24083">
                         <td>2</td>
-                        <td><strong>林骏喨</strong><br><span style="font-size:0.8rem;">LIM TEIK LIANG</span></td>
+                        <td>
+                            <strong>林骏喨</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">LIM TEIK LIANG</span>
+                        </td>
                         <td>J3T</td>
                         <td>24083</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="林宜彤 LIM YEE TONG">
+            
+                    <tr data-name="林宜彤 LIM YEE TONG 25036">
                         <td>3</td>
-                        <td><strong>林宜彤</strong><br><span style="font-size:0.8rem;">LIM YEE TONG</span></td>
+                        <td>
+                            <strong>林宜彤</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">LIM YEE TONG</span>
+                        </td>
                         <td>J2Y</td>
                         <td>25036</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="潘宛瑜 TRACY PHUAH WANYU">
+            
+                    <tr data-name="潘宛瑜 TRACY PHUAH WANYU 25071">
                         <td>4</td>
-                        <td><strong>潘宛瑜</strong><br><span style="font-size:0.8rem;">TRACY PHUAH WANYU</span></td>
+                        <td>
+                            <strong>潘宛瑜</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">TRACY PHUAH WANYU</span>
+                        </td>
                         <td>J2Y</td>
                         <td>25071</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="符传吉 FOO CHUAN JI">
+            
+                    <tr data-name="符传吉 FOO CHUAN JI 25044">
                         <td>5</td>
-                        <td><strong>符传吉</strong><br><span style="font-size:0.8rem;">FOO CHUAN JI</span></td>
+                        <td>
+                            <strong>符传吉</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">FOO CHUAN JI</span>
+                        </td>
                         <td>J2Y</td>
                         <td>25044</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="陈欣怡 CINDY TAN XIN YI">
+            
+                    <tr data-name="陈欣怡 CINDY TAN XIN YI 25058">
                         <td>6</td>
-                        <td><strong>陈欣怡</strong><br><span style="font-size:0.8rem;">CINDY TAN XIN YI</span></td>
+                        <td>
+                            <strong>陈欣怡</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">CINDY TAN XIN YI</span>
+                        </td>
                         <td>J2F</td>
                         <td>25058</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="丽亚 DHIYA ZULAIKHA DARWISYAH BINTI YUSNIZAN">
+            
+                    <tr data-name="丽亚 DHIYA ZULAIKHA DARWISYAH BINTI YUSNIZAN 25059">
                         <td>7</td>
-                        <td><strong>丽亚</strong><br><span style="font-size:0.8rem;">DHIYA ZULAIKHA DARWI</span></td>
+                        <td>
+                            <strong>丽亚</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">DHIYA ZULAIKHA DARWISYAH ...</span>
+                        </td>
                         <td>J2F</td>
                         <td>25059</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="郑宜桐 TEH YEE THONG">
+            
+                    <tr data-name="郑宜桐 TEH YEE THONG 26024">
                         <td>8</td>
-                        <td><strong>郑宜桐</strong><br><span style="font-size:0.8rem;">TEH YEE THONG</span></td>
+                        <td>
+                            <strong>郑宜桐</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">TEH YEE THONG</span>
+                        </td>
                         <td>J1Y</td>
                         <td>26024</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="浦源政 POH YUAN ZHENG">
+            
+                    <tr data-name="浦源政 POH YUAN ZHENG 22044">
                         <td>9</td>
-                        <td><strong>浦源政</strong><br><span style="font-size:0.8rem;">POH YUAN ZHENG</span></td>
+                        <td>
+                            <strong>浦源政</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">POH YUAN ZHENG</span>
+                        </td>
                         <td>S2Y</td>
                         <td>22044</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="吴贝优 GOH BEI YO">
+            
+                    <tr data-name="吴贝优 GOH BEI YO 22021">
                         <td>10</td>
-                        <td><strong>吴贝优</strong><br><span style="font-size:0.8rem;">GOH BEI YO</span></td>
+                        <td>
+                            <strong>吴贝优</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">GOH BEI YO</span>
+                        </td>
                         <td>S2Y</td>
                         <td>22021</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="林沛筠 LIM PEI JUN">
+            
+                    <tr data-name="林沛筠 LIM PEI JUN 22030">
                         <td>11</td>
-                        <td><strong>林沛筠</strong><br><span style="font-size:0.8rem;">LIM PEI JUN</span></td>
+                        <td>
+                            <strong>林沛筠</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">LIM PEI JUN</span>
+                        </td>
                         <td>S2Y</td>
                         <td>22030</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
+            
                 </tbody>
             </table>
         </div>
-    
-        <div class="group-section " data-group="沧澜组">
+        
+        <div class="group-card group-ocean">
             <div class="group-header">
                 <span class="group-name">沧澜组</span>
                 <span class="group-total">总分 0</span>
@@ -395,109 +418,111 @@
             <table>
                 <thead>
                     <tr>
-                        <th>名次</th>
+                        <th style="width: 60px">序号</th>
                         <th>姓名</th>
-                        <th>班级</th>
-                        <th>学号</th>
-                        <th>总分</th>
+                        <th style="width: 100px">班级</th>
+                        <th style="width: 120px">学号</th>
+                        <th style="width: 100px">总分</th>
                     </tr>
                 </thead>
                 <tbody>
-    
-                    <tr data-name="郑憶欣 TEE YEE XIN">
+        
+                    <tr data-name="郑憶欣 TEE YEE XIN 23065">
                         <td>1</td>
-                        <td><strong>郑憶欣</strong><br><span style="font-size:0.8rem;">TEE YEE XIN</span></td>
+                        <td>
+                            <strong>郑憶欣</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">TEE YEE XIN</span>
+                        </td>
                         <td>S1Y</td>
                         <td>23065</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="谢楷棋 CHEAH KHAI QI">
+            
+                    <tr data-name="谢楷棋 CHEAH KHAI QI 23013">
                         <td>2</td>
-                        <td><strong>谢楷棋</strong><br><span style="font-size:0.8rem;">CHEAH KHAI QI</span></td>
+                        <td>
+                            <strong>谢楷棋</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">CHEAH KHAI QI</span>
+                        </td>
                         <td>S1T</td>
                         <td>23013</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="蔡善恩 CHUAH SHAN EN">
+            
+                    <tr data-name="蔡善恩 CHUAH SHAN EN 24039">
                         <td>3</td>
-                        <td><strong>蔡善恩</strong><br><span style="font-size:0.8rem;">CHUAH SHAN EN</span></td>
+                        <td>
+                            <strong>蔡善恩</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">CHUAH SHAN EN</span>
+                        </td>
                         <td>J3F</td>
                         <td>24039</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="许家绮 KOO JIA QI">
+            
+                    <tr data-name="许家绮 KOO JIA QI 25031">
                         <td>4</td>
-                        <td><strong>许家绮</strong><br><span style="font-size:0.8rem;">KOO JIA QI</span></td>
+                        <td>
+                            <strong>许家绮</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">KOO JIA QI</span>
+                        </td>
                         <td>J2Y</td>
                         <td>25031</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="张子欣 TEON ZI XIN">
+            
+                    <tr data-name="张子欣 TEON ZI XIN 25070">
                         <td>5</td>
-                        <td><strong>张子欣</strong><br><span style="font-size:0.8rem;">TEON ZI XIN</span></td>
+                        <td>
+                            <strong>张子欣</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">TEON ZI XIN</span>
+                        </td>
                         <td>J2F</td>
                         <td>25070</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
-                    <tr data-name="施锦轩 SEE JIN XUAN">
+            
+                    <tr data-name="施锦轩 SEE JIN XUAN 26092">
                         <td>6</td>
-                        <td><strong>施锦轩</strong><br><span style="font-size:0.8rem;">SEE JIN XUAN</span></td>
+                        <td>
+                            <strong>施锦轩</strong><br>
+                            <span style="font-size:0.8rem; color:#7f8c8d;">SEE JIN XUAN</span>
+                        </td>
                         <td>J1T</td>
                         <td>26092</td>
                         <td><span class="score-badge">0</span></td>
                     </tr>
-        
+            
                 </tbody>
             </table>
         </div>
-    
-        <div class="footer">训育处 · 数据每日自动更新</div>
+        
+        <div class="footer">
+            训育处 · 数据每日自动更新 · 仅供参考
+        </div>
     </div>
 
     <script>
-        const tabs = document.querySelectorAll('.tab');
-        const sections = document.querySelectorAll('.group-section');
-        const groupRankItems = document.querySelectorAll('.group-rank-item');
-        
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                const groupName = tab.dataset.group;
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                sections.forEach(section => {
-                    section.classList.remove('active');
-                    if (section.dataset.group === groupName) {
-                        section.classList.add('active');
-                    }
-                });
-            });
-        });
-
-        groupRankItems.forEach(item => {
-            item.addEventListener('click', () => {
-                const groupName = item.dataset.group;
-                const targetTab = Array.from(tabs).find(tab => tab.dataset.group === groupName);
-                if (targetTab) targetTab.click();
-            });
-        });
-
         const searchInput = document.getElementById('search');
         const allRows = document.querySelectorAll('tbody tr');
         
         searchInput.addEventListener('input', (e) => {
             const searchTerm = e.target.value.toLowerCase().trim();
+            
             if (searchTerm === '') {
-                allRows.forEach(row => row.style.display = '');
+                allRows.forEach(row => {
+                    row.style.display = '';
+                });
                 return;
             }
+            
             allRows.forEach(row => {
-                const nameAttr = row.dataset.name.toLowerCase();
-                row.style.display = nameAttr.includes(searchTerm) ? '' : 'none';
+                const searchText = row.getAttribute('data-name').toLowerCase();
+                if (searchText.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
             });
         });
     </script>
