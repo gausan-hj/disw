@@ -28,10 +28,9 @@ if len(df) > 0:
     for j in range(7, len(first_row)):
         if pd.notna(first_row[j]):
             date_str = str(first_row[j])
-            # 提取月-日
             try:
                 if "00:00" in date_str:
-                    date_str = date_str[5:10]  # "03-02"
+                    date_str = date_str[5:10]
                 dates.append(date_str)
             except:
                 dates.append(f"D{j-6}")
@@ -138,7 +137,7 @@ for member in members_list:
 
 print(f"\n总共找到 {len(people)} 人")
 
-# 按组别整理，保持原顺序
+# 按组别整理
 group_data = {g: [] for g in ["星穹组", "夜曜组", "沧澜组"]}
 group_totals = {g: 0 for g in ["星穹组", "夜曜组", "沧澜组"]}
 
@@ -156,7 +155,14 @@ group_rank = {}
 for i, (g, _) in enumerate(sorted_groups, 1):
     group_rank[g] = i
 
-# 生成HTML - 美观版
+# 组别颜色配置
+group_colors = {
+    "星穹组": {"primary": "#fbbf24", "light": "#fef3c7", "border": "#f59e0b"},
+    "夜曜组": {"primary": "#a78bfa", "light": "#ede9fe", "border": "#8b5cf6"},
+    "沧澜组": {"primary": "#60a5fa", "light": "#dbeafe", "border": "#3b82f6"}
+}
+
+# 生成HTML
 html = f"""<!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -245,19 +251,18 @@ html = f"""<!DOCTYPE html>
         }}
         .rank-card:active {{
             transform: scale(0.98);
-            background: #f8fafc;
         }}
-        .rank-1 {{
-            background: linear-gradient(135deg, #fef9e7, #fff);
+        .rank-card[data-group="星穹组"] {{
+            background: linear-gradient(135deg, #fef3c7, white);
             border-left: 4px solid #fbbf24;
         }}
-        .rank-2 {{
-            background: linear-gradient(135deg, #f1f5f9, #fff);
-            border-left: 4px solid #94a3b8;
+        .rank-card[data-group="夜曜组"] {{
+            background: linear-gradient(135deg, #ede9fe, white);
+            border-left: 4px solid #a78bfa;
         }}
-        .rank-3 {{
-            background: linear-gradient(135deg, #fef3e7, #fff);
-            border-left: 4px solid #f97316;
+        .rank-card[data-group="沧澜组"] {{
+            background: linear-gradient(135deg, #dbeafe, white);
+            border-left: 4px solid #60a5fa;
         }}
         .rank-icon {{
             font-size: 2rem;
@@ -296,6 +301,16 @@ html = f"""<!DOCTYPE html>
             box-shadow: 0 4px 16px rgba(0,0,0,0.03);
             border: 1px solid #eef2f6;
             scroll-margin-top: 10px;
+            border-top: 4px solid;
+        }}
+        .group-card[data-group="星穹组"] {{
+            border-top-color: #fbbf24;
+        }}
+        .group-card[data-group="夜曜组"] {{
+            border-top-color: #a78bfa;
+        }}
+        .group-card[data-group="沧澜组"] {{
+            border-top-color: #60a5fa;
         }}
         .group-header {{
             display: flex;
@@ -311,12 +326,21 @@ html = f"""<!DOCTYPE html>
             letter-spacing: -0.01em;
         }}
         .group-badge {{
-            background: #f1f5f9;
             padding: 6px 14px;
             border-radius: 40px;
             font-size: 0.85rem;
             font-weight: 500;
-            color: #334155;
+            color: white;
+        }}
+        .group-card[data-group="星穹组"] .group-badge {{
+            background: #fbbf24;
+            color: #1e293b;
+        }}
+        .group-card[data-group="夜曜组"] .group-badge {{
+            background: #a78bfa;
+        }}
+        .group-card[data-group="沧澜组"] .group-badge {{
+            background: #60a5fa;
         }}
         
         /* 表格样式 */
@@ -371,14 +395,10 @@ html = f"""<!DOCTYPE html>
             color: #475569;
             white-space: nowrap;
         }}
-        .info-small {{
-            font-size: 0.7rem;
-            color: #94a3b8;
-        }}
         
         /* 分数标签 */
         .scores-cell {{
-            max-width: 180px;
+            max-width: 200px;
         }}
         .score-tags {{
             display: flex;
@@ -386,7 +406,6 @@ html = f"""<!DOCTYPE html>
             flex-wrap: wrap;
         }}
         .score-item {{
-            background: #f1f5f9;
             padding: 4px 8px;
             border-radius: 20px;
             font-size: 0.7rem;
@@ -395,6 +414,8 @@ html = f"""<!DOCTYPE html>
             align-items: center;
             gap: 4px;
             white-space: nowrap;
+            background: #f1f5f9;
+            color: #334155;
         }}
         .score-item.has-score {{
             background: #e0f2fe;
@@ -433,6 +454,13 @@ html = f"""<!DOCTYPE html>
             .rank-icon {{ font-size: 1.6rem; }}
             .score-tags {{ gap: 2px; }}
             .score-item {{ padding: 2px 6px; font-size: 0.65rem; }}
+            .member-table th {{
+                font-size: 0.7rem;
+            }}
+            .member-table td {{
+                padding: 8px 2px;
+                font-size: 0.85rem;
+            }}
         }}
     </style>
 </head>
@@ -445,7 +473,7 @@ html = f"""<!DOCTYPE html>
                 <span>{datetime.now().strftime('%Y.%m.%d %H:%M')}</span>
             </div>
             <div class="search-box">
-                <input type="text" id="search" placeholder="🔍 搜索姓名或英文名...">
+                <input type="text" id="search" placeholder="🔍 搜索姓名、英文名、班级或学号...">
             </div>
         </div>
 
@@ -459,7 +487,7 @@ group_ids = {"星穹组": "group-xingqiong", "夜曜组": "group-yeyao", "沧澜
 for i, (g, total) in enumerate(sorted_groups, 1):
     group_id = group_ids[g]
     html += f"""
-            <div class="rank-card rank-{i}" onclick="document.getElementById('{group_id}').scrollIntoView({{behavior: 'smooth'}})">
+            <div class="rank-card" data-group="{g}" onclick="document.getElementById('{group_id}').scrollIntoView({{behavior: 'smooth'}})">
                 <span class="rank-icon">{rank_icons[i]}</span>
                 <div class="rank-info">
                     <div class="rank-name">{g}</div>
@@ -480,9 +508,10 @@ for group_name in ["星穹组", "夜曜组", "沧澜组"]:
     members = group_data[group_name]
     rank = group_rank[group_name]
     group_id = group_ids[group_name]
+    color = group_colors[group_name]
     
     html += f"""
-            <div class="group-card" id="{group_id}">
+            <div class="group-card" data-group="{group_name}" id="{group_id}">
                 <div class="group-header">
                     <span class="group-title">{group_name}</span>
                     <span class="group-badge">第{rank}名 · {int(group_totals[group_name])}分</span>
