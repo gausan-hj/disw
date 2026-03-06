@@ -170,6 +170,13 @@ html = f"""<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>训育处 - 学长团分数板</title>
     <style>
+
+        * {{
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-focus-ring-color: rgba(0,0,0,0);
+  outline: none !important;
+}}
+
         * {{
             box-sizing: border-box;
             margin: 0;
@@ -601,3 +608,4 @@ with open("index.html", "w", encoding="utf-8") as f:
 print(f"\n✅ 生成成功！共 {len(people)} 人")
 for g in ["星穹组", "夜曜组", "沧澜组"]:
     print(f"  {g}: {len(group_data[g])}人, {int(group_totals[g])}分, 第{group_rank[g]}名")
+
