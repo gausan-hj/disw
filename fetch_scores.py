@@ -609,3 +609,4 @@ print(f"\n✅ 生成成功！共 {len(people)} 人")
 for g in ["星穹组", "夜曜组", "沧澜组"]:
     print(f"  {g}: {len(group_data[g])}人, {int(group_totals[g])}分, 第{group_rank[g]}名")
 
+
