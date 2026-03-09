@@ -191,7 +191,7 @@ for g in group_data:
                 p["reward_status"] = "❌"
                 p["reward_class"] = "reward-fail"
 
-# 生成HTML - 修复统计图下载和移除白光
+# 生成HTML - 融合版（无双击切换，无热力图）
 html = '''<!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -221,7 +221,6 @@ html = '''<!DOCTYPE html>
             --shadow-md: 0 4px 12px rgba(0,0,0,0.04);
             --shadow-lg: 0 8px 20px rgba(0,0,0,0.06);
             
-            /* 组颜色 - 明确定义 */
             --star-primary: #eab308;
             --star-light: #fef9c3;
             --star-bg: #fefae8;
@@ -234,8 +233,8 @@ html = '''<!DOCTYPE html>
             
             --score-bg: #f1f5f9;
             --score-text: #475569;
-            --score-highlight: #e6f0ff;
-            --score-highlight-text: #2563eb;
+            --score-highlight: #dbeafe;
+            --score-highlight-text: #1e40af;
             --reward-pass: #dcfce7;
             --reward-pass-text: #166534;
             --reward-fail: #fee2e2;
@@ -333,7 +332,7 @@ html = '''<!DOCTYPE html>
             align-items: center;
         }
 
-        /* 深色模式按钮 - 无白光 */
+        /* 深色模式按钮 */
         .theme-toggle {
             background: var(--bg-primary);
             border: 1px solid var(--border-light);
@@ -352,6 +351,20 @@ html = '''<!DOCTYPE html>
         .theme-toggle:active {
             background: var(--border-light);
             transform: scale(0.98);
+        }
+
+        .moon-icon {
+            display: inline-block;
+            font-size: 1rem;
+            transition: transform 0.2s ease;
+        }
+
+        body.night-mode .moon-icon {
+            transform: rotate(0deg);
+        }
+
+        body:not(.night-mode) .moon-icon {
+            transform: rotate(180deg);
         }
 
         /* 下载按钮 */
@@ -378,20 +391,6 @@ html = '''<!DOCTYPE html>
 
         body.night-mode .download-btn {
             color: #ffffff;
-        }
-
-        .moon-icon {
-            display: inline-block;
-            font-size: 1rem;
-            transition: transform 0.2s ease;
-        }
-
-        body.night-mode .moon-icon {
-            transform: rotate(0deg);
-        }
-
-        body:not(.night-mode) .moon-icon {
-            transform: rotate(180deg);
         }
 
         .meta-info {
@@ -553,7 +552,7 @@ html = '''<!DOCTYPE html>
             margin-top: 2px;
         }
 
-        /* 组排名卡片 - 移除所有白光效果 */
+        /* 组排名卡片 */
         .rank-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -573,7 +572,6 @@ html = '''<!DOCTYPE html>
             gap: 6px;
             border-left: 3px solid;
             transition: transform 0.1s ease;
-            /* 移除所有伪元素和光效 */
         }
 
         .rank-card:active {
@@ -582,15 +580,15 @@ html = '''<!DOCTYPE html>
 
         .rank-card[data-group="星穹组"] {
             border-left-color: #eab308 !important;
-            background: linear-gradient(to right, #fefae8, var(--card-bg));
+            background: linear-gradient(to right, var(--star-bg), var(--card-bg));
         }
         .rank-card[data-group="夜曜组"] {
             border-left-color: #a855f7 !important;
-            background: linear-gradient(to right, #faf5ff, var(--card-bg));
+            background: linear-gradient(to right, var(--night-bg), var(--card-bg));
         }
         .rank-card[data-group="沧澜组"] {
             border-left-color: #3b82f6 !important;
-            background: linear-gradient(to right, #f0f7ff, var(--card-bg));
+            background: linear-gradient(to right, var(--ocean-bg), var(--card-bg));
         }
 
         .rank-icon {
@@ -621,7 +619,13 @@ html = '''<!DOCTYPE html>
             color: var(--text-tertiary);
         }
 
-        /* 组卡片 - 移除所有白光效果 */
+        /* 组卡片 */
+        .groups {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
         .group-card {
             background: var(--card-bg);
             border-radius: 20px;
@@ -630,7 +634,6 @@ html = '''<!DOCTYPE html>
             border: 1px solid var(--border-subtle);
             scroll-margin-top: 12px;
             border-top: 3px solid;
-            /* 移除所有伪元素和光效 */
         }
 
         .group-card[data-group="星穹组"] { border-top-color: #eab308 !important; }
@@ -700,7 +703,7 @@ html = '''<!DOCTYPE html>
         .member-table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 550px;
+            min-width: 750px;  /* 增加宽度以容纳完整英文名 */
             font-size: 0.8rem;
         }
 
@@ -724,7 +727,7 @@ html = '''<!DOCTYPE html>
         }
 
         .member-table th:nth-child(1) { width: 30px; text-align: center; }
-        .member-table th:nth-child(2) { width: 90px; }
+        .member-table th:nth-child(2) { width: 180px; }  /* 增加姓名列宽度 */
         .member-table th:nth-child(3) { width: 45px; }
         .member-table th:nth-child(4) { width: 60px; }
         .member-table th:nth-child(5) { width: auto; }
@@ -735,6 +738,10 @@ html = '''<!DOCTYPE html>
         .member-table td:nth-child(6) { text-align: right; font-weight: 600; }
         .member-table td:nth-child(7) { text-align: center; }
 
+        .name-cell {
+            max-width: 180px;
+        }
+
         .name-cn {
             font-weight: 600;
             font-size: 0.8rem;
@@ -742,16 +749,14 @@ html = '''<!DOCTYPE html>
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 80px;
         }
 
         .name-en {
-            font-size: 0.55rem;
+            font-size: 0.65rem;
             color: var(--text-tertiary);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 80px;
+            white-space: normal;  /* 允许换行 */
+            line-height: 1.3;
+            word-break: break-word;  /* 长单词换行 */
         }
 
         .info-cell {
@@ -804,7 +809,7 @@ html = '''<!DOCTYPE html>
             color: var(--reward-fail-text);
         }
 
-        /* 奖励机制卡片 - 移除所有光效 */
+        /* 奖励机制卡片 - 从测试网站融合过来 */
         .reward-section {
             background: linear-gradient(135deg, var(--card-bg) 0%, var(--bg-primary) 100%);
             border-radius: 20px;
@@ -963,9 +968,8 @@ html = '''<!DOCTYPE html>
             .rank-name { font-size: 0.7rem; }
             .rank-score { font-size: 0.9rem; }
             .group-title { font-size: 1rem; }
-            .member-table { min-width: 500px; }
-            .name-cn { max-width: 70px; }
-            .name-en { max-width: 70px; }
+            .member-table { min-width: 650px; }
+            .name-en { font-size: 0.6rem; }
             .action-buttons { width: 100%; justify-content: flex-end; }
         }
     </style>
@@ -1113,15 +1117,15 @@ for group_name in ["星穹组", "夜曜组", "沧澜组"]:
         if not score_tags:
             score_tags = '<span class="score-item">—</span>'
         
-        # 截断英文名
-        name_en_short = member['name_en'][:10] + "…" if len(member['name_en']) > 10 else member['name_en']
+        # 完整显示英文名（不截断）
+        name_en_full = member['name_en']
         
         html += f'''
                         <tr data-search="{member['name_cn']} {member['name_en']} {member['class']} {member['student_id']}">
                             <td>{member['order']}</td>
-                            <td>
+                            <td class="name-cell">
                                 <div class="name-cn">{member['name_cn']}</div>
-                                <div class="name-en">{name_en_short}</div>
+                                <div class="name-en">{name_en_full}</div>
                             </td>
                             <td class="info-cell">{member['class']}</td>
                             <td class="info-cell">{member['student_id']}</td>
@@ -1141,7 +1145,7 @@ for group_name in ["星穹组", "夜曜组", "沧澜组"]:
 html += '''
         </div>
 
-        <!-- 奖励机制卡片 -->
+        <!-- 奖励机制卡片 - 从测试网站融合过来 -->
         <div class="reward-section">
             <div class="reward-header">
                 <span class="reward-icon">🎁</span>
@@ -1229,7 +1233,7 @@ for g in ["星穹组", "夜曜组", "沧澜组"]:
 
 html += '''        ];
 
-        // 组数据 - 按固定顺序
+        // 组数据
         const groups = ["星穹组", "夜曜组", "沧澜组"];
         const scores = [
             statsData.find(s => s.group === "星穹组").total,
@@ -1330,14 +1334,11 @@ html += '''        ];
             try {
                 showToast('📸 正在生成图片...');
                 
-                // 确保图表已生成
                 if (!chart) {
                     generateChart();
                 }
                 
-                // 等待图表渲染
                 setTimeout(async () => {
-                    // 使用html2canvas将图表卡片转为图片
                     const canvas = await html2canvas(chartCard, {
                         scale: 2,
                         backgroundColor: getComputedStyle(document.body).backgroundColor,
@@ -1346,7 +1347,6 @@ html += '''        ];
                         logging: false
                     });
                     
-                    // 创建下载链接
                     const link = document.createElement('a');
                     link.download = `学长团统计_${new Date().toISOString().slice(0,10)}.png`;
                     link.href = canvas.toDataURL('image/png');
@@ -1361,29 +1361,21 @@ html += '''        ];
             }
         }
 
-        // 下载按钮点击 - 显示统计图
         downloadBtn.addEventListener('click', () => {
-            // 显示统计图卡片
             chartCard.classList.add('show');
-            
-            // 生成图表和统计卡片
             generateChart();
             generateStatsGrid();
-            
             showToast('📊 统计图已生成');
         });
 
-        // 保存按钮点击
         if (saveChartBtn) {
             saveChartBtn.addEventListener('click', saveChartToGallery);
         }
 
-        // 关闭统计图
         closeChart.addEventListener('click', () => {
             chartCard.classList.remove('show');
         });
 
-        // 搜索功能
         searchInput.addEventListener('input', (e) => {
             const searchTerm = e.target.value.toLowerCase().trim();
             allRows.forEach(row => {
@@ -1392,7 +1384,6 @@ html += '''        ];
             });
         });
 
-        // 深色模式切换时更新图表颜色
         const observer = new MutationObserver(() => {
             if (chart && chartCard.classList.contains('show')) {
                 generateChart();
@@ -1415,4 +1406,4 @@ for g in ["星穹组", "夜曜组", "沧澜组"]:
         members = group_data[g]
         pass_count = sum(1 for m in members if m["reward_status"] == "✅")
         print(f"  {g}: {pass_count}/{len(members)} 人达标 ({int(pass_count/len(members)*100)}%)")
-print("✨ 修复：统计图下载 + 移除所有白光")
+print("✨ 融合版：英文名完整显示 + 奖励机制卡片 + 统计图下载")
