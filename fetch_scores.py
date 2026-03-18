@@ -473,7 +473,7 @@ for g in group_data:
         group_max_scores[g] = 0
         group_min_scores[g] = 0
 
-# 生成HTML - 修复按钮点击问题
+# 生成HTML - 添加OneSignal通知权限
 html = '''<!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -482,6 +482,10 @@ html = '''<!DOCTYPE html>
     <title>训育处 - 学长团分数板</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- OneSignal SDK - 用于通知权限 -->
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    
     <style>
         * {
             margin: 0;
@@ -591,8 +595,6 @@ html = '''<!DOCTYPE html>
         .container {
             max-width: 100%;
             margin: 0 auto;
-            position: relative;
-            z-index: 1;
         }
 
         .double-tap-hint {
@@ -625,8 +627,6 @@ html = '''<!DOCTYPE html>
             margin-bottom: 16px;
             box-shadow: var(--shadow-md);
             border: 1px solid var(--border-subtle);
-            position: relative;
-            z-index: 10;
         }
 
         .header-top {
@@ -658,8 +658,6 @@ html = '''<!DOCTYPE html>
             display: flex;
             gap: 8px;
             align-items: center;
-            position: relative;
-            z-index: 20;
         }
 
         .lang-toggle {
@@ -675,9 +673,6 @@ html = '''<!DOCTYPE html>
             color: var(--text-primary);
             transition: all 0.2s ease;
             white-space: nowrap;
-            position: relative;
-            z-index: 30;
-            pointer-events: auto !important;
         }
 
         .lang-toggle:active {
@@ -697,9 +692,6 @@ html = '''<!DOCTYPE html>
             color: var(--text-primary);
             transition: background 0.15s ease;
             white-space: nowrap;
-            position: relative;
-            z-index: 30;
-            pointer-events: auto !important;
         }
 
         .theme-toggle:active {
@@ -735,9 +727,6 @@ html = '''<!DOCTYPE html>
             font-weight: 500;
             transition: all 0.15s ease;
             white-space: nowrap;
-            position: relative;
-            z-index: 30;
-            pointer-events: auto !important;
         }
 
         .download-btn:active {
@@ -841,8 +830,6 @@ html = '''<!DOCTYPE html>
             box-shadow: var(--shadow-md);
             border: 1px solid var(--border-subtle);
             display: none;
-            position: relative;
-            z-index: 100;
         }
 
         .chart-card.show {
@@ -893,9 +880,6 @@ html = '''<!DOCTYPE html>
             display: flex;
             align-items: center;
             gap: 4px;
-            position: relative;
-            z-index: 110;
-            pointer-events: auto !important;
         }
 
         body.night-mode .save-chart-btn {
@@ -910,9 +894,6 @@ html = '''<!DOCTYPE html>
             font-size: 0.7rem;
             cursor: pointer;
             color: var(--text-secondary);
-            position: relative;
-            z-index: 110;
-            pointer-events: auto !important;
         }
 
         .chart-container {
@@ -1700,7 +1681,6 @@ html = '''<!DOCTYPE html>
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
-            pointer-events: auto !important;
         }
 
         .popup-btn:hover {
@@ -1913,6 +1893,40 @@ html = '''<!DOCTYPE html>
     </div>
 
     <script>
+        // ========== OneSignal 初始化 - 用于通知权限 ==========
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        OneSignalDeferred.push(async function(OneSignal) {
+            await OneSignal.init({
+                appId: "137d66ce-9746-4206-9861-a1c368a0b548", // OneSignal App ID
+                allowLocalhostAsSecureOrigin: true,
+                notifyButton: {
+                    enable: true,
+                    size: 'medium',
+                    showCredit: false,
+                    position: 'bottom-right',
+                    text: {
+                        'message': '开启提醒',
+                        'subscribe': '知道了，开启提醒',
+                        'unsubscribe': '关闭提醒'
+                    },
+                    colors: {
+                        'circle.background': '#eab308',
+                        'circle.foreground': '#1a2b3c',
+                        'badge.background': '#eab308',
+                        'badge.foreground': '#1a2b3c',
+                        'badge.bordercolor': '#e2e8f0',
+                        'button.background': '#eab308',
+                        'button.foreground': '#1a2b3c',
+                        'button.hover.background': '#ca8a04'
+                    }
+                },
+                serviceWorkerParam: { scope: '/' },
+                serviceWorkerPath: 'OneSignalSDKWorker.js',
+                serviceWorkerUpdaterPath: 'OneSignalSDKUpdaterWorker.js',
+            });
+            console.log('OneSignal 初始化成功');
+        });
+
         // ========== 首先定义所有函数 ==========
         
         // 切换深色模式
@@ -1973,8 +1987,11 @@ html = '''<!DOCTYPE html>
             }, 3000);
         }
 
-        // 开启提醒
+        // 开启提醒 - 使用 OneSignal 请求权限
         function enableReminders() {
+            OneSignalDeferred.push(function(OneSignal) {
+                OneSignal.Notifications.requestPermission();
+            });
             showNotification('🔔 提醒已开启', '你将在以下时间收到通知：\\n早上6:00 · 晚上7:00 · 晚上8:15 · 晚上10:00');
             closePopup();
         }
@@ -2105,7 +2122,6 @@ html = '''<!DOCTYPE html>
             const themeToggle = document.getElementById('themeToggle');
             if (themeToggle) {
                 themeToggle.addEventListener('click', function(e) {
-                    e.stopPropagation();
                     toggleNightMode();
                 });
             }
@@ -2114,7 +2130,6 @@ html = '''<!DOCTYPE html>
             const langToggle = document.getElementById('langToggle');
             if (langToggle) {
                 langToggle.addEventListener('click', function(e) {
-                    e.stopPropagation();
                     const body = document.body;
                     if (body.classList.contains('lang-zh')) {
                         body.classList.remove('lang-zh');
@@ -2143,7 +2158,6 @@ html = '''<!DOCTYPE html>
             
             if (downloadBtn && chartCard) {
                 downloadBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
                     chartCard.classList.add('show');
                     generateChart();
                     showToast('📊 统计图已生成');
@@ -2154,7 +2168,6 @@ html = '''<!DOCTYPE html>
             const saveChartBtn = document.getElementById('saveChartBtn');
             if (saveChartBtn) {
                 saveChartBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
                     saveChartToGallery();
                 });
             }
@@ -2162,7 +2175,6 @@ html = '''<!DOCTYPE html>
             // 关闭图表
             if (closeChart && chartCard) {
                 closeChart.addEventListener('click', function(e) {
-                    e.stopPropagation();
                     chartCard.classList.remove('show');
                 });
             }
@@ -2185,7 +2197,6 @@ html = '''<!DOCTYPE html>
             const reminderBtn = document.getElementById('reminderBtn');
             if (reminderBtn) {
                 reminderBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
                     showReminderPopup();
                 });
             }
