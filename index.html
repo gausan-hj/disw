@@ -46,6 +46,16 @@
             --reward-fail: #fee2e2;
             --reward-fail-text: #991b1b;
             
+            --heat-1: #083344;
+            --heat-2: #164e63;
+            --heat-3: #155e75;
+            --heat-4: #0369a1;
+            --heat-5: #0284c7;
+            --heat-6: #38bdf8;
+            --heat-7: #7dd3fc;
+            --heat-8: #bae6fd;
+            --heat-9: #e0f2fe;
+            
             --safe-top: env(safe-area-inset-top);
             --safe-bottom: env(safe-area-inset-bottom);
         }
@@ -78,6 +88,16 @@
             --reward-pass-text: #bbf7d0;
             --reward-fail: #562b2b;
             --reward-fail-text: #fecaca;
+            
+            --heat-1: #000814;
+            --heat-2: #001d3d;
+            --heat-3: #003566;
+            --heat-4: #0a4a7a;
+            --heat-5: #1a5a8a;
+            --heat-6: #2a6a9a;
+            --heat-7: #3a7aaa;
+            --heat-8: #4a8aba;
+            --heat-9: #5a9aca;
         }
 
         body {
@@ -95,9 +115,33 @@
         .container {
             max-width: 100%;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
-        /* 头部 */
+        .double-tap-hint {
+            position: fixed;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card-bg);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light);
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .double-tap-hint.show {
+            opacity: 0.9;
+        }
+
         .header {
             background: var(--card-bg);
             border-radius: 24px;
@@ -105,6 +149,8 @@
             margin-bottom: 16px;
             box-shadow: var(--shadow-md);
             border: 1px solid var(--border-subtle);
+            position: relative;
+            z-index: 10;
         }
 
         .header-top {
@@ -136,9 +182,32 @@
             display: flex;
             gap: 8px;
             align-items: center;
+            position: relative;
+            z-index: 20;
         }
 
-        /* 深色模式按钮 */
+        .lang-toggle {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            border-radius: 30px;
+            padding: 6px 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            position: relative;
+            z-index: 30;
+            pointer-events: auto !important;
+        }
+
+        .lang-toggle:active {
+            transform: scale(0.92);
+        }
+
         .theme-toggle {
             background: var(--bg-primary);
             border: 1px solid var(--border-light);
@@ -152,6 +221,9 @@
             color: var(--text-primary);
             transition: background 0.15s ease;
             white-space: nowrap;
+            position: relative;
+            z-index: 30;
+            pointer-events: auto !important;
         }
 
         .theme-toggle:active {
@@ -173,7 +245,6 @@
             transform: rotate(180deg);
         }
 
-        /* 下载按钮 */
         .download-btn {
             background: var(--star-primary);
             border: none;
@@ -188,6 +259,9 @@
             font-weight: 500;
             transition: all 0.15s ease;
             white-space: nowrap;
+            position: relative;
+            z-index: 30;
+            pointer-events: auto !important;
         }
 
         .download-btn:active {
@@ -248,7 +322,41 @@
             border-color: var(--text-tertiary);
         }
 
-        /* 统计图卡片 */
+        .heatmap-legend {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-bottom: 8px;
+            font-size: 0.65rem;
+            color: var(--text-tertiary);
+        }
+
+        .legend-colors {
+            display: flex;
+            gap: 2px;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        .legend-color.low { background: var(--heat-1); }
+        .legend-color.mid-low { background: var(--heat-3); }
+        .legend-color.mid { background: var(--heat-5); }
+        .legend-color.mid-high { background: var(--heat-7); }
+        .legend-color.high { background: var(--heat-9); }
+
+        .legend-label {
+            display: flex;
+            gap: 8px;
+        }
+
+        .legend-label span.low { color: var(--heat-1); font-weight: bold; }
+        .legend-label span.high { color: var(--heat-9); font-weight: bold; }
+
         .chart-card {
             background: var(--card-bg);
             border-radius: 20px;
@@ -257,6 +365,8 @@
             box-shadow: var(--shadow-md);
             border: 1px solid var(--border-subtle);
             display: none;
+            position: relative;
+            z-index: 100;
         }
 
         .chart-card.show {
@@ -307,6 +417,13 @@
             display: flex;
             align-items: center;
             gap: 4px;
+            position: relative;
+            z-index: 110;
+            pointer-events: auto !important;
+        }
+
+        body.night-mode .save-chart-btn {
+            color: #ffffff;
         }
 
         .close-chart {
@@ -317,6 +434,9 @@
             font-size: 0.7rem;
             cursor: pointer;
             color: var(--text-secondary);
+            position: relative;
+            z-index: 110;
+            pointer-events: auto !important;
         }
 
         .chart-container {
@@ -358,7 +478,6 @@
             margin-top: 2px;
         }
 
-        /* 组排名卡片 */
         .rank-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -425,7 +544,6 @@
             color: var(--text-tertiary);
         }
 
-        /* 组卡片 */
         .groups {
             display: flex;
             flex-direction: column;
@@ -498,7 +616,6 @@
         .group-card[data-group="夜曜组"] .group-badge { background: #a855f7; }
         .group-card[data-group="沧澜组"] .group-badge { background: #3b82f6; }
 
-        /* 表格 */
         .table-container {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
@@ -509,7 +626,7 @@
         .member-table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 750px;  /* 增加宽度以容纳完整英文名 */
+            min-width: 750px;
             font-size: 0.8rem;
         }
 
@@ -533,7 +650,7 @@
         }
 
         .member-table th:nth-child(1) { width: 30px; text-align: center; }
-        .member-table th:nth-child(2) { width: 180px; }  /* 增加姓名列宽度 */
+        .member-table th:nth-child(2) { width: 180px; }
         .member-table th:nth-child(3) { width: 45px; }
         .member-table th:nth-child(4) { width: 60px; }
         .member-table th:nth-child(5) { width: auto; }
@@ -546,6 +663,12 @@
 
         .name-cell {
             max-width: 180px;
+            min-height: 45px;
+            position: relative;
+        }
+
+        .name-cn, .name-en {
+            transition: all 0.3s ease;
         }
 
         .name-cn {
@@ -560,9 +683,88 @@
         .name-en {
             font-size: 0.65rem;
             color: var(--text-tertiary);
-            white-space: normal;  /* 允许换行 */
+            white-space: normal;
             line-height: 1.3;
-            word-break: break-word;  /* 长单词换行 */
+            word-break: break-word;
+        }
+
+        .name-cell.lang-switching .name-cn {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+
+        .name-cell.lang-switching .name-en {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        body.lang-zh .name-cell {
+            display: flex;
+            flex-direction: column;
+        }
+
+        body.lang-zh .name-cell .name-cn {
+            order: 1;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        body.lang-zh .name-cell .name-en {
+            order: 2;
+            transform: translateY(0);
+            opacity: 0.8;
+        }
+
+        body.lang-en .name-cell {
+            display: flex;
+            flex-direction: column;
+        }
+
+        body.lang-en .name-cell .name-en {
+            order: 1;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        body.lang-en .name-cell .name-cn {
+            order: 2;
+            font-size: 0.65rem;
+            color: var(--text-tertiary);
+            font-weight: 400;
+            opacity: 0.8;
+            transform: translateY(0);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        body.lang-ms .name-cell {
+            display: flex;
+            flex-direction: column;
+        }
+
+        body.lang-ms .name-cell .name-en {
+            order: 1;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        body.lang-ms .name-cell .name-cn {
+            order: 2;
+            font-size: 0.65rem;
+            color: var(--text-tertiary);
+            font-weight: 400;
+            opacity: 0.8;
+            transform: translateY(0);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .info-cell {
@@ -570,7 +772,6 @@
             color: var(--text-secondary);
         }
 
-        /* 分数标签 */
         .score-tags {
             display: flex;
             gap: 2px;
@@ -585,6 +786,12 @@
             background: var(--score-bg);
             color: var(--score-text);
             border: 1px solid var(--border-subtle);
+            transition: transform 0.1s ease;
+        }
+
+        .score-item:hover {
+            transform: scale(1.1);
+            z-index: 10;
         }
 
         .score-item.has-score {
@@ -594,6 +801,23 @@
 
         .score-date { opacity: 0.7; margin-right: 1px; }
         .score-value { font-weight: 600; }
+
+        .total-heat {
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 2px 6px;
+            border-radius: 12px;
+            display: inline-block;
+            min-width: 35px;
+            text-align: center;
+            color: #ffffff !important;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        body.night-mode .total-heat {
+            color: #ffffff !important;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
 
         .reward-pass, .reward-fail {
             padding: 2px 5px;
@@ -615,7 +839,6 @@
             color: var(--reward-fail-text);
         }
 
-        /* 奖励机制卡片 - 从测试网站融合过来 */
         .reward-section {
             background: linear-gradient(135deg, var(--card-bg) 0%, var(--bg-primary) 100%);
             border-radius: 20px;
@@ -734,7 +957,6 @@
             border-top: 1px solid var(--border-subtle);
         }
 
-        /* 下载提示 */
         .download-toast {
             position: fixed;
             bottom: 20px;
@@ -750,7 +972,7 @@
             align-items: center;
             gap: 8px;
             transition: transform 0.3s ease;
-            z-index: 1000;
+            z-index: 2000;
             font-size: 0.8rem;
         }
 
@@ -770,6 +992,254 @@
             font-size: 0.7rem;
         }
 
+        body.night-mode .toast-icon {
+            color: #ffffff;
+        }
+
+        .notification-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light);
+            z-index: 3000;
+            max-width: 280px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .notification-toast.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .toast-close {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            cursor: pointer;
+            color: var(--text-tertiary);
+            font-size: 0.8rem;
+            padding: 4px;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast-close:hover {
+            background: var(--border-subtle);
+        }
+
+        .toast-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .reminder-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--star-primary);
+            color: #1a2b3c;
+            padding: 14px 24px;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 15px rgba(234, 179, 8, 0.3);
+            cursor: pointer;
+            font-weight: 600;
+            border: 2px solid var(--border-light);
+            z-index: 1000;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .reminder-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(234, 179, 8, 0.4);
+        }
+
+        .reminder-btn:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 15px rgba(234, 179, 8, 0.3);
+            }
+            50% {
+                box-shadow: 0 8px 25px rgba(234, 179, 8, 0.6);
+            }
+            100% {
+                box-shadow: 0 4px 15px rgba(234, 179, 8, 0.3);
+            }
+        }
+
+        .bell-icon {
+            font-size: 1.4rem;
+            animation: ring 3s infinite;
+        }
+
+        @keyframes ring {
+            0%, 100% { transform: rotate(0); }
+            10%, 30%, 50%, 70%, 90% { transform: rotate(10deg); }
+            20%, 40%, 60%, 80% { transform: rotate(-10deg); }
+        }
+
+        .reminder-popup {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light);
+            width: 300px;
+            z-index: 2000;
+            display: none;
+            animation: slideUp 0.4s ease;
+        }
+
+        .reminder-popup.show {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .popup-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+        }
+
+        .popup-icon {
+            font-size: 1.4rem;
+        }
+
+        .popup-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--text-tertiary);
+            padding: 4px;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .popup-close:hover {
+            background: var(--border-subtle);
+        }
+
+        .popup-content {
+            padding: 16px;
+        }
+
+        .time-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .time-item:last-child {
+            border-bottom: none;
+        }
+
+        .time-icon {
+            font-size: 1.2rem;
+            width: 32px;
+        }
+
+        .time-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            width: 80px;
+        }
+
+        .time-desc {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+        }
+
+        .popup-footer {
+            padding: 16px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .popup-btn {
+            width: 100%;
+            background: var(--star-primary);
+            color: #1a2b3c;
+            border: none;
+            border-radius: 30px;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            pointer-events: auto !important;
+        }
+
+        .popup-btn:hover {
+            transform: scale(1.02);
+            background: #ca8a04;
+        }
+
+        .popup-btn:active {
+            transform: scale(0.98);
+        }
+
+        body.night-mode .popup-btn {
+            color: #ffffff;
+        }
+
         @media (max-width: 360px) {
             .rank-name { font-size: 0.7rem; }
             .rank-score { font-size: 0.9rem; }
@@ -780,28 +1250,37 @@
         }
     </style>
 </head>
-<body>
+<body class="lang-zh">
     <div class="container">
+        <div class="double-tap-hint" id="doubleTapHint">
+            <span id="hintText">👆 双击屏幕 / 按两次空格 切换深色模式</span>
+        </div>
+
         <div class="header">
             <div class="header-top">
                 <div class="title-group">
                     <span class="school-icon">🏫</span>
-                    <h1>学长团分数板</h1>
+                    <h1>学长团分数板 · 热力图</h1>
                 </div>
                 <div class="action-buttons">
                     <button class="download-btn" id="downloadBtn">
                         <span>📊</span>
                         <span>下载统计</span>
                     </button>
-                    <div class="theme-toggle" onclick="document.body.classList.toggle('night-mode')">
+                    <div class="lang-toggle" id="langToggle">
+                        <span class="lang-left">中</span>
+                        <span class="lang-separator">/</span>
+                        <span class="lang-right">EN</span>
+                    </div>
+                    <div class="theme-toggle" id="themeToggle">
                         <span class="moon-icon">🌓</span>
                         <span>深色</span>
                     </div>
                 </div>
             </div>
             <div class="meta-info">
-                <span>Prefects' Scoreboard</span>
-                <span class="date-badge">03/18 07:09</span>
+                <span>Prefects' Scoreboard · 颜色越浅分数越高</span>
+                <span class="date-badge">03/18 09:37</span>
             </div>
             <div class="search-wrapper">
                 <span class="search-icon">🔍</span>
@@ -809,7 +1288,21 @@
             </div>
         </div>
 
-        <!-- 统计图卡片 -->
+        <div class="heatmap-legend">
+            <div class="legend-label">
+                <span class="low">低分 █</span>
+                <span> → </span>
+                <span class="high">高分 █</span>
+            </div>
+            <div class="legend-colors">
+                <div class="legend-color low" title="低分（深色）"></div>
+                <div class="legend-color mid-low" title="中低分"></div>
+                <div class="legend-color mid" title="中分"></div>
+                <div class="legend-color mid-high" title="中高分"></div>
+                <div class="legend-color high" title="高分（浅色）"></div>
+            </div>
+        </div>
+
         <div class="chart-card" id="chartCard">
             <div class="chart-header">
                 <span class="chart-title">
@@ -830,9 +1323,8 @@
             <div class="stats-grid" id="statsGrid"></div>
         </div>
 
-        <!-- 组排名卡片 -->
         <div class="rank-grid">
-
+            
             <div class="rank-card" data-group="夜曜组" onclick="document.getElementById('group-yeyao').scrollIntoView({behavior: 'smooth'})">
                 <span class="rank-icon">🥇</span>
                 <div class="rank-info">
@@ -859,9 +1351,8 @@
 
         </div>
 
-        <!-- 组别详情 -->
         <div class="groups">
-
+            
             <div class="group-card" data-group="星穹组" id="group-xingqiong">
                 <div class="group-header">
                     <div class="group-title-wrapper">
@@ -869,7 +1360,7 @@
                         <span class="group-title">星穹组</span>
                     </div>
                     <div class="group-stats">
-                        <span class="group-avg">平均5</span>
+                        <span class="group-avg">平均 5</span>
                         <span class="group-badge">第2名</span>
                     </div>
                 </div>
@@ -897,7 +1388,7 @@
                             <td class="info-cell">S2FA</td>
                             <td class="info-cell">22038</td>
                             <td><div class="score-tags"><span class="score-item">—</span></div></td>
-                            <td>0</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-1);">0</span></td>
                             <td><span class="reward-fail">❌</span></td>
                         </tr>
 
@@ -910,7 +1401,7 @@
                             <td class="info-cell">S2Y</td>
                             <td class="info-cell">22100</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">13/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">6/3</span><span class="score-value">1</span></span></div></td>
-                            <td>2</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-1);">2</span></td>
                             <td><span class="reward-fail">❌</span></td>
                         </tr>
 
@@ -923,7 +1414,7 @@
                             <td class="info-cell">J3T</td>
                             <td class="info-cell">24076</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">12/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">3</span></span></div></td>
-                            <td>4</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-2);">4</span></td>
                             <td><span class="reward-fail">❌</span></td>
                         </tr>
 
@@ -936,7 +1427,7 @@
                             <td class="info-cell">J3T</td>
                             <td class="info-cell">24078</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">11/3</span><span class="score-value">2</span></span><span class="score-item has-score"><span class="score-date">12/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">13/3</span><span class="score-value">4</span></span><span class="score-item has-score"><span class="score-date">6/3</span><span class="score-value">4</span></span></div></td>
-                            <td>11</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-5);">11</span></td>
                             <td><span class="reward-pass">✅</span></td>
                         </tr>
 
@@ -949,7 +1440,7 @@
                             <td class="info-cell">J3K</td>
                             <td class="info-cell">24068</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">17/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">2</span></span><span class="score-item has-score"><span class="score-date">9/3</span><span class="score-value">1</span></span></div></td>
-                            <td>4</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-2);">4</span></td>
                             <td><span class="reward-fail">❌</span></td>
                         </tr>
 
@@ -962,7 +1453,7 @@
                             <td class="info-cell">J3T</td>
                             <td class="info-cell">24088</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">11/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">13/3</span><span class="score-value">2</span></span></div></td>
-                            <td>3</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-2);">3</span></td>
                             <td><span class="reward-fail">❌</span></td>
                         </tr>
 
@@ -975,7 +1466,7 @@
                             <td class="info-cell">J2Y</td>
                             <td class="info-cell">25035</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">11/3</span><span class="score-value">2</span></span><span class="score-item has-score"><span class="score-date">12/3</span><span class="score-value">2</span></span><span class="score-item has-score"><span class="score-date">6/3</span><span class="score-value">3</span></span><span class="score-item has-score"><span class="score-date">9/3</span><span class="score-value">2</span></span></div></td>
-                            <td>9</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-4);">9</span></td>
                             <td><span class="reward-pass">✅</span></td>
                         </tr>
 
@@ -988,7 +1479,7 @@
                             <td class="info-cell">J2Y</td>
                             <td class="info-cell">25046</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">13/3</span><span class="score-value">2</span></span><span class="score-item has-score"><span class="score-date">2/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">3/3</span><span class="score-value">3</span></span><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">9</span></span><span class="score-item has-score"><span class="score-date">9/3</span><span class="score-value">3</span></span></div></td>
-                            <td>21</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-9);">21</span></td>
                             <td><span class="reward-pass">✅</span></td>
                         </tr>
 
@@ -1001,7 +1492,7 @@
                             <td class="info-cell">J1Y</td>
                             <td class="info-cell">26018</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">9/3</span><span class="score-value">1</span></span></div></td>
-                            <td>1</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-1);">1</span></td>
                             <td><span class="reward-fail">❌</span></td>
                         </tr>
 
@@ -1014,7 +1505,7 @@
                             <td class="info-cell">J1Y</td>
                             <td class="info-cell">26032</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">10/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">9/3</span><span class="score-value">1</span></span></div></td>
-                            <td>2</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-1);">2</span></td>
                             <td><span class="reward-fail">❌</span></td>
                         </tr>
 
@@ -1030,7 +1521,7 @@
                         <span class="group-title">夜曜组</span>
                     </div>
                     <div class="group-stats">
-                        <span class="group-avg">平均10</span>
+                        <span class="group-avg">平均 10</span>
                         <span class="group-badge">第1名</span>
                     </div>
                 </div>
@@ -1058,7 +1549,7 @@
                             <td class="info-cell">S2FA</td>
                             <td class="info-cell">22040</td>
                             <td><div class="score-tags"><span class="score-item">—</span></div></td>
-                            <td>0</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-1);">0</span></td>
                             <td><span class="reward-fail">❌</span></td>
                         </tr>
 
@@ -1071,7 +1562,7 @@
                             <td class="info-cell">S2Y</td>
                             <td class="info-cell">22029</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">13/3</span><span class="score-value">1</span></span></div></td>
-                            <td>1</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-1);">1</span></td>
                             <td><span class="reward-fail">❌</span></td>
                         </tr>
 
@@ -1084,7 +1575,7 @@
                             <td class="info-cell">S2Y</td>
                             <td class="info-cell">22083</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">10/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">12/3</span><span class="score-value">3</span></span><span class="score-item has-score"><span class="score-date">13/3</span><span class="score-value">2</span></span><span class="score-item has-score"><span class="score-date">17/3</span><span class="score-value">2</span></span></div></td>
-                            <td>8</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-3);">8</span></td>
                             <td><span class="reward-pass">✅</span></td>
                         </tr>
 
@@ -1097,7 +1588,7 @@
                             <td class="info-cell">S2K</td>
                             <td class="info-cell">22051</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">13/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">1</span></span></div></td>
-                            <td>2</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-1);">2</span></td>
                             <td><span class="reward-fail">❌</span></td>
                         </tr>
 
@@ -1110,7 +1601,7 @@
                             <td class="info-cell">J3T</td>
                             <td class="info-cell">24083</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">10/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">2/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">3/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">9/3</span><span class="score-value">1</span></span></div></td>
-                            <td>5</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-2);">5</span></td>
                             <td><span class="reward-pass">✅</span></td>
                         </tr>
 
@@ -1123,7 +1614,7 @@
                             <td class="info-cell">J2Y</td>
                             <td class="info-cell">25036</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">13/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">17/3</span><span class="score-value">3</span></span><span class="score-item has-score"><span class="score-date">3/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">4/3</span><span class="score-value">2</span></span><span class="score-item has-score"><span class="score-date">6/3</span><span class="score-value">2</span></span></div></td>
-                            <td>10</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-3);">10</span></td>
                             <td><span class="reward-pass">✅</span></td>
                         </tr>
 
@@ -1136,7 +1627,7 @@
                             <td class="info-cell">J2Y</td>
                             <td class="info-cell">25071</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">11/3</span><span class="score-value">2</span></span><span class="score-item has-score"><span class="score-date">12/3</span><span class="score-value">2</span></span><span class="score-item has-score"><span class="score-date">4/3</span><span class="score-value">3</span></span><span class="score-item has-score"><span class="score-date">9/3</span><span class="score-value">2</span></span></div></td>
-                            <td>9</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-3);">9</span></td>
                             <td><span class="reward-pass">✅</span></td>
                         </tr>
 
@@ -1149,7 +1640,7 @@
                             <td class="info-cell">J2Y</td>
                             <td class="info-cell">25044</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">17/3</span><span class="score-value">2</span></span><span class="score-item has-score"><span class="score-date">2/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">3/3</span><span class="score-value">3</span></span><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">9/3</span><span class="score-value">6</span></span></div></td>
-                            <td>22</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-7);">22</span></td>
                             <td><span class="reward-pass">✅</span></td>
                         </tr>
 
@@ -1162,7 +1653,7 @@
                             <td class="info-cell">J2F</td>
                             <td class="info-cell">25058</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">2/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">4/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">4</span></span><span class="score-item has-score"><span class="score-date">6/3</span><span class="score-value">2</span></span><span class="score-item has-score"><span class="score-date">9/3</span><span class="score-value">4</span></span></div></td>
-                            <td>20</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-6);">20</span></td>
                             <td><span class="reward-pass">✅</span></td>
                         </tr>
 
@@ -1175,7 +1666,7 @@
                             <td class="info-cell">J2F</td>
                             <td class="info-cell">25059</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">17/3</span><span class="score-value">5</span></span><span class="score-item has-score"><span class="score-date">2/3</span><span class="score-value">3</span></span><span class="score-item has-score"><span class="score-date">4/3</span><span class="score-value">6</span></span><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">4</span></span><span class="score-item has-score"><span class="score-date">6/3</span><span class="score-value">7</span></span></div></td>
-                            <td>31</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-9);">31</span></td>
                             <td><span class="reward-pass">✅</span></td>
                         </tr>
 
@@ -1188,7 +1679,7 @@
                             <td class="info-cell">J1Y</td>
                             <td class="info-cell">26024</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">11/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">4/3</span><span class="score-value">1</span></span></div></td>
-                            <td>2</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-1);">2</span></td>
                             <td><span class="reward-fail">❌</span></td>
                         </tr>
 
@@ -1204,7 +1695,7 @@
                         <span class="group-title">沧澜组</span>
                     </div>
                     <div class="group-stats">
-                        <span class="group-avg">平均5</span>
+                        <span class="group-avg">平均 5</span>
                         <span class="group-badge">第3名</span>
                     </div>
                 </div>
@@ -1232,7 +1723,7 @@
                             <td class="info-cell">S2Y</td>
                             <td class="info-cell">22044</td>
                             <td><div class="score-tags"><span class="score-item">—</span></div></td>
-                            <td>0</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-1);">0</span></td>
                             <td><span class="reward-fail">❌</span></td>
                         </tr>
 
@@ -1245,7 +1736,7 @@
                             <td class="info-cell">S2Y</td>
                             <td class="info-cell">22021</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">13/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">6/3</span><span class="score-value">1</span></span></div></td>
-                            <td>2</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-1);">2</span></td>
                             <td><span class="reward-fail">❌</span></td>
                         </tr>
 
@@ -1258,7 +1749,7 @@
                             <td class="info-cell">S2Y</td>
                             <td class="info-cell">22030</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">13/3</span><span class="score-value">2</span></span><span class="score-item has-score"><span class="score-date">17/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">6/3</span><span class="score-value">1</span></span></div></td>
-                            <td>4</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-2);">4</span></td>
                             <td><span class="reward-fail">❌</span></td>
                         </tr>
 
@@ -1271,7 +1762,7 @@
                             <td class="info-cell">S2FA</td>
                             <td class="info-cell">22017</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">11/3</span><span class="score-value">3</span></span><span class="score-item has-score"><span class="score-date">12/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">13/3</span><span class="score-value">2</span></span><span class="score-item has-score"><span class="score-date">4/3</span><span class="score-value">3</span></span><span class="score-item has-score"><span class="score-date">9/3</span><span class="score-value">1</span></span></div></td>
-                            <td>10</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-5);">10</span></td>
                             <td><span class="reward-pass">✅</span></td>
                         </tr>
 
@@ -1284,7 +1775,7 @@
                             <td class="info-cell">S1Y</td>
                             <td class="info-cell">23065</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">12/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">17/3</span><span class="score-value">2</span></span><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">1</span></span></div></td>
-                            <td>4</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-2);">4</span></td>
                             <td><span class="reward-fail">❌</span></td>
                         </tr>
 
@@ -1297,7 +1788,7 @@
                             <td class="info-cell">S1T</td>
                             <td class="info-cell">23013</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">6/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">9/3</span><span class="score-value">1</span></span></div></td>
-                            <td>2</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-1);">2</span></td>
                             <td><span class="reward-fail">❌</span></td>
                         </tr>
 
@@ -1310,7 +1801,7 @@
                             <td class="info-cell">J3F</td>
                             <td class="info-cell">24039</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">13/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">6/3</span><span class="score-value">2</span></span></div></td>
-                            <td>3</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-2);">3</span></td>
                             <td><span class="reward-fail">❌</span></td>
                         </tr>
 
@@ -1323,7 +1814,7 @@
                             <td class="info-cell">J2Y</td>
                             <td class="info-cell">25031</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">13/3</span><span class="score-value">5</span></span><span class="score-item has-score"><span class="score-date">17/3</span><span class="score-value">3</span></span><span class="score-item has-score"><span class="score-date">3/3</span><span class="score-value">2</span></span><span class="score-item has-score"><span class="score-date">4/3</span><span class="score-value">4</span></span><span class="score-item has-score"><span class="score-date">6/3</span><span class="score-value">3</span></span></div></td>
-                            <td>21</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-9);">21</span></td>
                             <td><span class="reward-pass">✅</span></td>
                         </tr>
 
@@ -1336,7 +1827,7 @@
                             <td class="info-cell">J2F</td>
                             <td class="info-cell">25070</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">4/3</span><span class="score-value">2</span></span><span class="score-item has-score"><span class="score-date">6/3</span><span class="score-value">3</span></span></div></td>
-                            <td>5</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-3);">5</span></td>
                             <td><span class="reward-pass">✅</span></td>
                         </tr>
 
@@ -1349,7 +1840,7 @@
                             <td class="info-cell">J1T</td>
                             <td class="info-cell">26092</td>
                             <td><div class="score-tags"><span class="score-item has-score"><span class="score-date">10/3</span><span class="score-value">2</span></span><span class="score-item has-score"><span class="score-date">17/3</span><span class="score-value">1</span></span><span class="score-item has-score"><span class="score-date">5/3</span><span class="score-value">2</span></span></div></td>
-                            <td>5</td>
+                            <td><span class="total-heat" style="background-color: var(--heat-3);">5</span></td>
                             <td><span class="reward-fail">❌</span></td>
                         </tr>
 
@@ -1360,7 +1851,6 @@
 
         </div>
 
-        <!-- 奖励机制卡片 - 从测试网站融合过来 -->
         <div class="reward-section">
             <div class="reward-header">
                 <span class="reward-icon">🎁</span>
@@ -1409,72 +1899,162 @@
             </div>
         </div>
 
+        <div class="reminder-btn" id="reminderBtn">
+            <span class="bell-icon">🔔</span>
+            <span class="reminder-text">开启提醒</span>
+        </div>
+
+        <div class="reminder-popup" id="reminderPopup">
+            <div class="popup-header">
+                <span class="popup-icon">⏰</span>
+                <span class="popup-title">每日提醒时间</span>
+                <span class="popup-close" onclick="closePopup()">✕</span>
+            </div>
+            <div class="popup-content">
+                <div class="time-item">
+                    <span class="time-icon">🌅</span>
+                    <span class="time-label">早上 6:00</span>
+                    <span class="time-desc">起床提醒</span>
+                </div>
+                <div class="time-item">
+                    <span class="time-icon">🌆</span>
+                    <span class="time-label">晚上 7:00</span>
+                    <span class="time-desc">明天衣服提醒</span>
+                </div>
+                <div class="time-item">
+                    <span class="time-icon">🌙</span>
+                    <span class="time-label">晚上 8:15</span>
+                    <span class="time-desc">再次提醒</span>
+                </div>
+                <div class="time-item">
+                    <span class="time-icon">🌃</span>
+                    <span class="time-label">晚上 10:00</span>
+                    <span class="time-desc">睡前提醒</span>
+                </div>
+            </div>
+            <div class="popup-footer">
+                <button class="popup-btn" onclick="enableReminders()">知道了，开启提醒</button>
+            </div>
+        </div>
+
+        <div class="notification-toast" id="notificationToast">
+            <div class="toast-close" onclick="this.parentElement.classList.remove('show')">✕</div>
+            <div class="toast-title">
+                <span>🔔</span>
+                <span id="toastMessage">通知</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-secondary);" id="toastDetail"></div>
+        </div>
+
         <div class="footer">
-            👆 点击排名卡片跳转 · 🌓切换深色 · 📊下载统计 · 最近5次得分
+            👆 双击屏幕 / 按两次空格切换深色 · 📊下载统计 · 颜色越浅分数越高
         </div>
     </div>
 
-    <!-- 下载提示 -->
     <div class="download-toast" id="downloadToast">
         <span class="toast-icon">✓</span>
         <span id="toastMessage">统计图已生成</span>
     </div>
 
     <script>
-        // 检查系统主题偏好
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.body.classList.add('night-mode');
+        // ========== 首先定义所有函数 ==========
+        
+        // 切换深色模式
+        function toggleNightMode() {
+            document.body.classList.toggle('night-mode');
+            showHint(document.body.classList.contains('night-mode') ? '🌙 深色模式' : '☀️ 日间模式');
+            
+            // 如果图表显示中，重新生成以适配深色模式
+            const chartCard = document.getElementById('chartCard');
+            if (chartCard && chartCard.classList.contains('show') && window.chart) {
+                generateChart();
+            }
         }
-        
-        const searchInput = document.getElementById('search');
-        const allRows = document.querySelectorAll('tbody tr');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const saveChartBtn = document.getElementById('saveChartBtn');
-        const chartCard = document.getElementById('chartCard');
-        const closeChart = document.getElementById('closeChart');
-        const downloadToast = document.getElementById('downloadToast');
-        const toastMessage = document.getElementById('toastMessage');
-        const statsGrid = document.getElementById('statsGrid');
-        
-        // 统计数据
-        const statsData = [
-            { group: "星穹组", total: 57, rank: 2, members: 10, avg: 5, color: "#eab308" },
-            { group: "夜曜组", total: 110, rank: 1, members: 11, avg: 10, color: "#a855f7" },
-            { group: "沧澜组", total: 56, rank: 3, members: 10, avg: 5, color: "#3b82f6" },
-        ];
-
-        // 组数据
-        const groups = ["星穹组", "夜曜组", "沧澜组"];
-        const scores = [
-            statsData.find(s => s.group === "星穹组").total,
-            statsData.find(s => s.group === "夜曜组").total,
-            statsData.find(s => s.group === "沧澜组").total
-        ];
-        const colors = ["#eab308", "#a855f7", "#3b82f6"];
-        
-        let chart = null;
 
         // 显示提示
+        function showHint(message) {
+            const hint = document.getElementById('doubleTapHint');
+            const hintText = document.getElementById('hintText');
+            if (!hint || !hintText) return;
+            
+            hintText.textContent = message;
+            hint.classList.add('show');
+            
+            clearTimeout(window.hintTimeout);
+            window.hintTimeout = setTimeout(() => {
+                hint.classList.remove('show');
+            }, 1500);
+        }
+
+        // 显示下载提示
         function showToast(message, isSuccess = true) {
-            toastMessage.textContent = message;
-            downloadToast.classList.add('show');
+            const toast = document.getElementById('downloadToast');
+            const msgEl = document.getElementById('toastMessage');
+            if (!toast || !msgEl) return;
+            
+            msgEl.textContent = message;
+            toast.classList.add('show');
+            
             setTimeout(() => {
-                downloadToast.classList.remove('show');
+                toast.classList.remove('show');
             }, 2000);
+        }
+
+        // 显示通知提示
+        function showNotification(title, detail) {
+            const toast = document.getElementById('notificationToast');
+            const titleEl = document.getElementById('toastMessage');
+            const detailEl = document.getElementById('toastDetail');
+            
+            if (!toast || !titleEl || !detailEl) return;
+            
+            titleEl.textContent = title;
+            detailEl.textContent = detail;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // 开启提醒
+        function enableReminders() {
+            showNotification('🔔 提醒已开启', '你将在以下时间收到通知：\n早上6:00 · 晚上7:00 · 晚上8:15 · 晚上10:00');
+            closePopup();
+        }
+
+        // 显示提醒弹窗
+        function showReminderPopup() {
+            const popup = document.getElementById('reminderPopup');
+            if (popup) popup.classList.add('show');
+        }
+
+        // 关闭弹窗
+        function closePopup() {
+            const popup = document.getElementById('reminderPopup');
+            if (popup) popup.classList.remove('show');
         }
 
         // 生成统计图
         function generateChart() {
-            const ctx = document.getElementById('groupChart').getContext('2d');
+            const canvas = document.getElementById('groupChart');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
             const isNightMode = document.body.classList.contains('night-mode');
             const textColor = isNightMode ? '#94a3b8' : '#5a6b7a';
             const gridColor = isNightMode ? '#2d3a4d' : '#e1e8f0';
             
-            if (chart) {
-                chart.destroy();
+            // 数据 - 会被Python替换
+            const groups = ["\u591c\u66dc\u7ec4", "\u661f\u7a79\u7ec4", "\u6ca7\u6f9c\u7ec4"];
+            const scores = [110, 57, 56];
+            const colors = ['#eab308', '#a855f7', '#3b82f6'];
+            
+            if (window.chart) {
+                window.chart.destroy();
             }
             
-            chart = new Chart(ctx, {
+            window.chart = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: groups,
@@ -1495,14 +2075,7 @@
                             callbacks: {
                                 label: function(context) {
                                     const value = context.raw;
-                                    const group = groups[context.dataIndex];
-                                    const stat = statsData.find(s => s.group === group);
-                                    return [
-                                        `总分: ${value}分`,
-                                        `排名: 第${stat.rank}名`,
-                                        `人数: ${stat.members}人`,
-                                        `平均: ${stat.avg}分`
-                                    ];
+                                    return `总分: ${value}`;
                                 }
                             }
                         }
@@ -1520,31 +2093,29 @@
                     }
                 }
             });
-        }
-
-        // 生成统计卡片
-        function generateStatsGrid() {
-            let html = '';
-            statsData.forEach(stat => {
-                html += `
+            
+            // 更新统计卡片
+            const statsGrid = document.getElementById('statsGrid');
+            if (statsGrid) {
+                statsGrid.innerHTML = groups.map((g, i) => `
                     <div class="stat-item">
-                        <div class="stat-label">${stat.group}</div>
-                        <div class="stat-value">${stat.total}</div>
-                        <div class="stat-rank">第${stat.rank}名 · ${stat.members}人</div>
+                        <div class="stat-label">${g}</div>
+                        <div class="stat-value">${scores[i]}</div>
+                        <div class="stat-rank">第${i+1}名 · 10人</div>
                     </div>
-                `;
-            });
-            statsGrid.innerHTML = html;
+                `).join('');
+            }
         }
 
-        // 保存统计图到相册
+        // 保存图表
         async function saveChartToGallery() {
             const chartCard = document.getElementById('chartCard');
+            if (!chartCard) return;
             
             try {
                 showToast('📸 正在生成图片...');
                 
-                if (!chart) {
+                if (!window.chart) {
                     generateChart();
                 }
                 
@@ -1558,7 +2129,7 @@
                     });
                     
                     const link = document.createElement('a');
-                    link.download = `学长团统计_${new Date().toISOString().slice(0,10)}.png`;
+                    link.download = `prefects_score_${new Date().toISOString().slice(0,10)}.png`;
                     link.href = canvas.toDataURL('image/png');
                     link.click();
                     
@@ -1571,36 +2142,150 @@
             }
         }
 
-        downloadBtn.addEventListener('click', () => {
-            chartCard.classList.add('show');
-            generateChart();
-            generateStatsGrid();
-            showToast('📊 统计图已生成');
-        });
+        // ========== DOM 加载完成后绑定事件 ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // 深色模式切换
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleNightMode();
+                });
+            }
 
-        if (saveChartBtn) {
-            saveChartBtn.addEventListener('click', saveChartToGallery);
-        }
+            // 语言切换
+            const langToggle = document.getElementById('langToggle');
+            if (langToggle) {
+                langToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const body = document.body;
+                    if (body.classList.contains('lang-zh')) {
+                        body.classList.remove('lang-zh');
+                        body.classList.add('lang-en');
+                        this.querySelector('.lang-left').textContent = 'EN';
+                        this.querySelector('.lang-right').textContent = 'MS';
+                    } else if (body.classList.contains('lang-en')) {
+                        body.classList.remove('lang-en');
+                        body.classList.add('lang-ms');
+                        this.querySelector('.lang-left').textContent = 'MS';
+                        this.querySelector('.lang-right').textContent = '中';
+                    } else {
+                        body.classList.remove('lang-ms');
+                        body.classList.add('lang-zh');
+                        this.querySelector('.lang-left').textContent = '中';
+                        this.querySelector('.lang-right').textContent = 'EN';
+                    }
+                    showNotification('🌐', `已切换到 ${body.classList.contains('lang-zh') ? '中文' : body.classList.contains('lang-en') ? 'English' : 'Bahasa Melayu'}`);
+                });
+            }
 
-        closeChart.addEventListener('click', () => {
-            chartCard.classList.remove('show');
-        });
+            // 下载统计按钮
+            const downloadBtn = document.getElementById('downloadBtn');
+            const chartCard = document.getElementById('chartCard');
+            const closeChart = document.getElementById('closeChart');
+            
+            if (downloadBtn && chartCard) {
+                downloadBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    chartCard.classList.add('show');
+                    generateChart();
+                    showToast('📊 统计图已生成');
+                });
+            }
 
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase().trim();
-            allRows.forEach(row => {
-                const searchText = row.getAttribute('data-search').toLowerCase();
-                row.style.display = searchText.includes(searchTerm) ? '' : 'none';
+            // 保存图表按钮
+            const saveChartBtn = document.getElementById('saveChartBtn');
+            if (saveChartBtn) {
+                saveChartBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    saveChartToGallery();
+                });
+            }
+
+            // 关闭图表
+            if (closeChart && chartCard) {
+                closeChart.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    chartCard.classList.remove('show');
+                });
+            }
+
+            // 搜索功能
+            const searchInput = document.getElementById('search');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    const searchTerm = e.target.value.toLowerCase().trim();
+                    const allRows = document.querySelectorAll('tbody tr');
+                    
+                    allRows.forEach(row => {
+                        const searchText = row.getAttribute('data-search')?.toLowerCase() || '';
+                        row.style.display = searchText.includes(searchTerm) ? '' : 'none';
+                    });
+                });
+            }
+
+            // 提醒按钮
+            const reminderBtn = document.getElementById('reminderBtn');
+            if (reminderBtn) {
+                reminderBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    showReminderPopup();
+                });
+            }
+
+            // 点击外部关闭弹窗
+            document.addEventListener('click', function(e) {
+                const popup = document.getElementById('reminderPopup');
+                const btn = document.getElementById('reminderBtn');
+                if (popup && btn) {
+                    if (!popup.contains(e.target) && !btn.contains(e.target)) {
+                        popup.classList.remove('show');
+                    }
+                }
+            });
+
+            // 双击/双空格监听
+            let lastTap = 0;
+            let lastSpaceTime = 0;
+            let spaceCount = 0;
+
+            document.addEventListener('touchstart', (e) => {
+                const currentTime = new Date().getTime();
+                const tapLength = currentTime - lastTap;
+                
+                if (tapLength < 200 && tapLength > 0) {
+                    toggleNightMode();
+                    e.preventDefault();
+                }
+                lastTap = currentTime;
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    
+                    const currentTime = new Date().getTime();
+                    
+                    if (currentTime - lastSpaceTime < 500) {
+                        spaceCount++;
+                        if (spaceCount === 2) {
+                            toggleNightMode();
+                            spaceCount = 0;
+                        }
+                    } else {
+                        spaceCount = 1;
+                    }
+                    
+                    lastSpaceTime = currentTime;
+                }
             });
         });
 
-        const observer = new MutationObserver(() => {
-            if (chart && chartCard.classList.contains('show')) {
-                generateChart();
-            }
-        });
-        
-        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        // 检查系统主题偏好
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.body.classList.add('night-mode');
+        }
     </script>
 </body>
 </html>
