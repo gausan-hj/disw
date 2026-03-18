@@ -1,0 +1,115 @@
+name: 周二周四联课提醒
+
+on:
+  schedule:
+    # 星期一晚上提醒星期二 (3次)
+    - cron: '0 11 * * 1'   # 星期一 19:00
+    - cron: '15 12 * * 1'  # 星期一 20:15
+    - cron: '0 14 * * 1'   # 星期一 22:00
+    
+    # 星期二早上提醒星期二
+    - cron: '0 22 * * 1'   # 星期二 06:00 (星期一的UTC 22:00)
+    
+    # 星期三晚上提醒星期四 (3次)
+    - cron: '0 11 * * 3'   # 星期三 19:00
+    - cron: '15 12 * * 3'  # 星期三 20:15
+    - cron: '0 14 * * 3'   # 星期三 22:00
+    
+    # 星期四早上提醒星期四
+    - cron: '0 22 * * 3'   # 星期四 06:00 (星期三的UTC 22:00)
+  
+  # 支持手动触发
+  workflow_dispatch:
+
+jobs:
+  send-reminder:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 获取当前时间信息
+        id: time
+        run: |
+          # 当前小时 (UTC)
+          echo "hour=$(date +%H)" >> $GITHUB_OUTPUT
+          
+          # 当前星期几 (1=周一, 2=周二, 3=周三, 4=周四, 5=周五, 6=周六, 7=周日)
+          echo "weekday=$(date +%u)" >> $GITHUB_OUTPUT
+          
+          # 星期名称
+          echo "weekday_name=$(date +%A)" >> $GITHUB_OUTPUT
+          
+          # 明天星期几
+          echo "tomorrow=$(date -d "tomorrow" +%u)" >> $GITHUB_OUTPUT
+          echo "tomorrow_name=$(date -d "tomorrow" +%A)" >> $GITHUB_OUTPUT
+          
+          # 判断是否是手动触发
+          echo "is_manual=${{ github.event_name == 'workflow_dispatch' }}" >> $GITHUB_OUTPUT
+      
+      - name: 根据时间生成提醒内容
+        id: message
+        run: |
+          HOUR="${{ steps.time.outputs.hour }}"
+          WEEKDAY="${{ steps.time.outputs.weekday }}"
+          TOMORROW="${{ steps.time.outputs.tomorrow }}"
+          IS_MANUAL="${{ steps.time.outputs.is_manual }}"
+          
+          # 默认消息为空
+          MESSAGE=""
+          
+          # 早上6点 (UTC 22:00) - 提醒今天
+          if [ "$HOUR" = "22" ]; then
+            if [ "$WEEKDAY" = "2" ]; then
+              MESSAGE="🎽 今天是星期二！有联课活动，请穿体育衣"
+            elif [ "$WEEKDAY" = "4" ]; then
+              MESSAGE="👔 今天是星期四！有联课活动，请穿校服"
+            fi
+          
+          # 晚上 - 提醒明天
+          else
+            if [ "$TOMORROW" = "2" ]; then
+              MESSAGE="🎽 明天星期二有联课活动，请准备体育衣"
+            elif [ "$TOMORROW" = "4" ]; then
+              MESSAGE="👔 明天星期四有联课活动，请准备校服"
+            fi
+          fi
+          
+          # 如果是手动触发且没有消息，就发测试消息（用日期信息）
+          if [ "$IS_MANUAL" = "true" ] && [ -z "$MESSAGE" ]; then
+            TODAY_NAME="${{ steps.time.outputs.weekday_name }}"
+            TOMORROW_NAME="${{ steps.time.outputs.tomorrow_name }}"
+            MESSAGE="系统运行正常 | 今天$TODAY_NAME，明天$TOMORROW_NAME"
+          fi
+          
+          # 输出消息
+          echo "message=$MESSAGE" >> $GITHUB_OUTPUT
+          
+          # 调试信息
+          echo "调试信息:"
+          echo "  hour: $HOUR"
+          echo "  weekday: $WEEKDAY"
+          echo "  tomorrow: $TOMORROW"
+          echo "  is_manual: $IS_MANUAL"
+          echo "  message: $MESSAGE"
+      
+      - name: 发送 OneSignal 推送
+        if: steps.message.outputs.message != ''
+        run: |
+          curl -X POST "https://onesignal.com/api/v1/notifications" \
+            -H "Authorization: Basic ${{ secrets.ONESIGNAL_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "app_id": "${{ secrets.ONESIGNAL_APP_ID }}",
+              "headings": {"en": "📋 系统状态报告"},
+              "contents": {"en": "${{ steps.message.outputs.message }}"},
+              "included_segments": ["All"],
+              "chrome_web_icon": "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+            }'
+      
+      - name: 记录推送日志
+        if: always()
+        run: |
+          echo "🕐 执行时间: $(date)"
+          echo "📅 今天: ${{ steps.time.outputs.weekday_name }}"
+          echo "⏰ 小时: ${{ steps.time.outputs.hour }}"
+          echo "🤖 手动触发: ${{ steps.time.outputs.is_manual }}"
+          echo "💬 消息: ${{ steps.message.outputs.message }}"
