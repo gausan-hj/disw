@@ -30,7 +30,7 @@ on:
     # ----- 每天早上提醒今天放假 -----
     - cron: '0 22 20-29 3 *'   # 🌅 06:00 - 今天放假啦！
     
-    # ----- 每天晚上提醒明天继续放假 -----
+    # ----- 每天晚上提醒明天继续放假 (20-28号) -----
     - cron: '0 11 20-28 3 *'   # 🌆 19:00 - 明天继续放假
     - cron: '15 12 20-28 3 *'  # 🔔 20:15 - 再次提醒
     - cron: '0 14 20-28 3 *'   # 🌙 22:00 - 睡前提醒：明天继续放假
@@ -217,42 +217,51 @@ jobs:
             fi
             EMOJI="🔧"
           
-          # 3️⃣ 手动触发（无自定义消息）
+          # 3️⃣ 手动触发（无自定义消息）- 优先判断放假状态
           elif [ "$IS_MANUAL" = "true" ]; then
             if [ "$IS_HOLIDAY" = "true" ]; then
+              # 🏖️ 放假期间
               if [ "$IS_LAST_DAY" = "true" ]; then
                 TITLE="🏖️ 假期最后一天"
                 MESSAGE="今天是 $WEEKDAY_CN，假期最后一天啦！明天就要开学了，准备好书包和校服了吗？"
                 EMOJI="🎒"
+              elif [ "$IS_FIRST_DAY" = "true" ]; then
+                TITLE="🏖️ 假期开始啦！"
+                MESSAGE="今天是 $WEEKDAY_CN，假期开始啦！好好放松一下吧~"
+                EMOJI="🎉"
               else
                 TITLE="🏖️ 放假通知"
                 MESSAGE="今天是 $WEEKDAY_CN，放假第 $HOLIDAY_DAY 天，还剩 $HOLIDAY_LEFT 天，好好休息！"
                 EMOJI="😎"
               fi
             elif [ "$TOMORROW_SCHOOL" = "true" ]; then
+              # 📚 明天开学
               TITLE="📢 明天开学啦！"
               MESSAGE="明天 $TOMORROW_CN 就要开学啦！请准备好书包、文具和校服"
               EMOJI="🏃"
-            elif [ "$WEEKDAY_NUM" = "2" ]; then
-              TITLE="📢 今天有联课活动"
-              MESSAGE="🎽 今天是星期二！有联课活动，请穿体育衣"
-              EMOJI="⚽"
-            elif [ "$WEEKDAY_NUM" = "4" ]; then
-              TITLE="📢 今天有联课活动"
-              MESSAGE="👔 今天是星期四！有联课活动，请穿校服"
-              EMOJI="📚"
-            elif [ "$TOMORROW_NUM" = "2" ]; then
-              TITLE="⏰ 明天联课提醒"
-              MESSAGE="🎽 明天星期二有联课活动，请准备体育衣"
-              EMOJI="🌅"
-            elif [ "$TOMORROW_NUM" = "4" ]; then
-              TITLE="⏰ 明天联课提醒"
-              MESSAGE="👔 明天星期四有联课活动，请准备校服"
-              EMOJI="🌅"
             else
-              TITLE="ℹ️ 系统提示"
-              MESSAGE="今天 $WEEKDAY_CN 和明天 $TOMORROW_CN 都没有联课活动"
-              EMOJI="📌"
+              # ⚽ 非放假期间，才检查联课活动
+              if [ "$WEEKDAY_NUM" = "2" ]; then
+                TITLE="📢 今天有联课活动"
+                MESSAGE="🎽 今天是星期二！有联课活动，请穿体育衣"
+                EMOJI="⚽"
+              elif [ "$WEEKDAY_NUM" = "4" ]; then
+                TITLE="📢 今天有联课活动"
+                MESSAGE="👔 今天是星期四！有联课活动，请穿校服"
+                EMOJI="📚"
+              elif [ "$TOMORROW_NUM" = "2" ]; then
+                TITLE="⏰ 明天联课提醒"
+                MESSAGE="🎽 明天星期二有联课活动，请准备体育衣"
+                EMOJI="🌅"
+              elif [ "$TOMORROW_NUM" = "4" ]; then
+                TITLE="⏰ 明天联课提醒"
+                MESSAGE="👔 明天星期四有联课活动，请准备校服"
+                EMOJI="🌅"
+              else
+                TITLE="ℹ️ 系统提示"
+                MESSAGE="今天 $WEEKDAY_CN 和明天 $TOMORROW_CN 都没有联课活动"
+                EMOJI="📌"
+              fi
             fi
           
           # 4️⃣ 自动触发（定时任务）
@@ -277,16 +286,9 @@ jobs:
               
               # 晚上7点 - 明天继续放假 (20-28号)
               elif [ "$HOUR" = "11" ] && [ "$DAY" -le 28 ]; then
-                if [ "$IS_LAST_DAY" = "true" ]; then
-                  # 这个不会执行，因为29号晚上会走下面的开学提醒
-                  TITLE="🌆 明天继续放假"
-                  MESSAGE="明天 $TOMORROW_CN 还是放假，可以睡到自然醒！"
-                  EMOJI="✨"
-                else
-                  TITLE="🌆 明天继续放假"
-                  MESSAGE="明天 $TOMORROW_CN 还是放假，放假第 $((HOLIDAY_DAY+1)) 天，好好享受！"
-                  EMOJI="✨"
-                fi
+                TITLE="🌆 明天继续放假"
+                MESSAGE="明天 $TOMORROW_CN 还是放假，放假第 $((HOLIDAY_DAY+1)) 天，好好享受！"
+                EMOJI="✨"
               
               # 晚上8:15 - 再次提醒 (20-28号)
               elif [ "$HOUR" = "12" ] && [ "$MINUTE" = "15" ] && [ "$DAY" -le 28 ]; then
@@ -321,7 +323,7 @@ jobs:
               MESSAGE="📚 今天开学啦！祝大家新学期学习进步，加油！"
               EMOJI="⭐"
             
-            # ⚽ 周二/周四联课提醒
+            # ⚽ 周二/周四联课提醒 (非放假期间)
             else
               # 早上提醒
               if [ "$HOUR" = "22" ]; then
