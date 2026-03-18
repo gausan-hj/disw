@@ -1260,7 +1260,7 @@
             </div>
             <div class="meta-info">
                 <span>Prefects' Scoreboard · 颜色越浅分数越高</span>
-                <span class="date-badge">03/18 15:19</span>
+                <span class="date-badge">03/18 15:22</span>
             </div>
             <div class="search-wrapper">
                 <span class="search-icon">🔍</span>
@@ -1937,40 +1937,17 @@
     </div>
 
     <script>
-        // ========== OneSignal 初始化 - 用于通知权限 ==========
-        window.OneSignalDeferred = window.OneSignalDeferred || [];
-        OneSignalDeferred.push(async function(OneSignal) {
-            await OneSignal.init({
-                appId: "137d66ce-9746-4206-9861-a1c368a0b548", // OneSignal App ID
-                allowLocalhostAsSecureOrigin: true,
-                notifyButton: {
-                    enable: true,
-                    size: 'medium',
-                    showCredit: false,
-                    position: 'bottom-right',
-                    text: {
-                        'message': '开启提醒',
-                        'subscribe': '知道了，开启提醒',
-                        'unsubscribe': '关闭提醒'
-                    },
-                    colors: {
-                        'circle.background': '#eab308',
-                        'circle.foreground': '#1a2b3c',
-                        'badge.background': '#eab308',
-                        'badge.foreground': '#1a2b3c',
-                        'badge.bordercolor': '#e2e8f0',
-                        'button.background': '#eab308',
-                        'button.foreground': '#1a2b3c',
-                        'button.hover.background': '#ca8a04'
-                    }
-                },
-                serviceWorkerParam: { scope: '/' },
-                serviceWorkerPath: 'OneSignalSDKWorker.js',
-                serviceWorkerUpdaterPath: 'OneSignalSDKUpdaterWorker.js',
-            });
-            console.log('OneSignal 初始化成功');
-        });
-
+        // ===== 替换原有的 OneSignal 初始化部分 =====
+window.OneSignalDeferred = window.OneSignalDeferred || [];
+OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+        appId: "137d66ce-9746-4206-9861-a1c368a0b548", // 确保这是你在 OneSignal 面板申请的 ID
+        allowLocalhostAsSecureOrigin: true,
+        notifyButton: {
+            enable: false, // 用我们自己的 bell-icon 按钮触发，关掉自带的
+        },
+    });
+});
         // ========== 首先定义所有函数 ==========
         
         // 切换深色模式
@@ -2031,14 +2008,35 @@
             }, 3000);
         }
 
-        // 开启提醒 - 使用 OneSignal 请求权限
-        function enableReminders() {
-            OneSignalDeferred.push(function(OneSignal) {
-                OneSignal.Notifications.requestPermission();
-            });
-            showNotification('🔔 提醒已开启', '你将在以下时间收到通知：\n早上6:00 · 晚上7:00 · 晚上8:15 · 晚上10:00');
-            closePopup();
+        // ===== 强化激活函数 =====
+async function enableReminders() {
+    OneSignalDeferred.push(async function(OneSignal) {
+        // 1. 检查浏览器是否支持
+        if (!OneSignal.Notifications.isPushSupported()) {
+            showNotification('❌ 不支持', '您的浏览器不支持网页通知');
+            return;
         }
+
+        // 2. 弹出系统原生权限请求
+        try {
+            await OneSignal.Notifications.requestPermission();
+            
+            // 3. 检查是否成功获取权限
+            if (OneSignal.Notifications.permission) {
+                showNotification('✅ 权限已开启', '您已成功订阅联课提醒');
+                
+                // 可以在这里给用户打标签，方便后台定向推送
+                OneSignal.User.addTag("role", "prefect"); 
+                
+                closePopup();
+            } else {
+                showNotification('⚠️ 权限被拒绝', '请在浏览器设置中手动开启通知');
+            }
+        } catch (err) {
+            console.error("Permission error:", err);
+        }
+    });
+}
 
         // 显示提醒弹窗
         function showReminderPopup() {
