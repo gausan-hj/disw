@@ -118,7 +118,13 @@ except FileNotFoundError:
                     "generating": "📸 正在生成图片...",
                     "saved": "✅ 已保存到相册",
                     "saveFailed": "❌ 保存失败",
-                    "chartGenerated": "📊 统计图已生成"
+                    "chartGenerated": "📊 统计图已生成",
+                    "not_supported": "❌ 不支持",
+                    "not_supported_detail": "您的浏览器不支持网页通知",
+                    "permission_granted": "✅ 权限已开启",
+                    "permission_granted_detail": "您已成功订阅联课提醒",
+                    "permission_denied": "⚠️ 权限被拒绝",
+                    "permission_denied_detail": "请在浏览器设置中手动开启通知"
                 }
             }
         },
@@ -194,7 +200,13 @@ except FileNotFoundError:
                     "generating": "📸 Generating image...",
                     "saved": "✅ Saved to gallery",
                     "saveFailed": "❌ Save failed",
-                    "chartGenerated": "📊 Chart generated"
+                    "chartGenerated": "📊 Chart generated",
+                    "not_supported": "❌ Not supported",
+                    "not_supported_detail": "Your browser does not support web notifications",
+                    "permission_granted": "✅ Permission granted",
+                    "permission_granted_detail": "You have successfully subscribed to CCA reminders",
+                    "permission_denied": "⚠️ Permission denied",
+                    "permission_denied_detail": "Please enable notifications in your browser settings"
                 }
             }
         },
@@ -270,7 +282,13 @@ except FileNotFoundError:
                     "generating": "📸 Menjana imej...",
                     "saved": "✅ Disimpan ke galeri",
                     "saveFailed": "❌ Gagal menyimpan",
-                    "chartGenerated": "📊 Carta dijana"
+                    "chartGenerated": "📊 Carta dijana",
+                    "not_supported": "❌ Tidak disokong",
+                    "not_supported_detail": "Pelayar anda tidak menyokong pemberitahuan web",
+                    "permission_granted": "✅ Kebenaran diberikan",
+                    "permission_granted_detail": "Anda telah berjaya melanggan peringatan CCA",
+                    "permission_denied": "⚠️ Kebenaran ditolak",
+                    "permission_denied_detail": "Sila dayakan pemberitahuan dalam tetapan pelayar anda"
                 }
             }
         }
@@ -473,7 +491,7 @@ for g in group_data:
         group_max_scores[g] = 0
         group_min_scores[g] = 0
 
-# 生成HTML - 添加OneSignal通知权限
+# 生成HTML - 添加专业的OneSignal通知权限
 html = '''<!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -1893,56 +1911,197 @@ html = '''<!DOCTYPE html>
     </div>
 
     <script>
-        // ========== OneSignal 初始化 - 用于通知权限 ==========
+        // ========== 语言数据 ==========
+        const LANGUAGES = {languages_json};
+        
+        // 当前语言
+        let currentLang = localStorage.getItem('prefect_lang') || 'zh';
+        
+        // ========== 翻译函数 ==========
+        function t(key, params = {{}}) {{
+            const keys = key.split('.');
+            let value = LANGUAGES[currentLang];
+            for (const k of keys) {{
+                if (value && value[k] !== undefined) {{
+                    value = value[k];
+                }} else {{
+                    console.warn(`Translation key not found: ${{key}}`);
+                    return key;
+                }}
+            }}
+            
+            if (typeof value === 'string') {{
+                return value.replace(/\\{{([^}}]+)\\}}/g, (match, p1) => {{
+                    return params[p1] !== undefined ? params[p1] : match;
+                }});
+            }}
+            return value;
+        }}
+        
+        // ========== 更新页面所有文本 ==========
+        function updatePageLanguage() {{
+            // 更新所有带 data-i18n 属性的元素
+            document.querySelectorAll('[data-i18n]').forEach(el => {{
+                const key = el.getAttribute('data-i18n');
+                el.textContent = t(key);
+            }});
+            
+            // 更新所有带 data-i18n-placeholder 属性的输入框
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {{
+                const key = el.getAttribute('data-i18n-placeholder');
+                el.placeholder = t(key);
+            }});
+            
+            // 更新组名（特殊处理）
+            updateGroupNames();
+            
+            // 更新统计图标题
+            if (window.chart && document.getElementById('chartCard')?.classList.contains('show')) {{
+                generateChart();
+            }}
+            
+            // 更新语言按钮显示
+            updateLangButton();
+        }}
+        
+        // 更新组名
+        function updateGroupNames() {{
+            document.querySelectorAll('.rank-card').forEach(card => {{
+                const group = card.getAttribute('data-group');
+                const groupName = getTranslatedGroupName(group);
+                const nameEl = card.querySelector('.rank-name');
+                if (nameEl) nameEl.textContent = groupName;
+            }});
+            
+            document.querySelectorAll('.group-card').forEach(card => {{
+                const group = card.getAttribute('data-group');
+                const groupName = getTranslatedGroupName(group);
+                const titleEl = card.querySelector('.group-title');
+                if (titleEl) titleEl.textContent = groupName;
+                
+                const avgEl = card.querySelector('.group-avg');
+                if (avgEl) {{
+                    const score = avgEl.textContent.match(/\\d+/)?.[0] || '';
+                    avgEl.innerHTML = t('app.groups.average') + ' ' + score;
+                }}
+            }});
+            
+            document.querySelectorAll('.group-badge').forEach(badge => {{
+                const text = badge.textContent;
+                const match = text.match(/第(\d+)名/);
+                if (match) {{
+                    badge.textContent = t('app.chart.rank', {{rank: match[1]}});
+                }}
+            }});
+        }}
+        
+        function getTranslatedGroupName(group) {{
+            const map = {{
+                '星穹组': 'app.groups.xingqiong',
+                '夜曜组': 'app.groups.yeyao',
+                '沧澜组': 'app.groups.canglan'
+            }};
+            return t(map[group]);
+        }}
+        
+        function updateLangButton() {{
+            const langToggle = document.getElementById('langToggle');
+            if (!langToggle) return;
+            
+            const leftSpan = langToggle.querySelector('.lang-left');
+            const rightSpan = langToggle.querySelector('.lang-right');
+            
+            if (currentLang === 'zh') {{
+                leftSpan.textContent = '中';
+                rightSpan.textContent = 'EN';
+            }} else if (currentLang === 'en') {{
+                leftSpan.textContent = 'EN';
+                rightSpan.textContent = 'MS';
+            }} else {{
+                leftSpan.textContent = 'MS';
+                rightSpan.textContent = '中';
+            }}
+        }}
+        
+        // ========== OneSignal 初始化 - 专业的通知权限处理 ==========
         window.OneSignalDeferred = window.OneSignalDeferred || [];
-        OneSignalDeferred.push(async function(OneSignal) {
-            await OneSignal.init({
-                appId: "137d66ce-9746-4206-9861-a1c368a0b548", // OneSignal App ID
+        OneSignalDeferred.push(async function(OneSignal) {{
+            await OneSignal.init({{
+                appId: "137d66ce-9746-4206-9861-a1c368a0b548", // 确保这是你在 OneSignal 面板申请的 ID
+                safari_web_id: "web.onesignal.auto.xxxxxxxx", // 如果要支持 Safari，需填入此项
                 allowLocalhostAsSecureOrigin: true,
-                notifyButton: {
-                    enable: true,
-                    size: 'medium',
-                    showCredit: false,
-                    position: 'bottom-right',
-                    text: {
-                        'message': '开启提醒',
-                        'subscribe': '知道了，开启提醒',
-                        'unsubscribe': '关闭提醒'
-                    },
-                    colors: {
-                        'circle.background': '#eab308',
-                        'circle.foreground': '#1a2b3c',
-                        'badge.background': '#eab308',
-                        'badge.foreground': '#1a2b3c',
-                        'badge.bordercolor': '#e2e8f0',
-                        'button.background': '#eab308',
-                        'button.foreground': '#1a2b3c',
-                        'button.hover.background': '#ca8a04'
-                    }
-                },
-                serviceWorkerParam: { scope: '/' },
-                serviceWorkerPath: 'OneSignalSDKWorker.js',
-                serviceWorkerUpdaterPath: 'OneSignalSDKUpdaterWorker.js',
-            });
+                notifyButton: {{
+                    enable: false, // 我们用自己画的那个漂亮的 bell-icon 按钮触发，所以关掉自带的
+                }},
+            }});
             console.log('OneSignal 初始化成功');
-        });
+        }});
 
-        // ========== 首先定义所有函数 ==========
+        // ========== 强化激活函数 ==========
+        async function enableReminders() {{
+            OneSignalDeferred.push(async function(OneSignal) {{
+                // 1. 检查浏览器是否支持
+                if (!OneSignal.Notifications.isPushSupported()) {{
+                    showNotification(t('app.toast.not_supported'), t('app.toast.not_supported_detail'));
+                    return;
+                }}
+
+                // 2. 弹出系统原生权限请求
+                try {{
+                    await OneSignal.Notifications.requestPermission();
+                    
+                    // 3. 检查是否成功获取权限
+                    if (OneSignal.Notifications.permission) {{
+                        showNotification(t('app.toast.permission_granted'), t('app.toast.permission_granted_detail'));
+                        
+                        // 可以在这里给用户打标签，方便后台定向推送
+                        OneSignal.User.addTag("role", "prefect"); 
+                        
+                        closePopup();
+                    }} else {{
+                        showNotification(t('app.toast.permission_denied'), t('app.toast.permission_denied_detail'));
+                    }}
+                }} catch (err) {{
+                    console.error("Permission error:", err);
+                }}
+            }});
+        }}
+        
+        // ========== 切换语言 ==========
+        function toggleLanguage() {{
+            if (currentLang === 'zh') {{
+                currentLang = 'en';
+            }} else if (currentLang === 'en') {{
+                currentLang = 'ms';
+            }} else {{
+                currentLang = 'zh';
+            }}
+            
+            localStorage.setItem('prefect_lang', currentLang);
+            document.body.classList.remove('lang-zh', 'lang-en', 'lang-ms');
+            document.body.classList.add(`lang-${{currentLang}}`);
+            
+            updatePageLanguage();
+            
+            const langNames = {{ zh: '中文', en: 'English', ms: 'Bahasa Melayu' }};
+            showNotification('🌐', t('app.toast.languageSwitched', {{lang: langNames[currentLang]}}));
+        }}
+        
+        // ========== 其他功能函数 ==========
         
         // 切换深色模式
-        function toggleNightMode() {
+        function toggleNightMode() {{
             document.body.classList.toggle('night-mode');
             showHint(document.body.classList.contains('night-mode') ? '🌙 深色模式' : '☀️ 日间模式');
             
-            // 如果图表显示中，重新生成以适配深色模式
             const chartCard = document.getElementById('chartCard');
-            if (chartCard && chartCard.classList.contains('show') && window.chart) {
+            if (chartCard && chartCard.classList.contains('show') && window.chart) {{
                 generateChart();
-            }
-        }
+            }}
+        }}
 
         // 显示提示
-        function showHint(message) {
+        function showHint(message) {{
             const hint = document.getElementById('doubleTapHint');
             const hintText = document.getElementById('hintText');
             if (!hint || !hintText) return;
@@ -1951,13 +2110,13 @@ html = '''<!DOCTYPE html>
             hint.classList.add('show');
             
             clearTimeout(window.hintTimeout);
-            window.hintTimeout = setTimeout(() => {
+            window.hintTimeout = setTimeout(() => {{
                 hint.classList.remove('show');
-            }, 1500);
-        }
+            }}, 1500);
+        }}
 
         // 显示下载提示
-        function showToast(message, isSuccess = true) {
+        function showToast(message) {{
             const toast = document.getElementById('downloadToast');
             const msgEl = document.getElementById('toastMessage');
             if (!toast || !msgEl) return;
@@ -1965,13 +2124,13 @@ html = '''<!DOCTYPE html>
             msgEl.textContent = message;
             toast.classList.add('show');
             
-            setTimeout(() => {
+            setTimeout(() => {{
                 toast.classList.remove('show');
-            }, 2000);
-        }
+            }}, 2000);
+        }}
 
         // 显示通知提示
-        function showNotification(title, detail) {
+        function showNotification(title, detail) {{
             const toast = document.getElementById('notificationToast');
             const titleEl = document.getElementById('toastMessage');
             const detailEl = document.getElementById('toastDetail');
@@ -1982,34 +2141,25 @@ html = '''<!DOCTYPE html>
             detailEl.textContent = detail;
             toast.classList.add('show');
             
-            setTimeout(() => {
+            setTimeout(() => {{
                 toast.classList.remove('show');
-            }, 3000);
-        }
-
-        // 开启提醒 - 使用 OneSignal 请求权限
-        function enableReminders() {
-            OneSignalDeferred.push(function(OneSignal) {
-                OneSignal.Notifications.requestPermission();
-            });
-            showNotification('🔔 提醒已开启', '你将在以下时间收到通知：\\n早上6:00 · 晚上7:00 · 晚上8:15 · 晚上10:00');
-            closePopup();
-        }
+            }}, 3000);
+        }}
 
         // 显示提醒弹窗
-        function showReminderPopup() {
+        function showReminderPopup() {{
             const popup = document.getElementById('reminderPopup');
             if (popup) popup.classList.add('show');
-        }
+        }}
 
         // 关闭弹窗
-        function closePopup() {
+        function closePopup() {{
             const popup = document.getElementById('reminderPopup');
             if (popup) popup.classList.remove('show');
-        }
+        }}
 
         // 生成统计图
-        function generateChart() {
+        function generateChart() {{
             const canvas = document.getElementById('groupChart');
             if (!canvas) return;
             
@@ -2018,241 +2168,234 @@ html = '''<!DOCTYPE html>
             const textColor = isNightMode ? '#94a3b8' : '#5a6b7a';
             const gridColor = isNightMode ? '#2d3a4d' : '#e1e8f0';
             
-            // 数据 - 会被Python替换
-            const groups = ['星穹组', '夜曜组', '沧澜组'];
-            const scores = [1234, 1156, 1089];
+            const groups = {json.dumps(group_list)};
+            const scores = {json.dumps(total_list)};
             const colors = ['#eab308', '#a855f7', '#3b82f6'];
             
-            if (window.chart) {
+            if (window.chart) {{
                 window.chart.destroy();
-            }
+            }}
             
-            window.chart = new Chart(ctx, {
+            window.chart = new Chart(ctx, {{
                 type: 'bar',
-                data: {
-                    labels: groups,
-                    datasets: [{
-                        label: '总分',
+                data: {{
+                    labels: groups.map(g => getTranslatedGroupName(g)),
+                    datasets: [{{
+                        label: t('app.chart.total'),
                         data: scores,
                         backgroundColor: colors,
                         borderRadius: 6,
                         barPercentage: 0.6
-                    }]
-                },
-                options: {
+                    }}]
+                }},
+                options: {{
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
+                    plugins: {{
+                        legend: {{ display: false }},
+                        tooltip: {{
+                            callbacks: {{
+                                label: function(context) {{
                                     const value = context.raw;
-                                    return `总分: ${value}`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
+                                    const group = groups[context.dataIndex];
+                                    const members = {len(group_data[group_list[0]]) if group_list else 0};
+                                    const avg = Math.round(value / members);
+                                    return [
+                                        `${{t('app.chart.total')}}: ${{value}}`,
+                                        `${{t('app.chart.members', {{count: members}})}}`,
+                                        `${{t('app.chart.average', {{avg: avg}})}}`
+                                    ];
+                                }}
+                            }}
+                        }}
+                    }},
+                    scales: {{
+                        y: {{
                             beginAtZero: true,
-                            grid: { color: gridColor },
-                            ticks: { color: textColor }
-                        },
-                        x: {
-                            grid: { display: false },
-                            ticks: { color: textColor }
-                        }
-                    }
-                }
-            });
+                            grid: {{ color: gridColor }},
+                            ticks: {{ color: textColor }}
+                        }},
+                        x: {{
+                            grid: {{ display: false }},
+                            ticks: {{ color: textColor }}
+                        }}
+                    }}
+                }}
+            }});
             
             // 更新统计卡片
             const statsGrid = document.getElementById('statsGrid');
-            if (statsGrid) {
+            if (statsGrid) {{
                 statsGrid.innerHTML = groups.map((g, i) => `
                     <div class="stat-item">
-                        <div class="stat-label">${g}</div>
-                        <div class="stat-value">${scores[i]}</div>
-                        <div class="stat-rank">第${i+1}名 · 10人</div>
+                        <div class="stat-label">${{getTranslatedGroupName(g)}}</div>
+                        <div class="stat-value">${{scores[i]}}</div>
+                        <div class="stat-rank">${{t('app.chart.rank', {{rank: i+1}})}} · ${{t('app.chart.members', {{count: {len(group_data[group_list[0]]) if group_list else 0}}})}}</div>
                     </div>
                 `).join('');
-            }
-        }
+            }}
+        }}
 
         // 保存图表
-        async function saveChartToGallery() {
+        async function saveChartToGallery() {{
             const chartCard = document.getElementById('chartCard');
             if (!chartCard) return;
             
-            try {
-                showToast('📸 正在生成图片...');
+            try {{
+                showToast(t('app.toast.generating'));
                 
-                if (!window.chart) {
+                if (!window.chart) {{
                     generateChart();
-                }
+                }}
                 
-                setTimeout(async () => {
-                    const canvas = await html2canvas(chartCard, {
+                setTimeout(async () => {{
+                    const canvas = await html2canvas(chartCard, {{
                         scale: 2,
                         backgroundColor: getComputedStyle(document.body).backgroundColor,
                         allowTaint: false,
                         useCORS: true,
                         logging: false
-                    });
+                    }});
                     
                     const link = document.createElement('a');
-                    link.download = `prefects_score_${new Date().toISOString().slice(0,10)}.png`;
+                    link.download = `prefects_score_${{new Date().toISOString().slice(0,10)}}.png`;
                     link.href = canvas.toDataURL('image/png');
                     link.click();
                     
-                    showToast('✅ 已保存到相册');
-                }, 500);
+                    showToast(t('app.toast.saved'));
+                }}, 500);
                 
-            } catch (error) {
+            }} catch (error) {{
                 console.error('保存失败:', error);
-                showToast('❌ 保存失败');
-            }
-        }
+                showToast(t('app.toast.saveFailed'));
+            }}
+        }}
 
         // ========== DOM 加载完成后绑定事件 ==========
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {{
+            
+            // 初始化语言
+            document.body.classList.add(`lang-${{currentLang}}`);
+            updatePageLanguage();
             
             // 深色模式切换
             const themeToggle = document.getElementById('themeToggle');
-            if (themeToggle) {
-                themeToggle.addEventListener('click', function(e) {
+            if (themeToggle) {{
+                themeToggle.addEventListener('click', function(e) {{
                     toggleNightMode();
-                });
-            }
+                }});
+            }}
 
             // 语言切换
             const langToggle = document.getElementById('langToggle');
-            if (langToggle) {
-                langToggle.addEventListener('click', function(e) {
-                    const body = document.body;
-                    if (body.classList.contains('lang-zh')) {
-                        body.classList.remove('lang-zh');
-                        body.classList.add('lang-en');
-                        this.querySelector('.lang-left').textContent = 'EN';
-                        this.querySelector('.lang-right').textContent = 'MS';
-                    } else if (body.classList.contains('lang-en')) {
-                        body.classList.remove('lang-en');
-                        body.classList.add('lang-ms');
-                        this.querySelector('.lang-left').textContent = 'MS';
-                        this.querySelector('.lang-right').textContent = '中';
-                    } else {
-                        body.classList.remove('lang-ms');
-                        body.classList.add('lang-zh');
-                        this.querySelector('.lang-left').textContent = '中';
-                        this.querySelector('.lang-right').textContent = 'EN';
-                    }
-                    showNotification('🌐', `已切换到 ${body.classList.contains('lang-zh') ? '中文' : body.classList.contains('lang-en') ? 'English' : 'Bahasa Melayu'}`);
-                });
-            }
+            if (langToggle) {{
+                langToggle.addEventListener('click', function(e) {{
+                    toggleLanguage();
+                }});
+            }}
 
             // 下载统计按钮
             const downloadBtn = document.getElementById('downloadBtn');
             const chartCard = document.getElementById('chartCard');
             const closeChart = document.getElementById('closeChart');
             
-            if (downloadBtn && chartCard) {
-                downloadBtn.addEventListener('click', function(e) {
+            if (downloadBtn && chartCard) {{
+                downloadBtn.addEventListener('click', function(e) {{
                     chartCard.classList.add('show');
                     generateChart();
-                    showToast('📊 统计图已生成');
-                });
-            }
+                    showToast(t('app.toast.chartGenerated'));
+                }});
+            }}
 
             // 保存图表按钮
             const saveChartBtn = document.getElementById('saveChartBtn');
-            if (saveChartBtn) {
-                saveChartBtn.addEventListener('click', function(e) {
+            if (saveChartBtn) {{
+                saveChartBtn.addEventListener('click', function(e) {{
                     saveChartToGallery();
-                });
-            }
+                }});
+            }}
 
             // 关闭图表
-            if (closeChart && chartCard) {
-                closeChart.addEventListener('click', function(e) {
+            if (closeChart && chartCard) {{
+                closeChart.addEventListener('click', function(e) {{
                     chartCard.classList.remove('show');
-                });
-            }
+                }});
+            }}
 
             // 搜索功能
             const searchInput = document.getElementById('search');
-            if (searchInput) {
-                searchInput.addEventListener('input', function(e) {
+            if (searchInput) {{
+                searchInput.addEventListener('input', function(e) {{
                     const searchTerm = e.target.value.toLowerCase().trim();
                     const allRows = document.querySelectorAll('tbody tr');
                     
-                    allRows.forEach(row => {
+                    allRows.forEach(row => {{
                         const searchText = row.getAttribute('data-search')?.toLowerCase() || '';
                         row.style.display = searchText.includes(searchTerm) ? '' : 'none';
-                    });
-                });
-            }
+                    }});
+                }});
+            }}
 
             // 提醒按钮
             const reminderBtn = document.getElementById('reminderBtn');
-            if (reminderBtn) {
-                reminderBtn.addEventListener('click', function(e) {
+            if (reminderBtn) {{
+                reminderBtn.addEventListener('click', function(e) {{
                     showReminderPopup();
-                });
-            }
+                }});
+            }}
 
             // 点击外部关闭弹窗
-            document.addEventListener('click', function(e) {
+            document.addEventListener('click', function(e) {{
                 const popup = document.getElementById('reminderPopup');
                 const btn = document.getElementById('reminderBtn');
-                if (popup && btn) {
-                    if (!popup.contains(e.target) && !btn.contains(e.target)) {
+                if (popup && btn) {{
+                    if (!popup.contains(e.target) && !btn.contains(e.target)) {{
                         popup.classList.remove('show');
-                    }
-                }
-            });
+                    }}
+                }}
+            }});
 
             // 双击/双空格监听
             let lastTap = 0;
             let lastSpaceTime = 0;
             let spaceCount = 0;
 
-            document.addEventListener('touchstart', (e) => {
+            document.addEventListener('touchstart', (e) => {{
                 const currentTime = new Date().getTime();
                 const tapLength = currentTime - lastTap;
                 
-                if (tapLength < 200 && tapLength > 0) {
+                if (tapLength < 200 && tapLength > 0) {{
                     toggleNightMode();
                     e.preventDefault();
-                }
+                }}
                 lastTap = currentTime;
-            });
+            }});
 
-            document.addEventListener('keydown', (e) => {
-                if (e.code === 'Space') {
+            document.addEventListener('keydown', (e) => {{
+                if (e.code === 'Space') {{
                     e.preventDefault();
                     
                     const currentTime = new Date().getTime();
                     
-                    if (currentTime - lastSpaceTime < 500) {
+                    if (currentTime - lastSpaceTime < 500) {{
                         spaceCount++;
-                        if (spaceCount === 2) {
+                        if (spaceCount === 2) {{
                             toggleNightMode();
                             spaceCount = 0;
-                        }
-                    } else {
+                        }}
+                    }} else {{
                         spaceCount = 1;
-                    }
+                    }}
                     
                     lastSpaceTime = currentTime;
-                }
-            });
-        });
+                }}
+            }});
+        }});
 
         // 检查系统主题偏好
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {{
             document.body.classList.add('night-mode');
-        }
+        }}
     </script>
 </body>
 </html>'''
@@ -2390,9 +2533,10 @@ stats_json = json.dumps(stats_data, ensure_ascii=False)
 html = html.replace('<!-- 组排名卡片区域 -->', rank_cards_html)
 html = html.replace('<!-- 组别详情区域 -->', groups_html)
 
-# 替换JavaScript中的数据
-html = html.replace('const groups = [\'星穹组\', \'夜曜组\', \'沧澜组\'];', f'const groups = {json.dumps(group_list)};')
-html = html.replace('const scores = [1234, 1156, 1089];', f'const scores = {json.dumps(total_list)};')
+# 替换JavaScript中的组数据
+html = html.replace('{json.dumps(group_list)}', json.dumps(group_list))
+html = html.replace('{json.dumps(total_list)}', json.dumps(total_list))
+html = html.replace('{len(group_data[group_list[0]]) if group_list else 0}', str(len(group_data[group_list[0]]) if group_list else 0))
 
 # 替换日期
 html = html.replace('{datetime.now().strftime(\'%m/%d %H:%M\')}', datetime.now().strftime('%m/%d %H:%M'))
