@@ -1902,8 +1902,8 @@ OneSignalDeferred.push(async function(OneSignal) {
         notifyButton: {
             enable: false, // 用我们自己的 bell-icon 按钮触发，关掉自带的
         },
-           });
-       });
+    });
+});
         // ========== 首先定义所有函数 ==========
         
         // 切换深色模式
