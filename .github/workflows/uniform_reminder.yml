@@ -1,8 +1,9 @@
 # ============================================
 #  📋 学长团 · 联课活动自动提醒系统
 # ============================================
-#  版本: 2.3.0
+#  版本: 2.4.0
 #  功能: 周二/周四联课提醒 + 假期自动通知
+#  时区: 马来西亚时间 (UTC+8)
 #  假期: 3月18日 - 3月29日 (共12天)
 #  开学: 3月30日
 # ============================================
@@ -11,20 +12,20 @@ name: 🔔 学长团自动提醒 · 联课活动 + 假期通知
 
 on:
   # ==========================================
-  #  ⏰ 定时任务配置
+  #  ⏰ 定时任务配置 (马来西亚时间)
   # ==========================================
   schedule:
     # ----- 周二联课提醒 (每周一) -----
-    - cron: '0 11 * * 1'   # 🌆 周一 19:00 - 提醒明天周二
-    - cron: '15 12 * * 1'  # 🔔 周一 20:15 - 再次提醒
-    - cron: '0 14 * * 1'   # 🌙 周一 22:00 - 睡前提醒
-    - cron: '0 22 * * 1'   # 🌅 周二 06:00 - 当天提醒
+    - cron: '0 3 * * 1'   # 马来西亚 11:00 = UTC 03:00 - 提醒明天周二
+    - cron: '15 4 * * 1'  # 马来西亚 12:15 = UTC 04:15 - 再次提醒
+    - cron: '0 6 * * 1'   # 马来西亚 14:00 = UTC 06:00 - 睡前提醒
+    - cron: '0 22 * * 0'  # 马来西亚 06:00 = UTC 22:00 (前一天) - 当天提醒
     
     # ----- 周四联课提醒 (每周三) -----
-    - cron: '0 11 * * 3'   # 🌆 周三 19:00 - 提醒明天周四
-    - cron: '15 12 * * 3'  # 🔔 周三 20:15 - 再次提醒
-    - cron: '0 14 * * 3'   # 🌙 周三 22:00 - 睡前提醒
-    - cron: '0 22 * * 3'   # 🌅 周四 06:00 - 当天提醒
+    - cron: '0 3 * * 3'   # 马来西亚 11:00 = UTC 03:00 - 提醒明天周四
+    - cron: '15 4 * * 3'  # 马来西亚 12:15 = UTC 04:15 - 再次提醒
+    - cron: '0 6 * * 3'   # 马来西亚 14:00 = UTC 06:00 - 睡前提醒
+    - cron: '0 22 * * 2'  # 马来西亚 06:00 = UTC 22:00 (前一天) - 当天提醒
 
   # ==========================================
   #  🎮 手动触发模式
@@ -58,18 +59,28 @@ jobs:
     timeout-minutes: 5
     
     steps:
-      # ===== 步骤 1: 获取当前日期 =====
-      - name: 🕐 获取当前日期
-        id: date
+      # ===== 步骤 1: 设置时区为马来西亚 =====
+      - name: 🕐 设置时区为 Asia/Kuala_Lumpur
         run: |
-          # 获取当前日期 (UTC)
-          CURRENT_DATE=$(date +%Y-%m-%d)
-          CURRENT_DAY=$(date +%d)
-          CURRENT_MONTH=$(date +%m)
-          CURRENT_YEAR=$(date +%Y)
+          sudo ln -sf /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
+          echo "时区已设置为马来西亚时间 (UTC+8)"
+          date
+
+      # ===== 步骤 2: 获取马来西亚日期时间 =====
+      - name: 📅 获取马来西亚日期时间
+        id: datetime
+        run: |
+          # 获取马来西亚日期时间
+          CURRENT_DATETIME=$(date '+%Y-%m-%d %H:%M:%S')
+          CURRENT_DATE=$(date '+%Y-%m-%d')
+          CURRENT_DAY=$(date '+%d')
+          CURRENT_MONTH=$(date '+%m')
+          CURRENT_YEAR=$(date '+%Y')
+          CURRENT_HOUR=$(date '+%H')
+          CURRENT_MINUTE=$(date '+%M')
           
-          # 获取星期几
-          WEEKDAY_NUM=$(date +%u)
+          # 获取星期几 (马来西亚时间)
+          WEEKDAY_NUM=$(date '+%u')
           case $WEEKDAY_NUM in
             1) WEEKDAY_CN="星期一" ;;
             2) WEEKDAY_CN="星期二" ;;
@@ -81,7 +92,7 @@ jobs:
           esac
           
           # 明天星期几
-          TOMORROW_NUM=$(date -d "tomorrow" +%u 2>/dev/null || echo "0")
+          TOMORROW_NUM=$(date -d "tomorrow" '+%u' 2>/dev/null || echo "0")
           case $TOMORROW_NUM in
             1) TOMORROW_CN="星期一" ;;
             2) TOMORROW_CN="星期二" ;;
@@ -93,13 +104,12 @@ jobs:
             *) TOMORROW_CN="未知" ;;
           esac
           
-          # ===== 硬编码假期判断 =====
+          # ===== 假期判断 (马来西亚日期) =====
           # 假期: 2026年3月18日 - 2026年3月29日
           IS_HOLIDAY="false"
           IS_LAST_DAY="false"
           IS_FIRST_DAY="false"
           
-          # 检查年份和月份
           if [ "$CURRENT_YEAR" = "2026" ] && [ "$CURRENT_MONTH" = "03" ]; then
             # 3月18日 - 3月29日
             if [ "$CURRENT_DAY" -ge 18 ] && [ "$CURRENT_DAY" -le 29 ]; then
@@ -137,10 +147,13 @@ jobs:
           
           # 输出所有变量
           {
+            echo "current_datetime=$CURRENT_DATETIME"
             echo "current_date=$CURRENT_DATE"
             echo "current_day=$CURRENT_DAY"
             echo "current_month=$CURRENT_MONTH"
             echo "current_year=$CURRENT_YEAR"
+            echo "current_hour=$CURRENT_HOUR"
+            echo "current_minute=$CURRENT_MINUTE"
             echo "weekday_cn=$WEEKDAY_CN"
             echo "tomorrow_cn=$TOMORROW_CN"
             echo "is_holiday=$IS_HOLIDAY"
@@ -153,24 +166,27 @@ jobs:
             echo "test_mode=${{ github.event.inputs.test_mode == 'true' }}"
           } >> $GITHUB_OUTPUT
 
-      # ===== 步骤 2: 生成消息内容 =====
+      # ===== 步骤 3: 生成消息内容 =====
       - name: 💬 生成提醒内容
         id: message
         run: |
           # 获取所有变量
-          CURRENT_DAY="${{ steps.date.outputs.current_day }}"
-          CURRENT_MONTH="${{ steps.date.outputs.current_month }}"
-          CURRENT_YEAR="${{ steps.date.outputs.current_year }}"
-          WEEKDAY_CN="${{ steps.date.outputs.weekday_cn }}"
-          TOMORROW_CN="${{ steps.date.outputs.tomorrow_cn }}"
-          IS_HOLIDAY="${{ steps.date.outputs.is_holiday }}"
-          IS_FIRST_DAY="${{ steps.date.outputs.is_first_day }}"
-          IS_LAST_DAY="${{ steps.date.outputs.is_last_day }}"
-          HOLIDAY_DAY="${{ steps.date.outputs.holiday_day }}"
-          TOMORROW_SCHOOL="${{ steps.date.outputs.tomorrow_school }}"
-          TODAY_SCHOOL="${{ steps.date.outputs.today_school }}"
-          IS_MANUAL="${{ steps.date.outputs.is_manual }}"
-          TEST_MODE="${{ steps.date.outputs.test_mode }}"
+          CURRENT_DATE="${{ steps.datetime.outputs.current_date }}"
+          CURRENT_DAY="${{ steps.datetime.outputs.current_day }}"
+          CURRENT_MONTH="${{ steps.datetime.outputs.current_month }}"
+          CURRENT_YEAR="${{ steps.datetime.outputs.current_year }}"
+          CURRENT_HOUR="${{ steps.datetime.outputs.current_hour }}"
+          CURRENT_MINUTE="${{ steps.datetime.outputs.current_minute }}"
+          WEEKDAY_CN="${{ steps.datetime.outputs.weekday_cn }}"
+          TOMORROW_CN="${{ steps.datetime.outputs.tomorrow_cn }}"
+          IS_HOLIDAY="${{ steps.datetime.outputs.is_holiday }}"
+          IS_FIRST_DAY="${{ steps.datetime.outputs.is_first_day }}"
+          IS_LAST_DAY="${{ steps.datetime.outputs.is_last_day }}"
+          HOLIDAY_DAY="${{ steps.datetime.outputs.holiday_day }}"
+          TOMORROW_SCHOOL="${{ steps.datetime.outputs.tomorrow_school }}"
+          TODAY_SCHOOL="${{ steps.datetime.outputs.today_school }}"
+          IS_MANUAL="${{ steps.datetime.outputs.is_manual }}"
+          TEST_MODE="${{ steps.datetime.outputs.test_mode }}"
           CUSTOM_MESSAGE="${{ github.event.inputs.custom_message }}"
           
           # 初始化消息变量
@@ -179,12 +195,11 @@ jobs:
           EMOJI=""
           
           # 调试输出
-          echo "🔍 调试信息:"
-          echo "  日期: $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DAY"
+          echo "🔍 马来西亚时间调试:"
+          echo "  日期时间: $CURRENT_DATE $CURRENT_HOUR:$CURRENT_MINUTE"
           echo "  星期: $WEEKDAY_CN"
           echo "  放假: $IS_HOLIDAY"
           echo "  放假第: $HOLIDAY_DAY 天"
-          echo "  最后一天: $IS_LAST_DAY"
           
           # ===== 1. 自定义消息模式 =====
           if [ "$IS_MANUAL" = "true" ] && [ -n "$CUSTOM_MESSAGE" ]; then
@@ -196,9 +211,9 @@ jobs:
           elif [ "$TEST_MODE" = "true" ]; then
             TITLE="🧪 测试通知"
             if [ "$IS_HOLIDAY" = "true" ]; then
-              MESSAGE="✅ 系统运行正常 · 今天是 $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DAY，放假第 $HOLIDAY_DAY 天"
+              MESSAGE="✅ 系统运行正常 · 马来西亚时间 $CURRENT_DATE，放假第 $HOLIDAY_DAY 天"
             else
-              MESSAGE="✅ 系统运行正常 · 今天是 $WEEKDAY_CN"
+              MESSAGE="✅ 系统运行正常 · 马来西亚时间 $CURRENT_DATE $WEEKDAY_CN"
             fi
             EMOJI="🔧"
           
@@ -208,20 +223,20 @@ jobs:
             if [ "$IS_HOLIDAY" = "true" ]; then
               if [ "$IS_FIRST_DAY" = "true" ]; then
                 TITLE="🏖️ 假期开始啦！"
-                MESSAGE="今天是 $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DAY $WEEKDAY_CN，假期开始啦！好好放松吧~"
+                MESSAGE="今天是 $CURRENT_DATE $WEEKDAY_CN，假期开始啦！好好放松吧~"
                 EMOJI="🎉"
               elif [ "$IS_LAST_DAY" = "true" ]; then
                 TITLE="🏖️ 假期最后一天"
-                MESSAGE="今天是 $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DAY $WEEKDAY_CN，假期最后一天啦！明天就要开学了"
+                MESSAGE="今天是 $CURRENT_DATE $WEEKDAY_CN，假期最后一天啦！明天就要开学了"
                 EMOJI="🎒"
               else
                 TITLE="🏖️ 放假通知"
-                MESSAGE="今天是 $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DAY $WEEKDAY_CN，放假第 $HOLIDAY_DAY 天，好好休息！"
+                MESSAGE="今天是 $CURRENT_DATE $WEEKDAY_CN，放假第 $HOLIDAY_DAY 天，好好休息！"
                 EMOJI="😎"
               fi
             elif [ "$TODAY_SCHOOL" = "true" ]; then
               TITLE="🏫 开学啦！"
-              MESSAGE="今天是 $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DAY，开学啦！祝新学期学习进步"
+              MESSAGE="今天是 $CURRENT_DATE，开学啦！祝新学期学习进步"
               EMOJI="⭐"
             elif [ "$TOMORROW_SCHOOL" = "true" ]; then
               TITLE="📢 明天开学啦！"
@@ -229,9 +244,6 @@ jobs:
               EMOJI="🏃"
             else
               # 非假期，检查联课活动
-              WEEKDAY_NUM=$(date +%u)
-              TOMORROW_NUM=$(date -d "tomorrow" +%u 2>/dev/null || echo "0")
-              
               if [ "$WEEKDAY_NUM" = "2" ]; then
                 TITLE="📢 今天有联课活动"
                 MESSAGE="🎽 今天是星期二！有联课活动，请穿体育衣"
@@ -261,18 +273,18 @@ jobs:
             if [ "$IS_HOLIDAY" = "true" ]; then
               TITLE="🏖️ 放假通知"
               if [ "$IS_FIRST_DAY" = "true" ]; then
-                MESSAGE="今天是 $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DAY $WEEKDAY_CN，假期开始啦！好好放松吧~"
+                MESSAGE="今天是 $CURRENT_DATE $WEEKDAY_CN，假期开始啦！好好放松吧~"
               elif [ "$IS_LAST_DAY" = "true" ]; then
-                MESSAGE="今天是 $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DAY $WEEKDAY_CN，假期最后一天啦！明天开学"
+                MESSAGE="今天是 $CURRENT_DATE $WEEKDAY_CN，假期最后一天啦！明天开学"
               else
-                MESSAGE="今天是 $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DAY $WEEKDAY_CN，放假第 $HOLIDAY_DAY 天，不用上学"
+                MESSAGE="今天是 $CURRENT_DATE $WEEKDAY_CN，放假第 $HOLIDAY_DAY 天，不用上学"
               fi
               EMOJI="😴"
             
             # 开学当天
             elif [ "$TODAY_SCHOOL" = "true" ]; then
               TITLE="🏫 开学啦！"
-              MESSAGE="今天是 $CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DAY，开学啦！祝新学期学习进步"
+              MESSAGE="今天是 $CURRENT_DATE，开学啦！祝新学期学习进步"
               EMOJI="⭐"
             
             # 明天开学
@@ -283,9 +295,6 @@ jobs:
             
             # 联课提醒
             else
-              WEEKDAY_NUM=$(date +%u)
-              TOMORROW_NUM=$(date -d "tomorrow" +%u 2>/dev/null || echo "0")
-              
               if [ "$WEEKDAY_NUM" = "2" ] || [ "$WEEKDAY_NUM" = "4" ]; then
                 UNIFORM=$([ "$WEEKDAY_NUM" = "2" ] && echo "体育衣" || echo "校服")
                 TITLE="📢 今天有联课活动"
@@ -314,7 +323,7 @@ jobs:
             echo "⏭️ 没有需要发送的消息"
           fi
 
-      # ===== 步骤 3: 发送推送 =====
+      # ===== 步骤 4: 发送推送 =====
       - name: 📤 发送 OneSignal 推送
         if: steps.message.outputs.skip == 'false'
         run: |
@@ -335,7 +344,7 @@ jobs:
           
           echo "✅ 发送完成！"
 
-      # ===== 步骤 4: 记录日志 =====
+      # ===== 步骤 5: 记录日志 =====
       - name: 📝 日志记录
         if: always()
         run: |
@@ -344,14 +353,14 @@ jobs:
           echo "║         📋 执行报告                  ║"
           echo "╚══════════════════════════════════════╝"
           echo ""
-          echo "🕐 执行时间: $(date)"
-          echo "📅 日期: ${{ steps.date.outputs.current_date }}"
-          echo "📆 星期: ${{ steps.date.outputs.weekday_cn }}"
-          echo "🏖️ 放假: ${{ steps.date.outputs.is_holiday }}"
-          echo "📆 放假第: ${{ steps.date.outputs.holiday_day }} 天"
-          echo "🎒 最后一天: ${{ steps.date.outputs.is_last_day }}"
-          echo "🤖 手动触发: ${{ steps.date.outputs.is_manual }}"
-          echo "🧪 测试模式: ${{ steps.date.outputs.test_mode }}"
+          echo "🕐 马来西亚时间: ${{ steps.datetime.outputs.current_datetime }}"
+          echo "📅 日期: ${{ steps.datetime.outputs.current_date }}"
+          echo "📆 星期: ${{ steps.datetime.outputs.weekday_cn }}"
+          echo "🏖️ 放假: ${{ steps.datetime.outputs.is_holiday }}"
+          echo "📆 放假第: ${{ steps.datetime.outputs.holiday_day }} 天"
+          echo "🎒 最后一天: ${{ steps.datetime.outputs.is_last_day }}"
+          echo "🤖 手动触发: ${{ steps.datetime.outputs.is_manual }}"
+          echo "🧪 测试模式: ${{ steps.datetime.outputs.test_mode }}"
           echo ""
           if [ "${{ steps.message.outputs.skip }}" == "false" ]; then
             echo "💬 发送内容:"
