@@ -1897,7 +1897,7 @@ html = '''<!DOCTYPE html>
 window.OneSignalDeferred = window.OneSignalDeferred || [];
 OneSignalDeferred.push(async function(OneSignal) {
     await OneSignal.init({
-        appId: "137d66ce-9746-4206-9861-a1c368a0b548", // 确保这是你在 OneSignal 面板申请的 ID
+        appId: "9d36f74b-0815-4845-aeee-bf68f48e64d4", // 确保这是你在 OneSignal 面板申请的 ID
         allowLocalhostAsSecureOrigin: true,
         notifyButton: {
             enable: false, // 用我们自己的 bell-icon 按钮触发，关掉自带的
