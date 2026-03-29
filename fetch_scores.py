@@ -1511,6 +1511,31 @@ html = '''<!DOCTYPE html>
             font-weight: 600;
         }
 
+        .reminder-header-btn {
+    background: var(--star-primary);
+    border: none;
+    border-radius: 30px;
+    padding: 6px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    color: #1a2b3c;
+    font-weight: 500;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+
+.reminder-header-btn:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+}
+
+body.night-mode .reminder-header-btn {
+    color: #ffffff;
+}
+
         .reminder-btn {
             position: fixed;
             bottom: 20px;
@@ -1719,19 +1744,24 @@ html = '''<!DOCTYPE html>
                     <h1>学长团分数板 · 热力图</h1>
                 </div>
                 <div class="action-buttons">
-                    <button class="download-btn" id="downloadBtn">
-                        <span>📊</span>
-                        <span>下载统计</span>
-                    </button>
-                    <div class="lang-toggle" id="langToggle">
-                        <span class="lang-left">中</span>
-                        <span class="lang-separator">/</span>
-                        <span class="lang-right">EN</span>
-                    </div>
-                    <div class="theme-toggle" id="themeToggle">
-                        <span class="moon-icon">🌓</span>
-                        <span>深色</span>
-                    </div>
+    <button class="download-btn" id="downloadBtn">
+        <span>📊</span>
+        <span>下载统计</span>
+    </button>
+    <div class="lang-toggle" id="langToggle">
+        <span class="lang-left">中</span>
+        <span class="lang-separator">/</span>
+        <span class="lang-right">EN</span>
+    </div>
+    <div class="theme-toggle" id="themeToggle">
+        <span class="moon-icon">🌓</span>
+        <span>深色</span>
+    </div>
+    <button class="reminder-header-btn" id="reminderHeaderBtn">
+        <span>🔔</span>
+        <span>开启提醒</span>
+    </button>
+</div>
                 </div>
             </div>
             <div class="meta-info">
@@ -2202,13 +2232,21 @@ async function enableReminders() {
                 });
             }
 
-            // 提醒按钮
-            const reminderBtn = document.getElementById('reminderBtn');
-            if (reminderBtn) {
-                reminderBtn.addEventListener('click', function(e) {
-                    showReminderPopup();
-                });
-            }
+            // 底部悬浮按钮
+const reminderBtn = document.getElementById('reminderBtn');
+if (reminderBtn) {
+    reminderBtn.addEventListener('click', function(e) {
+        showReminderPopup();
+    });
+}
+
+// 顶部按钮
+const reminderHeaderBtn = document.getElementById('reminderHeaderBtn');
+if (reminderHeaderBtn) {
+    reminderHeaderBtn.addEventListener('click', function(e) {
+        showReminderPopup();
+    });
+}
 
             // 点击外部关闭弹窗
             document.addEventListener('click', function(e) {
