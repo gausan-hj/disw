@@ -2093,13 +2093,14 @@ async function enableReminders() {
     const groups = ['星穹组', '夜曜组', '沧澜组'];
     const scores = [1234, 1156, 1089];
     
-    // 颜色固定对应组别（不管排名）
-    const groupColorMap = {
+    // 颜色固定映射
+    const groupColorMap = window.groupColorMap || {
         '星穹组': '#eab308',
         '夜曜组': '#a855f7',
         '沧澜组': '#3b82f6'
     };
     
+    // 根据组别顺序生成颜色数组
     const colors = groups.map(g => groupColorMap[g]);
     
     if (window.chart) {
@@ -2402,6 +2403,24 @@ html = html.replace('<!-- 组别详情区域 -->', groups_html)
 # 替换JavaScript中的数据
 html = html.replace('const groups = [\'星穹组\', \'夜曜组\', \'沧澜组\'];', f'const groups = {json.dumps(group_list)};')
 html = html.replace('const scores = [1234, 1156, 1089];', f'const scores = {json.dumps(total_list)};')
+
+# ✅ 添加：生成颜色映射（按组别名称固定颜色）
+color_map = {
+    '星穹组': '#eab308',
+    '夜曜组': '#a855f7',
+    '沧澜组': '#3b82f6'
+}
+color_map_json = json.dumps(color_map, ensure_ascii=False)
+
+# 在HTML中注入颜色映射
+color_script = f'''
+<script>
+window.groupColorMap = {color_map_json};
+</script>
+'''
+
+# 在 </body> 之前插入
+html = html.replace('</body>', color_script + '\n</body>')
 
 # 替换日期
 html = html.replace('{datetime.now().strftime(\'%m/%d %H:%M\')}', datetime.now().strftime('%m/%d %H:%M'))
