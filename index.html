@@ -1262,7 +1262,7 @@
             </div>
             <div class="meta-info">
                 <span>Prefects' Scoreboard · 颜色越浅分数越高</span>
-                <span class="date-badge">03/29 06:57</span>
+                <span class="date-badge">03/29 07:03</span>
             </div>
             <div class="search-wrapper">
                 <span class="search-icon">🔍</span>
@@ -2124,8 +2124,8 @@ async function enableReminders() {
                     showNotification('🌐', `已切换到 ${body.classList.contains('lang-zh') ? '中文' : body.classList.contains('lang-en') ? 'English' : 'Bahasa Melayu'}`);
                 });
             }
-//统计图
-   function generateChart() {
+// ========== 统计图表相关函数 ==========
+function generateChart() {
     const canvas = document.getElementById('groupChart');
     if (!canvas) return;
     
@@ -2134,18 +2134,19 @@ async function enableReminders() {
     const textColor = isNightMode ? '#94a3b8' : '#5a6b7a';
     const gridColor = isNightMode ? '#2d3a4d' : '#e1e8f0';
     
-    const groups = ["\u591c\u66dc\u7ec4", "\u661f\u7a79\u7ec4", "\u6ca7\u6f9c\u7ec4"];
-    const scores = [110, 57, 56];
+    // 从全局获取数据
+    const groups = window.chartGroups || ['星穹组', '夜曜组', '沧澜组'];
+    const scores = window.chartScores || [0, 0, 0];
     
     // 颜色固定映射
-    const groupColorMap = window.groupColorMap || {
+    const groupColorMap = {
         '星穹组': '#eab308',
         '夜曜组': '#a855f7',
         '沧澜组': '#3b82f6'
     };
     
-    // 根据组别顺序生成颜色数组
-    const colors = groups.map(g => groupColorMap[g]);
+    // 根据组别生成颜色数组
+    const colors = groups.map(g => groupColorMap[g] || '#888888');
     
     if (window.chart) {
         window.chart.destroy();
@@ -2191,19 +2192,35 @@ async function enableReminders() {
     });
     
     // 更新统计卡片
+    updateStatsGrid(groups, scores);
+}
+
+function updateStatsGrid(groups, scores) {
     const statsGrid = document.getElementById('statsGrid');
-    if (statsGrid && window.groupStatsData) {
-        statsGrid.innerHTML = groups.map((g, i) => {
-            const membersCount = window.groupStatsData[g]?.members || '?';
-            return `
-                <div class="stat-item">
-                    <div class="stat-label">${g}</div>
-                    <div class="stat-value">${scores[i]}</div>
-                    <div class="stat-rank">第${i+1}名 · ${membersCount}人</div>
-                </div>
-            `;
-        }).join('');
-    }
+    if (!statsGrid) return;
+    
+    // 从全局获取组别数据
+    const groupData = window.groupStatsData || {};
+    
+    statsGrid.innerHTML = groups.map((g, i) => {
+        const data = groupData[g];
+        const membersCount = data ? data.members : '?';
+        const rank = data ? data.rank : (i + 1);
+        return `
+            <div class="stat-item">
+                <div class="stat-label">${g}</div>
+                <div class="stat-value">${scores[i]}</div>
+                <div class="stat-rank">第${rank}名 · ${membersCount}人</div>
+            </div>
+        `;
+    }).join('');
+}
+
+// 初始化图表数据
+function initChartData(groupsList, scoresList, statsData) {
+    window.chartGroups = groupsList;
+    window.chartScores = scoresList;
+    window.groupStatsData = statsData;
 }
             // 下载统计按钮
             const downloadBtn = document.getElementById('downloadBtn');
@@ -2310,7 +2327,25 @@ if (reminderBtn) {
     </script>
 
 <script>
-window.groupStatsData = {"星穹组": {"members": 10, "total": 57}, "夜曜组": {"members": 11, "total": 110}, "沧澜组": {"members": 10, "total": 56}};
+// 图表数据初始化
+window.chartGroups = ["夜曜组", "星穹组", "沧澜组"];
+window.chartScores = [110, 57, 56];
+window.groupStatsData = {"星穹组": {"members": 10, "total": 57, "avg": 5, "rank": 2}, "夜曜组": {"members": 11, "total": 110, "avg": 10, "rank": 1}, "沧澜组": {"members": 10, "total": 56, "avg": 5, "rank": 3}};
+
+// 颜色映射
+window.groupColorMap = {
+    '星穹组': '#eab308',
+    '夜曜组': '#a855f7',
+    '沧澜组': '#3b82f6'
+};
+
+// 页面加载后自动生成图表（如果图表卡片已显示）
+document.addEventListener('DOMContentLoaded', function() {
+    const chartCard = document.getElementById('chartCard');
+    if (chartCard && chartCard.classList.contains('show')) {
+        generateChart();
+    }
+});
 </script>
 
 </body>
