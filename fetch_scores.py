@@ -2419,9 +2419,6 @@ window.groupColorMap = {color_map_json};
 </script>
 '''
 
-# 在 </body> 之前插入
-html = html.replace('</body>', color_script + '\n</body>')
-
 # 替换日期
 html = html.replace('{datetime.now().strftime(\'%m/%d %H:%M\')}', datetime.now().strftime('%m/%d %H:%M'))
 
