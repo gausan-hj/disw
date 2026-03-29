@@ -2080,8 +2080,8 @@ async function enableReminders() {
                     showNotification('🌐', `已切换到 ${body.classList.contains('lang-zh') ? '中文' : body.classList.contains('lang-en') ? 'English' : 'Bahasa Melayu'}`);
                 });
             }
-//统计图
-   function generateChart() {
+// ========== 统计图表相关函数 ==========
+function generateChart() {
     const canvas = document.getElementById('groupChart');
     if (!canvas) return;
     
@@ -2090,18 +2090,19 @@ async function enableReminders() {
     const textColor = isNightMode ? '#94a3b8' : '#5a6b7a';
     const gridColor = isNightMode ? '#2d3a4d' : '#e1e8f0';
     
-    const groups = ['星穹组', '夜曜组', '沧澜组'];
-    const scores = [1234, 1156, 1089];
+    // 从全局获取数据
+    const groups = window.chartGroups || ['星穹组', '夜曜组', '沧澜组'];
+    const scores = window.chartScores || [0, 0, 0];
     
     // 颜色固定映射
-    const groupColorMap = window.groupColorMap || {
+    const groupColorMap = {
         '星穹组': '#eab308',
         '夜曜组': '#a855f7',
         '沧澜组': '#3b82f6'
     };
     
-    // 根据组别顺序生成颜色数组
-    const colors = groups.map(g => groupColorMap[g]);
+    // 根据组别生成颜色数组
+    const colors = groups.map(g => groupColorMap[g] || '#888888');
     
     if (window.chart) {
         window.chart.destroy();
@@ -2147,19 +2148,35 @@ async function enableReminders() {
     });
     
     // 更新统计卡片
+    updateStatsGrid(groups, scores);
+}
+
+function updateStatsGrid(groups, scores) {
     const statsGrid = document.getElementById('statsGrid');
-    if (statsGrid && window.groupStatsData) {
-        statsGrid.innerHTML = groups.map((g, i) => {
-            const membersCount = window.groupStatsData[g]?.members || '?';
-            return `
-                <div class="stat-item">
-                    <div class="stat-label">${g}</div>
-                    <div class="stat-value">${scores[i]}</div>
-                    <div class="stat-rank">第${i+1}名 · ${membersCount}人</div>
-                </div>
-            `;
-        }).join('');
-    }
+    if (!statsGrid) return;
+    
+    // 从全局获取组别数据
+    const groupData = window.groupStatsData || {};
+    
+    statsGrid.innerHTML = groups.map((g, i) => {
+        const data = groupData[g];
+        const membersCount = data ? data.members : '?';
+        const rank = data ? data.rank : (i + 1);
+        return `
+            <div class="stat-item">
+                <div class="stat-label">${g}</div>
+                <div class="stat-value">${scores[i]}</div>
+                <div class="stat-rank">第${rank}名 · ${membersCount}人</div>
+            </div>
+        `;
+    }).join('');
+}
+
+// 初始化图表数据
+function initChartData(groupsList, scoresList, statsData) {
+    window.chartGroups = groupsList;
+    window.chartScores = scoresList;
+    window.groupStatsData = statsData;
 }
             // 下载统计按钮
             const downloadBtn = document.getElementById('downloadBtn');
@@ -2404,48 +2421,63 @@ html = html.replace('<!-- 组别详情区域 -->', groups_html)
 html = html.replace('const groups = [\'星穹组\', \'夜曜组\', \'沧澜组\'];', f'const groups = {json.dumps(group_list)};')
 html = html.replace('const scores = [1234, 1156, 1089];', f'const scores = {json.dumps(total_list)};')
 
-# ✅ 添加：生成颜色映射（按组别名称固定颜色）
-color_map = {
-    '星穹组': '#eab308',
-    '夜曜组': '#a855f7',
-    '沧澜组': '#3b82f6'
-}
-color_map_json = json.dumps(color_map, ensure_ascii=False)
-
-# 在HTML中注入颜色映射
-color_script = f'''
-<script>
-window.groupColorMap = {color_map_json};
-</script>
-'''
-
 # 替换日期
 html = html.replace('{datetime.now().strftime(\'%m/%d %H:%M\')}', datetime.now().strftime('%m/%d %H:%M'))
 
-# 保存HTML文件
-with open("index.html", "w", encoding="utf-8") as f:
-    f.write(html)
+# ===== 准备图表数据 =====
+# 按排名顺序的组别和分数
+sorted_groups_data = []
+for g, total in sorted_groups:
+    sorted_groups_data.append({
+        "name": g,
+        "score": int(total),
+        "members": len(group_data[g]),
+        "rank": group_rank[g],
+        "avg": int(group_averages[g])
+    })
 
-# ===== 注入组员统计数据（修复问号问题）=====
-group_stats = {}
+# 准备注入的数据
+chart_groups = [item["name"] for item in sorted_groups_data]
+chart_scores = [item["score"] for item in sorted_groups_data]
+
+# 准备组别统计数据
+group_stats_data = {}
 for g in ["星穹组", "夜曜组", "沧澜组"]:
     if g in group_data:
-        group_stats[g] = {
+        group_stats_data[g] = {
             "members": len(group_data[g]),
-            "total": int(group_totals[g])
+            "total": int(group_totals[g]),
+            "avg": int(group_averages[g]),
+            "rank": group_rank[g]
         }
 
-group_stats_json = json.dumps(group_stats, ensure_ascii=False)
-
-# 把统计数据注入到 HTML 中
-stats_script = f'''
+# 生成注入脚本
+init_script = f'''
 <script>
-window.groupStatsData = {group_stats_json};
+// 图表数据初始化
+window.chartGroups = {json.dumps(chart_groups, ensure_ascii=False)};
+window.chartScores = {json.dumps(chart_scores, ensure_ascii=False)};
+window.groupStatsData = {json.dumps(group_stats_data, ensure_ascii=False)};
+
+// 颜色映射
+window.groupColorMap = {{
+    '星穹组': '#eab308',
+    '夜曜组': '#a855f7',
+    '沧澜组': '#3b82f6'
+}};
+
+// 页面加载后自动生成图表（如果图表卡片已显示）
+document.addEventListener('DOMContentLoaded', function() {{
+    const chartCard = document.getElementById('chartCard');
+    if (chartCard && chartCard.classList.contains('show')) {{
+        generateChart();
+    }}
+}});
 </script>
 '''
 
-# 在 </body> 标签之前插入
-html = html.replace('</body>', stats_script + '\n</body>')
+# 在 </body> 之前注入
+html = html.replace('</body>', init_script + '\n</body>')
 
 # 保存HTML文件
 with open("index.html", "w", encoding="utf-8") as f:
