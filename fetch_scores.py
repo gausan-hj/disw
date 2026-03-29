@@ -1511,30 +1511,6 @@ html = '''<!DOCTYPE html>
             font-weight: 600;
         }
 
-        .reminder-header-btn {
-    background: var(--star-primary);
-    border: none;
-    border-radius: 30px;
-    padding: 6px 12px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.8rem;
-    color: #1a2b3c;
-    font-weight: 500;
-    transition: all 0.15s ease;
-    white-space: nowrap;
-}
-
-.reminder-header-btn:active {
-    transform: scale(0.98);
-    opacity: 0.9;
-}
-
-body.night-mode .reminder-header-btn {
-    color: #ffffff;
-}
 
         .reminder-btn {
             position: fixed;
@@ -1746,7 +1722,7 @@ body.night-mode .reminder-header-btn {
                 <div class="action-buttons">
     <button class="download-btn" id="downloadBtn">
         <span>📊</span>
-        <span>下载统计</span>
+        <span>生成统计图</span>
     </button>
     <div class="lang-toggle" id="langToggle">
         <span class="lang-left">中</span>
@@ -1757,10 +1733,6 @@ body.night-mode .reminder-header-btn {
         <span class="moon-icon">🌓</span>
         <span>深色</span>
     </div>
-    <button class="reminder-header-btn" id="reminderHeaderBtn">
-        <span>🔔</span>
-        <span>开启提醒</span>
-    </button>
 </div>
                 </div>
             </div>
@@ -2037,88 +2009,7 @@ async function enableReminders() {
         }
 
         // 生成统计图
-        function generateChart() {
-    const canvas = document.getElementById('groupChart');
-    if (!canvas) return;
-    
-    const ctx = canvas.getContext('2d');
-    const isNightMode = document.body.classList.contains('night-mode');
-    const textColor = isNightMode ? '#94a3b8' : '#5a6b7a';
-    const gridColor = isNightMode ? '#2d3a4d' : '#e1e8f0';
-    
-    // 数据 - 会被Python替换
-    const groups = ['星穹组', '夜曜组', '沧澜组'];
-    const scores = [1234, 1156, 1089];
-    
-    // ✅ 修改：按组别名称映射颜色（不管排名，颜色固定对应组别）
-    const groupColorMap = {
-        '星穹组': '#eab308',
-        '夜曜组': '#a855f7',
-        '沧澜组': '#3b82f6'
-    };
-    
-    // 根据组别顺序生成颜色数组
-    const colors = groups.map(g => groupColorMap[g] || '#888888');
-    
-    if (window.chart) {
-        window.chart.destroy();
-    }
-    
-    window.chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: groups,
-            datasets: [{
-                label: '总分',
-                data: scores,
-                backgroundColor: colors,
-                borderRadius: 6,
-                barPercentage: 0.6
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            const value = context.raw;
-                            return `总分: ${value}`;
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    grid: { color: gridColor },
-                    ticks: { color: textColor }
-                },
-                x: {
-                    grid: { display: false },
-                    ticks: { color: textColor }
-                }
-            }
-        }
-    });
-    
-    // 更新统计卡片
-    const statsGrid = document.getElementById('statsGrid');
-    if (statsGrid) {
-        statsGrid.innerHTML = groups.map((g, i) => {
-            const membersCount = window.groupStatsData ? window.groupStatsData[g]?.members : '?';
-            return `
-                <div class="stat-item">
-                    <div class="stat-label">${g}</div>
-                    <div class="stat-value">${scores[i]}</div>
-                    <div class="stat-rank">第${i+1}名 · ${membersCount}人</div>
-                </div>
-            `;
-        }).join('');
-    }
-}
+        
         // 保存图表
         async function saveChartToGallery() {
             const chartCard = document.getElementById('chartCard');
@@ -2189,7 +2080,84 @@ async function enableReminders() {
                     showNotification('🌐', `已切换到 ${body.classList.contains('lang-zh') ? '中文' : body.classList.contains('lang-en') ? 'English' : 'Bahasa Melayu'}`);
                 });
             }
-
+//统计图
+   function generateChart() {
+    const canvas = document.getElementById('groupChart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    const isNightMode = document.body.classList.contains('night-mode');
+    const textColor = isNightMode ? '#94a3b8' : '#5a6b7a';
+    const gridColor = isNightMode ? '#2d3a4d' : '#e1e8f0';
+    
+    const groups = ['星穹组', '夜曜组', '沧澜组'];
+    const scores = [1234, 1156, 1089];
+    
+    const groupColorMap = {
+        '星穹组': '#eab308',
+        '夜曜组': '#a855f7',
+        '沧澜组': '#3b82f6'
+    };
+    
+    const colors = groups.map(g => groupColorMap[g] || '#888888');
+    
+    if (window.chart) {
+        window.chart.destroy();
+    }
+    
+    window.chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: groups,
+            datasets: [{
+                label: '总分',
+                data: scores,
+                backgroundColor: colors,
+                borderRadius: 6,
+                barPercentage: 0.6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `总分: ${context.raw}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: gridColor },
+                    ticks: { color: textColor }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: textColor }
+                }
+            }
+        }
+    });
+    
+    const statsGrid = document.getElementById('statsGrid');
+    if (statsGrid && window.groupStatsData) {
+        statsGrid.innerHTML = groups.map((g, i) => {
+            const membersCount = window.groupStatsData[g]?.members || '?';
+            return `
+                <div class="stat-item">
+                    <div class="stat-label">${g}</div>
+                    <div class="stat-value">${scores[i]}</div>
+                    <div class="stat-rank">第${i+1}名 · ${membersCount}人</div>
+                </div>
+            `;
+        }).join('');
+    }
+}
             // 下载统计按钮
             const downloadBtn = document.getElementById('downloadBtn');
             const chartCard = document.getElementById('chartCard');
@@ -2236,14 +2204,6 @@ async function enableReminders() {
 const reminderBtn = document.getElementById('reminderBtn');
 if (reminderBtn) {
     reminderBtn.addEventListener('click', function(e) {
-        showReminderPopup();
-    });
-}
-
-// 顶部按钮
-const reminderHeaderBtn = document.getElementById('reminderHeaderBtn');
-if (reminderHeaderBtn) {
-    reminderHeaderBtn.addEventListener('click', function(e) {
         showReminderPopup();
     });
 }
@@ -2443,6 +2403,31 @@ html = html.replace('const scores = [1234, 1156, 1089];', f'const scores = {json
 
 # 替换日期
 html = html.replace('{datetime.now().strftime(\'%m/%d %H:%M\')}', datetime.now().strftime('%m/%d %H:%M'))
+
+# 保存HTML文件
+with open("index.html", "w", encoding="utf-8") as f:
+    f.write(html)
+
+# ===== 注入组员统计数据（修复问号问题）=====
+group_stats = {}
+for g in ["星穹组", "夜曜组", "沧澜组"]:
+    if g in group_data:
+        group_stats[g] = {
+            "members": len(group_data[g]),
+            "total": int(group_totals[g])
+        }
+
+group_stats_json = json.dumps(group_stats, ensure_ascii=False)
+
+# 把统计数据注入到 HTML 中
+stats_script = f'''
+<script>
+window.groupStatsData = {group_stats_json};
+</script>
+'''
+
+# 在 </body> 标签之前插入
+html = html.replace('</body>', stats_script + '\n</body>')
 
 # 保存HTML文件
 with open("index.html", "w", encoding="utf-8") as f:
