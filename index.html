@@ -1260,7 +1260,7 @@
             </div>
             <div class="meta-info">
                 <span>Prefects' Scoreboard · 颜色越浅分数越高</span>
-                <span class="date-badge">03/29 05:18</span>
+                <span class="date-badge">03/29 06:16</span>
             </div>
             <div class="search-wrapper">
                 <span class="search-icon">🔍</span>
@@ -2052,76 +2052,87 @@ async function enableReminders() {
 
         // 生成统计图
         function generateChart() {
-            const canvas = document.getElementById('groupChart');
-            if (!canvas) return;
-            
-            const ctx = canvas.getContext('2d');
-            const isNightMode = document.body.classList.contains('night-mode');
-            const textColor = isNightMode ? '#94a3b8' : '#5a6b7a';
-            const gridColor = isNightMode ? '#2d3a4d' : '#e1e8f0';
-            
-            // 数据 - 会被Python替换
-            const groups = ["\u591c\u66dc\u7ec4", "\u661f\u7a79\u7ec4", "\u6ca7\u6f9c\u7ec4"];
-            const scores = [110, 57, 56];
-            const colors = ['#eab308', '#a855f7', '#3b82f6'];
-            
-            if (window.chart) {
-                window.chart.destroy();
-            }
-            
-            window.chart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: groups,
-                    datasets: [{
-                        label: '总分',
-                        data: scores,
-                        backgroundColor: colors,
-                        borderRadius: 6,
-                        barPercentage: 0.6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const value = context.raw;
-                                    return `总分: ${value}`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: { color: gridColor },
-                            ticks: { color: textColor }
-                        },
-                        x: {
-                            grid: { display: false },
-                            ticks: { color: textColor }
+    const canvas = document.getElementById('groupChart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    const isNightMode = document.body.classList.contains('night-mode');
+    const textColor = isNightMode ? '#94a3b8' : '#5a6b7a';
+    const gridColor = isNightMode ? '#2d3a4d' : '#e1e8f0';
+    
+    // 数据 - 会被Python替换
+    const groups = ["\u591c\u66dc\u7ec4", "\u661f\u7a79\u7ec4", "\u6ca7\u6f9c\u7ec4"];
+    const scores = [110, 57, 56];
+    
+    // ✅ 修改：按组别名称映射颜色（不管排名，颜色固定对应组别）
+    const groupColorMap = {
+        '星穹组': '#eab308',
+        '夜曜组': '#a855f7',
+        '沧澜组': '#3b82f6'
+    };
+    
+    // 根据组别顺序生成颜色数组
+    const colors = groups.map(g => groupColorMap[g] || '#888888');
+    
+    if (window.chart) {
+        window.chart.destroy();
+    }
+    
+    window.chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: groups,
+            datasets: [{
+                label: '总分',
+                data: scores,
+                backgroundColor: colors,
+                borderRadius: 6,
+                barPercentage: 0.6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.raw;
+                            return `总分: ${value}`;
                         }
                     }
                 }
-            });
-            
-            // 更新统计卡片
-            const statsGrid = document.getElementById('statsGrid');
-            if (statsGrid) {
-                statsGrid.innerHTML = groups.map((g, i) => `
-                    <div class="stat-item">
-                        <div class="stat-label">${g}</div>
-                        <div class="stat-value">${scores[i]}</div>
-                        <div class="stat-rank">第${i+1}名 · 10人</div>
-                    </div>
-                `).join('');
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: gridColor },
+                    ticks: { color: textColor }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: textColor }
+                }
             }
         }
-
+    });
+    
+    // 更新统计卡片
+    const statsGrid = document.getElementById('statsGrid');
+    if (statsGrid) {
+        statsGrid.innerHTML = groups.map((g, i) => {
+            const membersCount = window.groupStatsData ? window.groupStatsData[g]?.members : '?';
+            return `
+                <div class="stat-item">
+                    <div class="stat-label">${g}</div>
+                    <div class="stat-value">${scores[i]}</div>
+                    <div class="stat-rank">第${i+1}名 · ${membersCount}人</div>
+                </div>
+            `;
+        }).join('');
+    }
+}
         // 保存图表
         async function saveChartToGallery() {
             const chartCard = document.getElementById('chartCard');
