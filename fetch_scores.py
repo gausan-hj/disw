@@ -2093,13 +2093,14 @@ async function enableReminders() {
     const groups = ['星穹组', '夜曜组', '沧澜组'];
     const scores = [1234, 1156, 1089];
     
+    // 颜色固定对应组别（不管排名）
     const groupColorMap = {
         '星穹组': '#eab308',
         '夜曜组': '#a855f7',
         '沧澜组': '#3b82f6'
     };
     
-    const colors = groups.map(g => groupColorMap[g] || '#888888');
+    const colors = groups.map(g => groupColorMap[g]);
     
     if (window.chart) {
         window.chart.destroy();
@@ -2144,6 +2145,7 @@ async function enableReminders() {
         }
     });
     
+    // 更新统计卡片
     const statsGrid = document.getElementById('statsGrid');
     if (statsGrid && window.groupStatsData) {
         statsGrid.innerHTML = groups.map((g, i) => {
